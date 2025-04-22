@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { GithubIcon, LinkedinIcon, InstagramIcon, MailIcon, PhoneIcon, MapPinIcon, TrophyIcon } from 'lucide-react'
 
 const timelineEvents = [
