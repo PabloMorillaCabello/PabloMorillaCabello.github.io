@@ -315,7 +315,9 @@ Currently, I'm also learning Swedish and enjoying the journey of growing both pe
             {timelineEvents.map((event, index) => (
               <div 
                 key={index}
-                ref={el => timelineItemsRef.current[index] = el}
+                ref={(el) => {
+                  timelineItemsRef.current[index] = el;
+                }}
                 className={`timeline-item relative mb-32 group ${
                   visibleItems.includes(index) ? 'visible' : ''
                 }`}
