@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Name | Portfolio</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: #f7f9fb;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    header {
+      margin-top: 3rem;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.3rem;
+    }
+
+    h2 {
+      font-weight: 400;
+      color: #555;
+    }
+
+    .links a {
+      text-decoration: none;
+      color: white;
+      background: #24292f;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      margin: 0.3rem;
+      display: inline-block;
+      transition: background 0.3s ease;
+    }
+
+    .links a:hover {
+      background: #0366d6;
+    }
+
+    footer {
+      margin-top: auto;
+      font-size: 0.9rem;
+      color: #777;
+      padding: 2rem 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Your Name</h1>
+    <h2>Web Developer | Open Source Enthusiast</h2>
+  </header>
+
+  <p>Hello! 👋 I’m a developer who loves building cool stuff with code.  
+  You can find my projects and contributions on GitHub below.</p>
+
+  <div class="links">
+    <a href="https://github.com/yourusername" target="_blank">GitHub</a>
+    <a href="https://linkedin.com/in/yourusername" target="_blank">LinkedIn</a>
+    <a href="mailto:youremail@example.com">Email Me</a>
+  </div>
+
+  <footer>
+    © <span id="year"></span> Your Name. All rights reserved.
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
