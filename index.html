@@ -3,18 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your Name | Portfolio</title>
+  <title>Your Name | GitHub Portfolio</title>
   <style>
     body {
+      font-family: "Inter", sans-serif;
       margin: 0;
-      font-family: "Segoe UI", sans-serif;
-      background: #f7f9fb;
+      background-color: #f9fafb;
       color: #333;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      min-height: 100vh;
       padding: 2rem;
     }
 
@@ -23,59 +22,88 @@
     }
 
     h1 {
-      font-size: 2.5rem;
-      margin-bottom: 0.3rem;
+      font-size: 2.2rem;
+      margin-bottom: 0.2rem;
     }
 
     h2 {
       font-weight: 400;
-      color: #555;
+      color: #666;
     }
 
-    .links a {
+    #repos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .repo {
+      background: white;
+      border-radius: 10px;
+      padding: 1rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .repo:hover {
+      transform: translateY(-5px);
+    }
+
+    .repo a {
       text-decoration: none;
-      color: white;
-      background: #24292f;
-      padding: 0.6rem 1.2rem;
-      border-radius: 8px;
-      margin: 0.3rem;
-      display: inline-block;
-      transition: background 0.3s ease;
-    }
-
-    .links a:hover {
-      background: #0366d6;
+      color: #0366d6;
+      font-weight: 600;
     }
 
     footer {
-      margin-top: auto;
-      font-size: 0.9rem;
+      margin-top: 3rem;
       color: #777;
-      padding: 2rem 0;
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Your Name</h1>
-    <h2>Web Developer | Open Source Enthusiast</h2>
+    <h2>Full Stack Developer | Open Source Enthusiast</h2>
   </header>
 
-  <p>Hello! 👋 I’m a developer who loves building cool stuff with code.  
-  You can find my projects and contributions on GitHub below.</p>
+  <p>Here are some of my latest GitHub projects 👇</p>
 
-  <div class="links">
-    <a href="https://github.com/yourusername" target="_blank">GitHub</a>
-    <a href="https://linkedin.com/in/yourusername" target="_blank">LinkedIn</a>
-    <a href="mailto:youremail@example.com">Email Me</a>
-  </div>
+  <section id="repos">Loading repositories...</section>
 
   <footer>
-    © <span id="year"></span> Your Name. All rights reserved.
+    © <span id="year"></span> Your Name
   </footer>
 
   <script>
+    // Update the year automatically
     document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Replace with your GitHub username
+    const username = "yourusername";
+
+    async function loadRepos() {
+      const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated`);
+      const repos = await response.json();
+
+      const reposContainer = document.getElementById("repos");
+      reposContainer.innerHTML = "";
+
+      repos.slice(0, 6).forEach(repo => {
+        const repoElement = document.createElement("div");
+        repoElement.classList.add("repo");
+        repoElement.innerHTML = `
+          <a href="${repo.html_url}" target="_blank">${repo.name}</a>
+          <p>${repo.description || "No description provided."}</p>
+        `;
+        reposContainer.appendChild(repoElement);
+      });
+    }
+
+    loadRepos();
   </script>
 </body>
 </html>
