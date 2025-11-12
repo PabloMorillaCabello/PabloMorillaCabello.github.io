@@ -1,272 +1,454 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pablo Morilla Cabello | Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pablo Morilla Cabello — Portfolio (Tech Neon)</title>
+
+  <!-- Fuentes -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+  <meta name="description" content="Pablo Morilla Cabello - Automation Engineer & Full Stack Developer. Portafolio Tech Neon.">
+
   <style>
-    :root {
-      --bg-color: #f5f6f8;
-      --text-color: #222;
-      --accent-color: #0366d6;
-      --card-bg: #ffffff;
-      --shadow: rgba(0, 0, 0, 0.08);
+    /* ---------------------------
+       VARIABLES PRINCIPALES (CSS) - cambia colores aquí
+       --------------------------- */
+    :root{
+      --bg:#05060a;
+      --panel:#0b0d12;
+      --neon1: #00ffff;   /* cian */
+      --neon2: #ff00ff;   /* magenta */
+      --muted:#9aa4b2;
+      --glass: rgba(255,255,255,0.03);
+      --radius: 14px;
+      --max-width:1100px;
     }
 
-    [data-theme="dark"] {
-      --bg-color: #0d1117;
-      --text-color: #e6edf3;
-      --card-bg: #161b22;
-      --accent-color: #58a6ff;
-      --shadow: rgba(255, 255, 255, 0.05);
+    /* Tipografías / reset */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(0,255,255,0.03), transparent 6%),
+                  radial-gradient(900px 450px at 90% 90%, rgba(255,0,255,0.03), transparent 6%),
+                  var(--bg);
+      color:#e6f6f8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+      padding:32px 18px;
+      display:flex;
+      justify-content:center;
     }
 
-    * {
-      transition: background-color 0.3s ease, color 0.3s ease;
+    /* Contenedor central */
+    .wrap{
+      width:100%;
+      max-width:var(--max-width);
+      display:grid;
+      grid-template-columns: 340px 1fr;
+      gap:28px;
+      align-items:start;
     }
 
-    body {
-      font-family: "Inter", sans-serif;
-      margin: 0;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: 2rem;
+    /* SIDEBAR */
+    .sidebar{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      border-radius:var(--radius);
+      padding:22px;
+      position:relative;
+      overflow:hidden;
+      box-shadow: 0 6px 30px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      min-height:480px;
     }
 
-    header {
-      margin-top: 3rem;
-      position: relative;
+    /* Faux neon lines */
+    .sidebar::before, .sidebar::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      mix-blend-mode:screen;
+    }
+    .sidebar::before{
+      background: linear-gradient(90deg, rgba(0,255,255,0.02), transparent 40%, transparent 60%, rgba(255,0,255,0.02));
+      filter: blur(16px);
+    }
+    .sidebar::after{
+      background: repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0 2px, transparent 2px 6px);
+      mix-blend-mode:overlay;
     }
 
-    h1 {
-      font-size: 2.6rem;
-      margin-bottom: 0.3rem;
+    /* Avatar & title */
+    .avatar{
+      width:96px;height:96px;border-radius:18px;
+      background:linear-gradient(135deg,var(--neon1),var(--neon2));
+      display:block;margin:0 auto 14px;
+      box-shadow: 0 6px 22px rgba(0,0,0,0.6), 0 0 18px rgba(0,255,255,0.06);
+      display:flex;align-items:center;justify-content:center;color:#030305;font-weight:700;font-family:Orbitron, monospace;font-size:20px;
+    }
+    h1.title{
+      font-family: "Orbitron", monospace;
+      font-weight:700;
+      letter-spacing:0.6px;
+      text-align:center;
+      margin:6px 0 4px;
+      font-size:1.2rem;
+      color:var(--neon1);
+      text-shadow: 0 0 12px rgba(0,255,255,0.12);
+    }
+    p.slogan{
+      text-align:center;color:var(--muted);margin:6px 0 18px;font-size:0.95rem;
     }
 
-    h2 {
-      font-weight: 500;
-      color: var(--accent-color);
+    /* Info / badges */
+    .badges{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}
+    .badge{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:6px 10px;border-radius:999px;font-weight:600;font-size:0.82rem;color:var(--neon2);
+      border:1px solid rgba(255,0,255,0.08);
+      box-shadow: 0 6px 18px rgba(255,0,255,0.02);
     }
 
-    .section-title {
-      font-size: 1.8rem;
-      color: var(--accent-color);
-      margin-top: 4rem;
+    /* Skills list */
+    .skills{margin-top:10px;display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+    .skill{
+      background: rgba(255,255,255,0.02);
+      border-radius:10px;padding:8px;font-size:0.86rem;color:var(--muted);
+      border:1px solid rgba(255,255,255,0.02);
     }
 
-    #repos {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.2rem;
-      margin-top: 2rem;
-      width: 100%;
-      max-width: 900px;
+    /* Links social */
+    .socials{display:flex;gap:8px;justify-content:center;margin-top:16px}
+    .socials a{
+      display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      text-decoration:none;color:var(--neon1);font-weight:700;
+      box-shadow: 0 6px 18px rgba(0,255,255,0.03);
     }
 
-    .repo {
-      background: var(--card-bg);
-      border-radius: 10px;
-      padding: 1.5rem;
-      box-shadow: 0 3px 8px var(--shadow);
-      transition: transform 0.2s ease, box-shadow 0.3s;
+    /* MAIN */
+    .main{
+      min-height:480px;
+    }
+    .panel{
+      background: linear-gradient(180deg, rgba(10,12,16,0.6), rgba(6,8,12,0.6));
+      border-radius:var(--radius);
+      padding:22px;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.6);
     }
 
-    .repo:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 14px var(--shadow);
+    /* Section headings */
+    .section{
+      margin-bottom:20px;
+    }
+    .section h2{
+      display:flex;align-items:center;gap:12px;margin:0 0 12px;font-family:Orbitron, monospace;color:var(--neon2);
+      font-size:1rem;text-transform:uppercase;letter-spacing:1px;
+    }
+    .section h2 .dot{
+      width:10px;height:10px;border-radius:50%;
+      background:linear-gradient(45deg,var(--neon1),var(--neon2));
+      box-shadow: 0 0 20px rgba(0,255,255,0.12), 0 0 30px rgba(255,0,255,0.08);
     }
 
-    .repo a {
-      text-decoration: none;
-      color: var(--accent-color);
-      font-weight: 600;
+    /* ABOUT */
+    .about p{color:var(--muted);margin:0 0 12px}
+    .cta-row{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{
+      padding:10px 14px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.04);
+      color:var(--neon1);font-weight:600;text-decoration:none;cursor:pointer;
+      transition:transform .15s ease, box-shadow .15s ease;
+      display:inline-flex;align-items:center;gap:8px;
+    }
+    .btn:hover{transform:translateY(-4px);box-shadow: 0 10px 30px rgba(0,255,255,0.06);}
+
+    /* Projects grid */
+    .grid{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;
+    }
+    .card{
+      position:relative;overflow:hidden;border-radius:12px;padding:14px;background:linear-gradient(135deg, rgba(0,0,0,0.3), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.03);
+      transition:transform .18s ease, box-shadow .18s ease;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+      min-height:120px;display:flex;flex-direction:column;justify-content:space-between;
+    }
+    .card:hover{transform:translateY(-8px);box-shadow: 0 20px 60px rgba(0,0,0,0.7)}
+    .card .title{font-weight:700;color:var(--neon1);font-family:Orbitron, monospace}
+    .card p{color:var(--muted);font-size:0.92rem;margin:8px 0 0}
+
+    /* Contact form */
+    .contact-form{display:grid;gap:10px}
+    .input, textarea{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03);padding:10px;border-radius:8px;color:#e6f6f8}
+    textarea{min-height:120px;resize:vertical}
+
+    /* Tiny footer */
+    footer{margin-top:14px;color:var(--muted);font-size:0.86rem;text-align:center}
+
+    /* Decorative neon lines (top-right) */
+    .neon-lines{
+      position:absolute;right:8px;top:8px;display:flex;flex-direction:column;gap:6px;
+    }
+    .neon-lines span{
+      width:68px;height:2px;background:linear-gradient(90deg,var(--neon1),var(--neon2));opacity:0.18;filter:blur(6px);
     }
 
-    .timeline {
-      position: relative;
-      max-width: 800px;
-      margin: 4rem auto;
-      text-align: left;
+    /* Responsive */
+    @media (max-width:980px){
+      .wrap{grid-template-columns:1fr; padding-bottom:30px}
+      .sidebar{order:2}
+      .main{order:1}
     }
 
-    .timeline::after {
-      content: '';
-      position: absolute;
-      left: 50%;
-      top: 0;
-      transform: translateX(-50%);
-      width: 3px;
-      height: 100%;
-      background: var(--accent-color);
-    }
-
-    .timeline-item {
-      position: relative;
-      width: 50%;
-      padding: 1.5rem 2rem;
-      box-sizing: border-box;
-    }
-
-    .timeline-item:nth-child(odd) {
-      left: 0;
-      text-align: right;
-    }
-
-    .timeline-item:nth-child(even) {
-      left: 50%;
-    }
-
-    .timeline-item .content {
-      background: var(--card-bg);
-      border-radius: 10px;
-      padding: 1rem 1.5rem;
-      box-shadow: 0 2px 6px var(--shadow);
-      cursor: pointer;
-    }
-
-    .content h3 {
-      margin: 0 0 0.5rem;
-      color: var(--accent-color);
-    }
-
-    footer {
-      margin-top: 3rem;
-      color: #777;
-    }
-
-    .theme-toggle {
-      position: absolute;
-      top: 0;
-      right: -60px;
-      cursor: pointer;
-      background: var(--accent-color);
-      color: white;
-      border: none;
-      padding: 0.5rem 0.8rem;
-      border-radius: 8px;
-    }
-
-    #toTop {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: var(--accent-color);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      cursor: pointer;
-      font-size: 1.2rem;
-      display: none;
-      box-shadow: 0 2px 6px var(--shadow);
-    }
-
-    p {
-      line-height: 1.6;
-    }
-
-    a {
-      color: var(--accent-color);
-    }
+    /* Small utilities */
+    .muted{color:var(--muted)}
+    a.link{color:var(--neon1);text-decoration:none}
   </style>
 </head>
 <body>
-  <header>
-    <h1>Pablo Morilla Cabello</h1>
-    <h2>Automation Engineer | Full Stack Developer</h2>
-    <button class="theme-toggle" id="themeToggle">🌙</button>
-  </header>
-
-  <section>
-    <h2 class="section-title">About Me</h2>
-    <p>I’m an automation engineer and full-stack developer passionate about creating efficient systems that merge hardware, software, and AI.</p>
-  </section>
-
-  <section>
-    <h2 class="section-title">GitHub Projects</h2>
-    <section id="repos">Loading repositories...</section>
-  </section>
-
-  <section>
-    <h2 class="section-title">My Career Timeline</h2>
-    <div class="timeline" id="timeline">
-      <div class="timeline-item">
-        <div class="content">
-          <h3>2025 – Present | Full Stack Developer</h3>
-          <p>Working on modern web applications using React, Node.js, and cloud services to deliver scalable digital products.</p>
-        </div>
+  <div class="wrap" style="position:relative;max-width:1200px;">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="neon-lines" aria-hidden="true">
+        <span></span><span></span><span></span>
       </div>
-      <div class="timeline-item">
-        <div class="content">
-          <h3>2023 – 2025 | Software Engineer Intern</h3>
-          <p>Developed internal tools for automation and contributed to open-source projects, gaining strong backend experience.</p>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="content">
-          <h3>2021 – 2023 | Computer Science Degree</h3>
-          <p>Graduated with a focus on software development, databases, and systems design.</p>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <footer>
-    © <span id="year"></span> Pablo Morilla Cabello ·
-    <a href="https://www.linkedin.com/in/pablomorillacabello/" target="_blank">LinkedIn</a> · 
-    <a href="mailto:pablo@example.com">Email</a>
-  </footer>
+      <div class="avatar" id="avatar">PM</div>
+      <h1 class="title" id="heroName">Pablo Morilla Cabello</h1>
+      <p class="slogan" id="heroSlogan">Automation Engineer · AI · Full Stack</p>
 
-  <button id="toTop">↑</button>
+      <div class="badges" id="badges">
+        <div class="badge">Automation</div>
+        <div class="badge">AI</div>
+        <div class="badge">Full Stack</div>
+      </div>
+
+      <div class="section skills" aria-label="Skills">
+        <div class="skill">Python</div>
+        <div class="skill">Node.js</div>
+        <div class="skill">PLC / SCADA</div>
+        <div class="skill">Docker / Cloud</div>
+      </div>
+
+      <div class="socials" style="margin-top:16px">
+        <a id="linkGit" href="#" title="GitHub" target="_blank">GH</a>
+        <a id="linkLinkedin" href="#" title="LinkedIn" target="_blank">IN</a>
+        <a id="linkMail" href="#" title="Email" target="_blank">✉</a>
+      </div>
+
+      <div style="margin-top:18px;text-align:center;color:var(--muted);font-size:0.85rem">
+        <div>Disponible para contratos · Remote / On-site</div>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main">
+      <div class="panel">
+        <!-- ABOUT -->
+        <section class="section about" id="aboutSection">
+          <h2><span class="dot"></span> About</h2>
+          <p id="aboutText">
+            Soy ingeniero de automatización y desarrollador full-stack. Combino control industrial, software y ML para construir soluciones escalables y confiables.
+          </p>
+          <div class="cta-row" style="margin-top:12px">
+            <a class="btn" id="cvBtn" href="#" target="_blank">📄 Descargar CV</a>
+            <a class="btn" id="contactBtn" href="#contactSection">✉ Contactar</a>
+          </div>
+        </section>
+
+        <!-- PROJECTS -->
+        <section class="section">
+          <h2><span class="dot"></span> Projects</h2>
+          <div id="reposGrid" class="grid">
+            <!-- Repos aparecerán aquí -->
+            <div class="card"><div><div class="title">Loading...</div><p class="muted">Cargando repositorios desde GitHub</p></div></div>
+          </div>
+        </section>
+
+        <!-- EXPERIENCE / Timeline -->
+        <section class="section">
+          <h2><span class="dot"></span> Experience</h2>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div class="card" style="min-height:72px;padding:12px">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div>
+                  <div style="font-weight:700;color:var(--neon1)">2025 – Presente</div>
+                  <div class="muted">Full Stack Developer — Empresa X</div>
+                </div>
+                <div class="muted">Remote</div>
+              </div>
+            </div>
+
+            <div class="card" style="min-height:72px;padding:12px">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div>
+                  <div style="font-weight:700;color:var(--neon2)">2023 – 2025</div>
+                  <div class="muted">Software Engineer Intern — Empresa Y</div>
+                </div>
+                <div class="muted">On-site</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section class="section" id="contactSection">
+          <h2><span class="dot"></span> Contact</h2>
+          <div style="display:grid;grid-template-columns:1fr 320px;gap:12px">
+            <div>
+              <form class="contact-form" id="contactForm" onsubmit="event.preventDefault(); handleContactSubmit();">
+                <input class="input" id="name" placeholder="Tu nombre" required>
+                <input class="input" id="email" placeholder="Correo electrónico" type="email" required>
+                <textarea id="message" placeholder="Escribe tu mensaje..." required></textarea>
+                <div style="display:flex;gap:8px">
+                  <button class="btn" type="submit">Enviar mensaje</button>
+                  <button class="btn" type="button" onclick="fillDemo()">Rellenar demo</button>
+                </div>
+                <div id="contactStatus" class="muted" style="margin-top:6px;font-size:0.9rem"></div>
+              </form>
+            </div>
+
+            <div>
+              <div class="card" style="padding:14px">
+                <div style="font-weight:700;color:var(--neon1);margin-bottom:6px">Preferencias de contacto</div>
+                <div class="muted" style="font-size:0.95rem">Email: <a id="mailLink" class="link" href="mailto:mail@example.com">mail@example.com</a></div>
+                <div class="muted" style="margin-top:12px">También disponible en:</div>
+                <div style="display:flex;gap:8px;margin-top:8px">
+                  <a class="btn" id="whatsappBtn" href="#" target="_blank">WhatsApp</a>
+                  <a class="btn" id="calBtn" href="#" target="_blank">Calendly</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <footer>© <span id="year"></span> <span id="footName">Pablo Morilla Cabello</span> · Built with ❤️ · Tech Neon</footer>
+      </div>
+    </main>
+  </div>
 
   <script>
+    /* ======================================================
+       ZONA FÁCIL DE EDITAR (JS): Cambia datos aquí
+       ====================================================== */
+    const PROFILE = {
+      name: "Pablo Morilla Cabello",
+      short: "Pablo",
+      slogan: "Automation Engineer · AI · Full Stack",
+      initials: "PM",
+      about: "Soy ingeniero de automatización y desarrollador full-stack. Combino control industrial, software y ML para construir soluciones escalables y confiables.",
+      email: "pablo@example.com",
+      github: "https://github.com/PabloMorillaCabello",
+      linkedin: "https://www.linkedin.com/in/pablomorillacabello/",
+      cv: "#",           // link al CV (PDF)
+      whatsapp: "#",     // link de whatsapp
+      calendly: "#"      // link a calendario si quieres
+    };
+
+    /* ======================================================
+       Variables para comportamiento: NO necesitas tocarlas si no quieres
+       ====================================================== */
+    document.getElementById("heroName").textContent = PROFILE.name;
+    document.getElementById("heroSlogan").textContent = PROFILE.slogan;
+    document.getElementById("avatar").textContent = PROFILE.initials;
+    document.getElementById("aboutText").textContent = PROFILE.about;
+    document.getElementById("cvBtn").href = PROFILE.cv;
+    document.getElementById("linkGit").href = PROFILE.github;
+    document.getElementById("linkLinkedin").href = PROFILE.linkedin;
+    document.getElementById("linkMail").href = `mailto:${PROFILE.email}`;
+    document.getElementById("mailLink").href = `mailto:${PROFILE.email}`;
+    document.getElementById("whatsappBtn").href = PROFILE.whatsapp;
+    document.getElementById("calBtn").href = PROFILE.calendly;
+    document.getElementById("footName").textContent = PROFILE.name;
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    const username = "PabloMorillaCabello";
-    async function loadRepos() {
-      const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated`);
-      const reposContainer = document.getElementById("repos");
-      if (!response.ok) {
-        reposContainer.innerHTML = "⚠️ Unable to load repositories.";
-        return;
+    /* ======================================================
+       Funciones: carga repos desde GitHub (fácil de editar)
+       - Si quieres cambiar el usuario, edita `githubUser`
+       - O coloca un token personal si tienes rate limit (no incluido aquí)
+       ====================================================== */
+    const githubUser = (function(){
+      try { // intenta extraer del link que pusiste arriba
+        const url = new URL(PROFILE.github);
+        const maybe = url.pathname.replace(/\//g,"");
+        return maybe || "PabloMorillaCabello";
+      } catch(e){
+        return "PabloMorillaCabello";
       }
-      const repos = await response.json();
-      reposContainer.innerHTML = "";
-      repos
-        .filter(repo => repo.name.toLowerCase() !== `${username.toLowerCase()}.github.io`)
-        .slice(0, 6)
-        .forEach(repo => {
-          const div = document.createElement("div");
-          div.classList.add("repo");
-          div.innerHTML = `<a href="${repo.html_url}" target="_blank">${repo.name}</a>
-                           <p>${repo.description || "No description provided."}</p>`;
-          reposContainer.appendChild(div);
-        });
+    })();
+
+    async function loadRepos(limit = 6){
+      const container = document.getElementById("reposGrid");
+      container.innerHTML = `<div class="card"><div><div class="title">Cargando...</div><p class="muted">Obteniendo repos de GitHub</p></div></div>`;
+      try{
+        const res = await fetch(`https://api.github.com/users/${githubUser}/repos?sort=updated&per_page=${limit}`);
+        if(!res.ok){
+          container.innerHTML = `<div class="card"><div><div class="title">API Error</div><p class="muted">No fue posible obtener repositorios. Comprueba el usuario o rate limit.</p></div></div>`;
+          return;
+        }
+        const repos = await res.json();
+        container.innerHTML = "";
+        repos
+          .filter(r => r.name.toLowerCase() !== `${githubUser.toLowerCase()}.github.io`)
+          .slice(0,limit)
+          .forEach(repo => {
+            const div = document.createElement("div");
+            div.className = "card";
+            div.innerHTML = `
+              <div>
+                <div class="title">${repo.name}</div>
+                <p class="muted">${repo.description ? repo.description : "No description."}</p>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center;justify-content:flex-end">
+                <a class="btn" href="${repo.html_url}" target="_blank">Ver</a>
+              </div>`;
+            container.appendChild(div);
+          });
+      }catch(err){
+        container.innerHTML = `<div class="card"><div><div class="title">Error</div><p class="muted">Error: ${err.message}</p></div></div>`;
+      }
     }
-    loadRepos();
 
-    const themeToggle = document.getElementById("themeToggle");
-    const currentTheme = localStorage.getItem("theme") || "light";
-    document.documentElement.setAttribute("data-theme", currentTheme);
-    themeToggle.textContent = currentTheme === "dark" ? "☀️" : "🌙";
-    themeToggle.addEventListener("click", () => {
-      const newTheme = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
-      document.documentElement.setAttribute("data-theme", newTheme);
-      localStorage.setItem("theme", newTheme);
-      themeToggle.textContent = newTheme === "dark" ? "☀️" : "🌙";
-    });
+    loadRepos(8);
 
-    const toTop = document.getElementById("toTop");
-    window.addEventListener("scroll", () => {
-      toTop.style.display = window.scrollY > 400 ? "block" : "none";
+    /* ======================================================
+       Contact form handler (local-only demo). Si quieres integrarlo:
+       - Reemplaza con llamada a tu endpoint o a formspree / netlify forms
+       ====================================================== */
+    function handleContactSubmit(){
+      const nm = document.getElementById("name").value.trim();
+      const em = document.getElementById("email").value.trim();
+      const msg = document.getElementById("message").value.trim();
+      const status = document.getElementById("contactStatus");
+      if(!nm || !em || !msg){ status.textContent = "Completa todos los campos."; return; }
+      // Demo: muestra mensaje y limpia
+      status.textContent = "Mensaje enviado (demo). Reemplaza handleContactSubmit con tu integración real.";
+      setTimeout(()=> {
+        document.getElementById("contactForm").reset();
+      },900);
+    }
+
+    function fillDemo(){
+      document.getElementById("name").value = "Empresa Ejemplo";
+      document.getElementById("email").value = "hr@example.com";
+      document.getElementById("message").value = "Hola, me interesa contratarte para un proyecto de automatización.";
+    }
+
+    /* ======================================================
+       Extra: accesos rápidos con teclas (opcional)
+       - t -> ir a Contact
+       - g -> abrir GitHub
+       ====================================================== */
+    window.addEventListener("keydown", (e)=>{
+      if(e.key === "t") document.getElementById("contactBtn").click();
+      if(e.key === "g") window.open(PROFILE.github, "_blank");
     });
-    toTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
   </script>
 </body>
 </html>
