@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pablo Morilla Cabello - CV</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        :root {
+  /* Primitive Color Tokens */
+  --color-white: rgba(255, 255, 255, 1);
+  --color-black: rgba(0, 0, 0, 1);
+  --color-cream-50: rgba(252, 252, 249, 1);
+  --color-cream-100: rgba(255, 255, 253, 1);
+  --color-gray-200: rgba(245, 245, 245, 1);
+  --color-gray-300: rgba(167, 169, 169, 1);
+  --color-gray-400: rgba(119, 124, 124, 1);
+  --color-slate-500: rgba(98, 108, 113, 1);
+  --color-brown-600: rgba(94, 82, 64, 1);
+  --color-charcoal-700: rgba(31, 33, 33, 1);
+  --color-charcoal-800: rgba(38, 40, 40, 1);
+  --color-slate-900: rgba(19, 52, 59, 1);
+  --color-teal-300: rgba(50, 184, 198, 1);
+  --color-teal-400: rgba(45, 166, 178, 1);
+  --color-teal-500: rgba(33, 128, 141, 1);
+  --color-teal-600: rgba(29, 116, 128, 1);
+  --color-teal-700: rgba(26, 104, 115, 1);
+  --color-teal-800: rgba(41, 150, 161, 1);
+  --color-red-400: rgba(255, 84, 89, 1);
+  --color-red-500: rgba(192, 21, 47, 1);
+  --color-orange-400: rgba(230, 129, 97, 1);
+  --color-orange-500: rgba(168, 75, 47, 1);
+
+  /* CV Custom Colors - Professional Engineering Palette */
+  --cv-sidebar-bg: #1f4788;
+  --cv-primary-navy: #003d7a;
+  --cv-steel-blue: #3a5a80;
+  --cv-accent-teal: #1e8e99;
+  --cv-text-dark: #2c3e50;
+  --cv-text-light: #ffffff;
+  --cv-gray-light: #f8f9fa;
+  --cv-border-light: #e1e4e8;
+}
+
+@font-face {
+  font-family: 'FKGroteskNeue';
+  src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2') format('woff2');
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'FKGroteskNeue', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.4;
+  color: var(--cv-text-dark);
+  background: var(--cv-gray-light);
+}
+
+/* Multi-page container */
+.pages-wrapper {
+  background: #ddd;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.page {
+  width: 210mm;
+  height: 297mm;
+  max-width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto 20px auto;
+  background: white;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  display: flex;
+  page-break-after: always;
+  position: relative;
+  overflow: hidden;
+}
+
+.page:last-child {
+  margin-bottom: 20px;
+}
+
+.cv-container {
+  width: 100%;
+  height: 100%;
+  background: white;
+  display: flex;
+  position: relative;
+}
+
+/* Ensure proper rendering for PDF export */
+.cv-container * {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  color-adjust: exact;
+}
+
+/* SIDEBAR STYLES */
+.sidebar {
+  width: 30%;
+  height: 100%;
+  background: var(--cv-sidebar-bg);
+  color: var(--cv-text-light);
+  padding: 25px 20px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.sidebar-continued {
+  padding-top: 25px;
+}
+
+.profile-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  background: linear-gradient(135deg, var(--cv-steel-blue) 0%, var(--cv-accent-teal) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 5px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.profile-photo i {
+  font-size: 60px;
+  color: var(--cv-text-light);
+  opacity: 0.9;
+}
+
+.sidebar-section {
+  margin-bottom: 20px;
+  page-break-inside: avoid;
+}
+
+.sidebar-section h3 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #7fc8d6;
+  margin-bottom: 10px;
+  font-weight: 600;
+  border-bottom: 2px solid rgba(127, 200, 214, 0.3);
+  padding-bottom: 8px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.contact-item i {
+  width: 20px;
+  margin-right: 12px;
+  color: #7fc8d6;
+  font-size: 14px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.contact-item a {
+  color: var(--cv-text-light);
+  text-decoration: none;
+  word-break: break-word;
+}
+
+.contact-item a:hover {
+  color: #7fc8d6;
+}
+
+.skill-category {
+  margin-bottom: 12px;
+}
+
+.skill-category h4 {
+  font-size: 11px;
+  color: #7fc8d6;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.skill-tag {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.skill-tag:hover {
+  background: rgba(127, 200, 214, 0.3);
+  border-color: #7fc8d6;
+}
+
+.language-item {
+  margin-bottom: 10px;
+}
+
+.language-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+  font-size: 11px;
+}
+
+.language-name {
+  font-weight: 600;
+}
+
+.language-level {
+  font-size: 9px;
+  color: #7fc8d6;
+}
+
+.language-bar {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.language-progress {
+  height: 100%;
+  background: linear-gradient(90deg, #7fc8d6 0%, var(--cv-steel-blue) 100%);
+  border-radius: 10px;
+  transition: width 1s ease;
+}
+
+/* MAIN CONTENT STYLES */
+.main-content {
+  width: 70%;
+  height: 100%;
+  padding: 30px 40px;
+  background: white;
+  flex-shrink: 0;
+  overflow-y: auto;
+}
+
+.main-content-continued {
+  padding-top: 30px;
+}
+
+.header {
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--cv-steel-blue);
+  padding-bottom: 12px;
+  page-break-inside: avoid;
+}
+
+.header h1 {
+  font-size: 32px;
+  color: var(--cv-primary-navy);
+  margin-bottom: 5px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.header h2 {
+  font-size: 16px;
+  color: var(--cv-steel-blue);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.summary {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #555;
+  font-style: italic;
+}
+
+.section {
+  margin-bottom: 20px;
+  page-break-inside: avoid;
+}
+
+.section-title {
+  font-size: 16px;
+  color: var(--cv-primary-navy);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.section-title i {
+  margin-right: 10px;
+  color: var(--cv-steel-blue);
+  font-size: 16px;
+}
+
+.experience-item,
+.education-item,
+.project-item {
+  margin-bottom: 15px;
+  page-break-inside: avoid;
+  position: relative;
+  padding-left: 25px;
+  border-left: 2px solid var(--cv-steel-blue);
+}
+
+.experience-item::before,
+.education-item::before,
+.project-item::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 5px;
+  width: 10px;
+  height: 10px;
+  background: var(--cv-steel-blue);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px white, 0 0 0 5px var(--cv-steel-blue);
+}
+
+.item-header {
+  margin-bottom: 6px;
+}
+
+.item-title {
+  font-size: 13px;
+  color: var(--cv-primary-navy);
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.item-title a {
+  transition: color 0.3s ease;
+}
+
+.item-title a:hover {
+  color: var(--cv-steel-blue);
+  text-decoration: underline;
+}
+
+.item-company {
+  font-size: 12px;
+  color: var(--cv-steel-blue);
+  font-weight: 500;
+  margin-bottom: 3px;
+}
+
+.item-meta {
+  display: flex;
+  gap: 10px;
+  font-size: 10px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.item-meta i {
+  margin-right: 5px;
+  color: var(--cv-steel-blue);
+}
+
+.item-date {
+  color: var(--cv-primary-navy);
+  font-weight: 500;
+}
+
+.item-description {
+  font-size: 11px;
+  line-height: 1.4;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.highlights {
+  list-style: none;
+  padding-left: 0;
+}
+
+.highlights li {
+  position: relative;
+  padding-left: 15px;
+  margin-bottom: 4px;
+  font-size: 10px;
+  color: #555;
+}
+
+.highlights li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--cv-steel-blue);
+  font-weight: bold;
+}
+
+.degree {
+  font-size: 13px;
+  color: var(--cv-primary-navy);
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.institution {
+  font-size: 11px;
+  color: var(--cv-steel-blue);
+  font-weight: 500;
+  margin-bottom: 3px;
+}
+
+.gpa {
+  display: inline-block;
+  background: rgba(31, 71, 136, 0.1);
+  color: var(--cv-primary-navy);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 9px;
+  font-weight: 600;
+  margin-top: 5px;
+}
+
+.coursework {
+  font-size: 10px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 5px;
+}
+
+.tech-tag {
+  background: var(--cv-gray-light);
+  color: var(--cv-primary-navy);
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-size: 8px;
+  font-weight: 500;
+  border: 1px solid var(--cv-border-light);
+}
+
+.publication-item {
+  background: var(--cv-gray-light);
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  page-break-inside: avoid;
+  border-left: 4px solid var(--cv-steel-blue);
+}
+
+.publication-title {
+  font-size: 11px;
+  color: var(--cv-primary-navy);
+  font-weight: 600;
+  margin-bottom: 5px;
+  line-height: 1.5;
+}
+
+.publication-authors {
+  font-size: 10px;
+  color: #666;
+  margin-bottom: 3px;
+}
+
+.publication-meta {
+  font-size: 9px;
+  color: #888;
+}
+
+.publication-meta a {
+  color: var(--cv-steel-blue);
+  text-decoration: none;
+}
+
+.publication-meta a:hover {
+  text-decoration: underline;
+}
+
+.print-button {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: var(--cv-steel-blue);
+  color: white;
+  border: none;
+  padding: 15px 25px;
+  border-radius: 50px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(58, 90, 128, 0.4);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 1000;
+}
+
+.print-button:hover {
+  background: var(--cv-primary-navy);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(0, 61, 122, 0.5);
+}
+
+.print-button i {
+  font-size: 16px;
+}
+
+.print-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Loading spinner */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.print-button.loading i {
+  animation: spin 1s linear infinite;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+  
+  body {
+    background: white;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .pages-wrapper {
+    background: white;
+    padding: 0;
+  }
+  
+  .page {
+    margin: 0;
+    box-shadow: none;
+    page-break-after: always;
+    page-break-inside: avoid;
+  }
+  
+  .page:last-child {
+    page-break-after: auto;
+  }
+  
+  .print-button {
+    display: none !important;
+  }
+  
+  .sidebar {
+    background: var(--cv-sidebar-bg) !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  
+  .section,
+  .sidebar-section,
+  .experience-item,
+  .education-item,
+  .project-item,
+  .publication-item {
+    page-break-inside: avoid;
+  }
+}
+
+@media (max-width: 900px) {
+  .cv-container {
+    flex-direction: column;
+    margin: 0;
+  }
+  
+  .sidebar,
+  .main-content {
+    width: 100%;
+  }
+  
+  .main-content {
+    padding: 30px 25px;
+  }
+}
+    </style>
+</head>
+<body>
+    <div class="pages-wrapper">
+    <!-- PAGE 1 -->
+    <div class="page" id="page1">
+        <div class="cv-container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <!-- Profile Photo -->
+            <div class="profile-photo">
+                <i class="fas fa-user"></i>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="sidebar-section">
+                <h3>Contact</h3>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:pablomorillacabello@gmail.com">pablomorillacabello@gmail.com</a>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+34 626 171 323</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Trollhättan, Sweden</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-linkedin"></i>
+                    <a href="https://linkedin.com/in/PabloMorillaCabello" target="_blank">PabloMorillaCabello</a>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-github"></i>
+                    <a href="https://github.com/PabloMorillaCabello" target="_blank">PabloMorillaCabello</a>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-car"></i>
+                    <span>Driving License</span>
+                </div>
+            </div>
+
+            <!-- Technical Skills -->
+            <div class="sidebar-section">
+                <h3>Technical Skills</h3>
+                
+                <div class="skill-category">
+                    <h4>Programming</h4>
+                    <div class="skill-tags">
+                        <span class="skill-tag">C#</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">Java</span>
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">RapidCode</span>
+                        <span class="skill-tag">Arduino</span>
+                        <span class="skill-tag">MATLAB</span>
+                        <span class="skill-tag">C</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h4>Automation</h4>
+                    <div class="skill-tags">
+                        <span class="skill-tag">RobotStudio</span>
+                        <span class="skill-tag">PLC Programming</span>
+                        <span class="skill-tag">Industrial Robotics</span>
+                        <span class="skill-tag">Codesys</span>
+                        <span class="skill-tag">OPC-UA</span>
+                        <span class="skill-tag">MQTT</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h4>Software</h4>
+                    <div class="skill-tags">
+                        <span class="skill-tag">MATLAB/Simulink</span>
+                        <span class="skill-tag">NodeRED</span>
+                        <span class="skill-tag">MongoDB</span>
+                        <span class="skill-tag">AutoCAD</span>
+                        <span class="skill-tag">Xilinx</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Languages -->
+            <div class="sidebar-section">
+                <h3>Languages</h3>
+                
+                <div class="language-item">
+                    <div class="language-header">
+                        <span class="language-name">Spanish</span>
+                        <span class="language-level">Native</span>
+                    </div>
+                    <div class="language-bar">
+                        <div class="language-progress" style="width: 100%"></div>
+                    </div>
+                </div>
+
+                <div class="language-item">
+                    <div class="language-header">
+                        <span class="language-name">English</span>
+                        <span class="language-level">Fluent</span>
+                    </div>
+                    <div class="language-bar">
+                        <div class="language-progress" style="width: 90%"></div>
+                    </div>
+                </div>
+
+                <div class="language-item">
+                    <div class="language-header">
+                        <span class="language-name">Swedish</span>
+                        <span class="language-level">Basic</span>
+                    </div>
+                    <div class="language-bar">
+                        <div class="language-progress" style="width: 40%"></div>
+                    </div>
+                </div>
+            </div>
+
+
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <h1>Pablo Morilla Cabello</h1>
+                <h2>Automation Engineer &amp; Researcher</h2>
+                <p class="summary">
+                    Automation Engineer with expertise in industrial robotics, PLC programming, and intelligent systems integration. Proven track record delivering solutions for multinational companies.
+                </p>
+            </header>
+
+            <!-- Professional Experience (First Item) -->
+            <section class="section">
+                <h3 class="section-title">
+                    <i class="fas fa-briefcase"></i>
+                    Professional Experience
+                </h3>
+
+                <div class="experience-item">
+                    <div class="item-header">
+                        <div class="item-title">Automation Engineer</div>
+                        <div class="item-company">Elektroautomatik</div>
+                        <div class="item-meta">
+                            <span class="item-date">
+                                <i class="far fa-calendar"></i>
+                                April 2024 - Present
+                            </span>
+                            <span>
+                                <i class="fas fa-map-marker-alt"></i>
+                                Skövde, Sweden
+                            </span>
+                        </div>
+                    </div>
+                    <ul class="highlights">
+                        <li>Industrial robot programming and PLC automation</li>
+                        <li>Standardized workflows optimization</li>
+                        <li>On-site support: Volvo Group, SCANIA, Hitachi</li>
+                    </ul>
+                </div>
+
+                <div class="experience-item">
+                    <div class="item-header">
+                        <div class="item-title">Research Assistant</div>
+                        <div class="item-company">ASSAR Industrial Innovation Arena</div>
+                        <div class="item-meta">
+                            <span class="item-date">
+                                <i class="far fa-calendar"></i>
+                                June 2023 - August 2023
+                            </span>
+                            <span>
+                                <i class="fas fa-map-marker-alt"></i>
+                                Skövde, Sweden
+                            </span>
+                        </div>
+                    </div>
+                    <ul class="highlights">
+                        <li>Robotic systems integration and production simulation</li>
+                        <li>Co-authored peer-reviewed scientific publication</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+        </div>
+    </div>
+
+    <!-- PAGE 2 -->
+    <div class="page" id="page2">
+        <div class="cv-container">
+        <aside class="sidebar sidebar-continued">
+            <div class="sidebar-section" style="margin-top: 0;">
+                <h3 style="opacity: 0; margin-bottom: 5px;">Continued</h3>
+                <p style="font-size: 10px; color: #7fc8d6; font-style: italic;">Continued from page 1</p>
+            </div>
+        </aside>
+        <main class="main-content main-content-continued">
+
+            <!-- Education -->
+            <section class="section">
+                <h3 class="section-title">
+                    <i class="fas fa-graduation-cap"></i>
+                    Education
+                </h3>
+
+                <div class="education-item">
+                    <div class="item-header">
+                        <div class="degree">Master's in AI and Automation</div>
+                        <div class="institution">University West, Trollhättan, Sweden</div>
+                        <div class="item-meta">
+                            <span class="item-date">
+                                <i class="far fa-calendar"></i>
+                                August 2025 - Present
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="education-item">
+                    <div class="item-header">
+                        <div class="degree">Bachelor's in Robotics, Electronics &amp; Mechatronics</div>
+                        <div class="institution">University of Málaga, Spain</div>
+                        <div class="item-meta">
+                            <span class="item-date">
+                                <i class="far fa-calendar"></i>
+                                August 2019 - February 2024
+                            </span>
+                            <span class="gpa">GPA: 7.31/10</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="education-item">
+                    <div class="item-header">
+                        <div class="degree">ERASMUS - Bachelor's in Industrial Engineering</div>
+                        <div class="institution">Hogskolan i Skövde, Sweden</div>
+                        <div class="item-meta">
+                            <span class="item-date">
+                                <i class="far fa-calendar"></i>
+                                August 2022 - June 2023
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        </div>
+    </div>
+
+    <!-- PAGE 3 -->
+    <div class="page" id="page3">
+        <div class="cv-container">
+        <aside class="sidebar sidebar-continued">
+            <div class="sidebar-section" style="margin-top: 0;">
+                <h3 style="opacity: 0; margin-bottom: 5px;">Continued</h3>
+                <p style="font-size: 10px; color: #7fc8d6; font-style: italic;">Continued from page 2</p>
+            </div>
+        </aside>
+        <main class="main-content main-content-continued">
+
+            <!-- Key Projects -->
+            <section class="section">
+                <h3 class="section-title">
+                    <i class="fas fa-project-diagram"></i>
+                    Key Projects
+                </h3>
+
+                <div class="project-item">
+                    <div class="item-header">
+                        <div class="item-title"><a href="https://github.com/PabloMorillaCabello/AGV-Digital-Twin" target="_blank" style="color: var(--cv-primary-navy); text-decoration: none;">AGV Digital Twin Integration</a></div>
+                    </div>
+                    <p class="item-description">OPC UA integration with AGV simulation and remote control interface</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">C</span>
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">MongoDB</span>
+                        <span class="tech-tag">NodeRED</span>
+                        <span class="tech-tag">OPC-UA</span>
+                    </div>
+                </div>
+
+                <div class="project-item">
+                    <div class="item-header">
+                        <div class="item-title"><a href="https://github.com/PabloMorillaCabello/Mobile-Robotic-Lab" target="_blank" style="color: var(--cv-primary-navy); text-decoration: none;">Mobile Robotic Lab - PIERO</a></div>
+                    </div>
+                    <p class="item-description">Advanced control with path planning and collision avoidance</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">MATLAB</span>
+                        <span class="tech-tag">Arduino</span>
+                        <span class="tech-tag">C</span>
+                    </div>
+                </div>
+
+                <div class="project-item">
+                    <div class="item-header">
+                        <div class="item-title"><a href="https://github.com/PabloMorillaCabello/ULTRA-ADDIN" target="_blank" style="color: var(--cv-primary-navy); text-decoration: none;">ULTRA-ADDIN for RobotStudio</a></div>
+                    </div>
+                    <p class="item-description">Specialized plugin with modularized interface</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">C#</span>
+                        <span class="tech-tag">RobotStudio</span>
+                        <span class="tech-tag">Python</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+        </div>
+    </div>
+
+    <!-- PAGE 4 -->
+    <div class="page" id="page4">
+        <div class="cv-container">
+        <aside class="sidebar sidebar-continued">
+            <div class="sidebar-section" style="margin-top: 0;">
+                <h3 style="opacity: 0; margin-bottom: 5px;">Continued</h3>
+                <p style="font-size: 10px; color: #7fc8d6; font-style: italic;">Continued from page 3</p>
+            </div>
+        </aside>
+        <main class="main-content main-content-continued">
+
+            <!-- Publications -->
+            <section class="section">
+                <h3 class="section-title">
+                    <i class="fas fa-file-alt"></i>
+                    Publications
+                </h3>
+
+                <div class="publication-item">
+                    <div class="publication-title">
+                        Exploring the Synergies of Modularization, Interface Standardization, and Service-Orientation in Production System Simulation
+                    </div>
+                    <div class="publication-authors">
+                        M. Birtic, P. Morilla Cabello, Á. Muñoz, A. Syberfeldt
+                    </div>
+                    <div class="publication-meta">
+                        April 2024 • DOI: <a href="https://doi.org/10.3233/ATDE240164" target="_blank">10.3233/ATDE240164</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+        </div>
+    </div>
+    </div>
+
+    <!-- Print/Export Button -->
+    <button class="print-button" id="exportBtn">
+        <i class="fas fa-download"></i>
+        <span id="btnText">Exportar a PDF</span>
+    </button>
+
+    <script>
+        document.getElementById('exportBtn').addEventListener('click', async function() {
+            const button = this;
+            const btnText = document.getElementById('btnText');
+            const originalText = btnText.textContent;
+            
+            // Disable button and show loading state
+            button.disabled = true;
+            button.classList.add('loading');
+            btnText.textContent = 'Generando PDF...';
+            button.style.opacity = '0.7';
+            button.style.cursor = 'not-allowed';
+            
+            try {
+                // Get all pages
+                const pages = document.querySelectorAll('.page');
+                
+                // Temporarily hide the button for capture
+                button.style.display = 'none';
+                
+                // Wait a moment for rendering
+                await new Promise(resolve => setTimeout(resolve, 100));
+                
+                // Create PDF
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4',
+                    compress: true
+                });
+                
+                const imgWidth = 210; // A4 width in mm
+                const imgHeight = 297; // A4 height in mm
+                
+                // Process each page
+                for (let i = 0; i < pages.length; i++) {
+                    const page = pages[i];
+                    
+                    // Capture current page
+                    const canvas = await html2canvas(page, {
+                        scale: 2,
+                        useCORS: true,
+                        logging: false,
+                        backgroundColor: '#ffffff',
+                        windowWidth: 1200,
+                        windowHeight: page.offsetHeight,
+                        removeContainer: false,
+                        imageTimeout: 0,
+                        allowTaint: false
+                    });
+                    
+                    const imgData = canvas.toDataURL('image/jpeg', 0.95);
+                    
+                    // Add page to PDF (add new page if not first)
+                    if (i > 0) {
+                        pdf.addPage();
+                    }
+                    
+                    pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight, undefined, 'FAST');
+                }
+                
+                // Show button again
+                button.style.display = 'flex';
+                
+                // Save the PDF
+                pdf.save('Pablo_Morilla_Cabello_CV.pdf');
+                
+                // Reset button state
+                button.classList.remove('loading');
+                btnText.textContent = originalText;
+                button.disabled = false;
+                button.style.opacity = '1';
+                button.style.cursor = 'pointer';
+                
+                // Show success message briefly
+                const originalBtnText = btnText.textContent;
+                btnText.textContent = '✓ PDF Descargado!';
+                setTimeout(() => {
+                    btnText.textContent = originalBtnText;
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                alert('Error al generar PDF. Inténtalo de nuevo.');
+                
+                // Reset button state
+                button.style.display = 'flex';
+                button.classList.remove('loading');
+                btnText.textContent = originalText;
+                button.disabled = false;
+                button.style.opacity = '1';
+                button.style.cursor = 'pointer';
+            }
+        });
+    </script>
+</body>
+</html>
