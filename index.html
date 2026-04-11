@@ -864,6 +864,8 @@
 
         [data-theme="dark"] #form-status.success { background-color: #1a3a22; color: #7dda9c; border-color: #2d6a3f; }
         [data-theme="dark"] #form-status.error   { background-color: #3a1a1a; color: #da7d7d; border-color: #6a2d2d; }
+        [data-theme="dark"] [data-fs-success]     { background-color: #1a3a22 !important; color: #7dda9c !important; border-color: #2d6a3f !important; }
+        [data-theme="dark"] [data-fs-error]       { background-color: #3a1a1a !important; color: #da7d7d !important; border-color: #6a2d2d !important; }
 
         .contact-info { display: flex; flex-direction: column; gap: 1.2rem; }
 
@@ -1232,31 +1234,39 @@
                 <div class="contact-form">
                     <h3 style="font-family:'Crimson Text',serif;color:var(--text2);margin-bottom:0.5rem;">Send me a message</h3>
 
-                    <div class="form-group">
-                        <label for="contact-name">Name *</label>
-                        <input type="text" id="contact-name" name="name" placeholder="Your name" required>
+                    <div data-fs-success style="display:none;padding:0.75rem 1rem;border-radius:8px;background:#d4edda;color:#155724;border:1px solid #c3e6cb;">
+                        ✅ Message sent! I'll get back to you soon.
                     </div>
+                    <div data-fs-error style="display:none;padding:0.75rem 1rem;border-radius:8px;background:#f8d7da;color:#721c24;border:1px solid #f5c6cb;"></div>
 
-                    <div class="form-group">
-                        <label for="contact-email">Email *</label>
-                        <input type="email" id="contact-email" name="email" placeholder="your@email.com" required>
-                    </div>
+                    <form id="contact-form">
+                        <div class="form-group">
+                            <label for="contact-name">Name *</label>
+                            <input type="text" id="contact-name" name="name" placeholder="Your name" required data-fs-field>
+                            <span data-fs-error="name" style="color:#c0392b;font-size:0.82rem;"></span>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="contact-subject">Subject</label>
-                        <input type="text" id="contact-subject" name="subject" placeholder="What's this about?">
-                    </div>
+                        <div class="form-group">
+                            <label for="contact-email">Email *</label>
+                            <input type="email" id="contact-email" name="email" placeholder="your@email.com" required data-fs-field>
+                            <span data-fs-error="email" style="color:#c0392b;font-size:0.82rem;"></span>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="contact-message">Message *</label>
-                        <textarea id="contact-message" name="message" rows="5" placeholder="Your message..." required></textarea>
-                    </div>
+                        <div class="form-group">
+                            <label for="contact-subject">Subject</label>
+                            <input type="text" id="contact-subject" name="subject" placeholder="What's this about?">
+                        </div>
 
-                    <div id="form-status" role="alert"></div>
+                        <div class="form-group">
+                            <label for="contact-message">Message *</label>
+                            <textarea id="contact-message" name="message" rows="5" placeholder="Your message..." required data-fs-field></textarea>
+                            <span data-fs-error="message" style="color:#c0392b;font-size:0.82rem;"></span>
+                        </div>
 
-                    <button class="btn btn-primary" style="align-self:flex-start;" onclick="submitContactForm()">
-                        ⚙️ Send Message
-                    </button>
+                        <button type="submit" class="btn btn-primary" style="align-self:flex-start;margin-top:0.5rem;" data-fs-submit-btn>
+                            ⚙️ Send Message
+                        </button>
+                    </form>
                 </div>
 
                 <!-- Contact Info -->
@@ -1904,80 +1914,10 @@
     window.addEventListener('DOMContentLoaded', loadGitHubProjects);
 
     /* ================================================================
-       CONTACT FORM
+       CONTACT FORM — Formspree Ajax SDK
     ================================================================ */
-    async function submitContactForm() {
-        var nameEl    = document.getElementById('contact-name');
-        var emailEl   = document.getElementById('contact-email');
-        var subjectEl = document.getElementById('contact-subject');
-        var messageEl = document.getElementById('contact-message');
-        var statusEl  = document.getElementById('form-status');
-
-        var name    = nameEl.value.trim();
-        var email   = emailEl.value.trim();
-        var subject = subjectEl.value.trim();
-        var message = messageEl.value.trim();
-
-        // Validation
-        statusEl.className = '';
-        statusEl.style.display = 'none';
-
-        if (!name) {
-            showFormStatus('error', 'Please enter your name.');
-            nameEl.focus();
-            return;
-        }
-
-        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!email || !emailRegex.test(email)) {
-            showFormStatus('error', 'Please enter a valid email address.');
-            emailEl.focus();
-            return;
-        }
-
-        if (!message) {
-            showFormStatus('error', 'Please enter a message.');
-            messageEl.focus();
-            return;
-        }
-
-        // Send via Formspree (static-compatible, no backend needed)
-        var btn = document.querySelector('#contact .btn-primary');
-        btn.disabled = true;
-        btn.textContent = 'Sending…';
-
-        try {
-            var res = await fetch('https://formspree.io/f/xbjvyojq', {
-                method:  'POST',
-                headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-                body:    JSON.stringify({ name, email, subject, message, _replyto: email })
-            });
-
-            if (res.ok) {
-                showFormStatus('success', '✅ Message sent! I\'ll get back to you soon.');
-                nameEl.value = emailEl.value = subjectEl.value = messageEl.value = '';
-            } else {
-                throw new Error('Formspree error');
-            }
-        } catch (e) {
-            // Fallback: open mailto
-            var mailtoBody = encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\n\n' + message);
-            var mailtoSubject = encodeURIComponent(subject || 'Portfolio Contact: ' + name);
-            window.location.href = 'mailto:pablomorillacabello@gmail.com?subject=' + mailtoSubject + '&body=' + mailtoBody;
-            showFormStatus('success', '📧 Opening your email client…');
-        } finally {
-            btn.disabled = false;
-            btn.textContent = '⚙️ Send Message';
-        }
-    }
-
-    function showFormStatus(type, msg) {
-        var el     = document.getElementById('form-status');
-        el.textContent   = msg;
-        el.className     = type;
-        el.style.display = 'block';
-        setTimeout(function() { el.style.display = 'none'; }, 6000);
-    }
+    window.formspree = window.formspree || function() { (formspree.q = formspree.q || []).push(arguments); };
+    formspree('initForm', { formElement: '#contact-form', formId: 'mdapqbzr' });
 
     /* ================================================================
        CV OPEN
@@ -2006,5 +1946,6 @@
         });
     }, { passive: true });
     </script>
+    <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
 </body>
 </html>
