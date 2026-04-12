@@ -1229,10 +1229,10 @@
             <h2>Publications</h2>
             <div class="pub-card">
                 <span class="pub-badge">Conference Paper</span>
-                <h3>Evaluating Human-Robot Collaboration Frameworks in Industrial Automation</h3>
-                <p class="pub-authors">Pablo Morilla Cabello et al.</p>
-                <p class="pub-venue">SPS — Scandinavian Production Systems Conference, 2024</p>
-                <p class="pub-desc">This paper investigates methodologies for evaluating the effectiveness of human-robot collaboration (HRC) frameworks within industrial automation environments. Drawing on empirical data collected during a research stint at ASSAR Industrial Innovation Arena, the work proposes structured assessment criteria covering safety, ergonomics, productivity, and cognitive load — contributing actionable guidelines for practitioners deploying collaborative robotics in manufacturing settings.</p>
+                <h3>Exploring the Synergies of Modularization, Interface Standardization, and Service-Orientation in Production System Simulation</h3>
+                <p class="pub-authors">M. Birtic, P. Morilla Cabello, Á. Muñoz, A. Syberfeldt</p>
+                <p class="pub-venue">SPS 2024 · Advances in Transdisciplinary Engineering, Vol. 52, pp. 185–195 · <a href="https://doi.org/10.3233/ATDE240164" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;font-weight:600;">DOI: 10.3233/ATDE240164</a></p>
+                <p class="pub-desc">This paper investigates a combination of concepts that promote reconfigurability and flexibility in production systems. By integrating modularization, interface standardization, and a service-oriented architecture, the work explores whether these synergies can positively influence the simulation process for production systems that may be in constant flux and reconfiguration — supporting faster and easier creation and updates of digital models.</p>
             </div>
         </section>
     </div>
@@ -1616,12 +1616,13 @@
             this.cat  = cat;
 
             var w = window.innerWidth;
-            this.radius = w < 480 ? 42 : (w < 768 ? 52 : 60);
+            this.radius = w < 400 ? 30 : (w < 480 ? 36 : (w < 768 ? 46 : 60));
 
-            this.gravity        = 0.6;
-            this.bounce         = 0.5;
-            this.friction       = 0.98;
-            this.settleThreshold = 0.3;
+            var isMobile        = w < 768;
+            this.gravity        = isMobile ? 0.45 : 0.6;
+            this.bounce         = isMobile ? 0.35 : 0.5;
+            this.friction       = isMobile ? 0.96 : 0.98;
+            this.settleThreshold = isMobile ? 0.5 : 0.3;
             this.organizing     = false;
             this.settled        = false;
             this.targetX        = null;
@@ -1765,14 +1766,14 @@
         function getBallRadius() {
             // Base radius on canvas width (not window width)
             var cw = canvas.parentElement.clientWidth;
-            return cw < 480 ? 44 : (cw < 768 ? 52 : 62);
+            return cw < 400 ? 30 : (cw < 480 ? 36 : (cw < 768 ? 46 : 62));
         }
 
         function resizeCanvas() {
             // Set canvas bitmap size = CSS display size so no scaling distortion
             var cw = canvas.parentElement.clientWidth;
             canvas.width = cw;
-            if (!isOrganized) canvas.height = 520;
+            if (!isOrganized) canvas.height = cw < 480 ? 620 : (cw < 768 ? 580 : 520);
             // Sync ball radii to new canvas width
             var r = getBallRadius();
             balls.forEach(function(b) { b.radius = r; });
@@ -1786,10 +1787,13 @@
         resizeCanvas();
 
         // Position balls above canvas after sizing is known
+        var isMobileInit = canvas.width < 768;
+        var margin = isMobileInit ? 60 : 100;
+        var maxVx  = isMobileInit ? 3 : 8;
         balls.forEach(function(b) {
-            b.x  = Math.random() * (canvas.width - 200) + 100;
+            b.x  = Math.random() * (canvas.width - margin * 2) + margin;
             b.y  = -150 - Math.random() * 300;
-            b.vx = (Math.random() - 0.5) * 8;
+            b.vx = (Math.random() - 0.5) * maxVx;
         });
 
         window.addEventListener('resize', resizeCanvas);
@@ -1888,11 +1892,14 @@
                     this.textContent = '🔄 Reset to Free Fall';
                     isOrganized = true;
                 } else {
-                    canvas.height = 550;
+                    canvas.height = canvas.width < 480 ? 620 : (canvas.width < 768 ? 580 : 550);
+                    var resetMobile = canvas.width < 768;
+                    var resetMargin = resetMobile ? 60 : 100;
+                    var resetVx     = resetMobile ? 3 : 8;
                     balls.forEach(function(b) {
-                        b.x = Math.random() * (canvas.width - 200) + 100;
+                        b.x = Math.random() * (canvas.width - resetMargin * 2) + resetMargin;
                         b.y = -150 - Math.random() * 300;
-                        b.vx = (Math.random() - 0.5) * 8;
+                        b.vx = (Math.random() - 0.5) * resetVx;
                         b.vy = 0;
                         b.organizing = b.settled = false;
                         b.targetX = b.targetY = null;
