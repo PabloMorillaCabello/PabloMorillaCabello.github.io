@@ -243,9 +243,10 @@
         .gear-dropdown.open a:nth-child(7) { transition-delay: 0.28s; }
         .gear-dropdown.open a:nth-child(8) { transition-delay: 0.32s; }
 
-        .gear-dropdown a:hover { background: var(--bg2); color: var(--accent); padding-left: 1.6rem; }
+        .gear-dropdown a { white-space: nowrap; }
+        .gear-dropdown a:hover { background: var(--bg2); color: var(--accent); border-left: 3px solid var(--accent); padding-left: calc(1.3rem - 3px); }
 
-        .header-nav { display: none; }
+        .gear-wrap { display: none; }
 
         .header-right {
             display: flex;
@@ -1188,7 +1189,8 @@
         /* ===== RESPONSIVE ===== */
         @media (max-width: 900px) {
             .header-nav { display: none; }
-            #hamburger   { display: flex; }
+            #hamburger   { display: none; }
+            .gear-wrap   { display: flex; }
         }
 
         @media (max-width: 768px) {
