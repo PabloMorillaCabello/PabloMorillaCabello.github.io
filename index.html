@@ -658,23 +658,25 @@
         .skill-tag.hidden { display: none; }
 
         .skill-tag[data-cat="lang"] {
-            background: rgba(212,165,116,0.15);
-            color: var(--accent-dark);
-            border: 1.5px solid rgba(212,165,116,0.4);
-        }
-
-        .skill-tag[data-cat="tool"] {
             background: rgba(163,184,154,0.15);
             color: #6B8F63;
             border: 1.5px solid rgba(163,184,154,0.4);
         }
 
-        [data-theme="dark"] .skill-tag[data-cat="tool"] { color: #A3B89A; }
+        [data-theme="dark"] .skill-tag[data-cat="lang"] { color: #A3B89A; }
 
-        .skill-tag[data-cat="soft"] {
+        .skill-tag[data-cat="tool"] {
             background: rgba(189,179,216,0.15);
             color: #7A6EA8;
             border: 1.5px solid rgba(189,179,216,0.4);
+        }
+
+        [data-theme="dark"] .skill-tag[data-cat="tool"] { color: #BDB3D8; }
+
+        .skill-tag[data-cat="soft"] {
+            background: rgba(212,165,116,0.15);
+            color: var(--accent-dark);
+            border: 1.5px solid rgba(212,165,116,0.4);
         }
 
         [data-theme="dark"] .skill-tag[data-cat="soft"] { color: #BDB3D8; }
@@ -1678,7 +1680,13 @@
         "Automating the future, one robot at a time 🤖",
         "Your automation needs, solved with creativity!",
         "Merging robotics, mechatronics, and AI",
-        "From code to control: engineering smarter factories"
+        "From code to control: engineering smarter factories",
+        "Making robots do the boring stuff so humans don't have to 😅",
+        "Yes, I talk to machines. They actually listen 🤝",
+        "Turning coffee into automation since 2019 ☕",
+        "If it moves and shouldn't — that's a bug. If it doesn't move and should — also a bug 🐛",
+        "Somewhere between a physicist and a software engineer having an existential crisis 🌀",
+        "I put the 'auto' in automation 🏎️"
     ];
 
     var currentTagline  = 0;
