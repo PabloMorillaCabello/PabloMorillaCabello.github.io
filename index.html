@@ -166,6 +166,26 @@
             transition: background-color 0.3s;
         }
 
+        .header-nav {
+            display: flex;
+            gap: 1.6rem;
+            align-items: center;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .header-nav a {
+            color: var(--header-text);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            opacity: 0.9;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+        }
+
+        .header-nav a:hover { opacity: 1; text-decoration: underline; }
+
         /* GEAR NAV */
         .gear-wrap {
             position: relative;
@@ -1268,7 +1288,15 @@
             </nav>
         </div>
 
-        <nav class="header-nav" aria-label="Main navigation"></nav>
+        <nav class="header-nav" aria-label="Main navigation">
+            <a href="#about">About</a>
+            <a href="#career">Career</a>
+            <a href="#publications">Publications</a>
+            <a href="#projects">Projects</a>
+            <a href="#skills">Skills</a>
+            <a href="#recommendations">Recommendations</a>
+            <a href="#contact">Contact</a>
+        </nav>
 
         <div class="header-right">
             <button id="theme-toggle" aria-label="Toggle dark mode">🌙 Dark</button>
