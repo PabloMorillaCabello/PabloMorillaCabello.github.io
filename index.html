@@ -166,33 +166,86 @@
             transition: background-color 0.3s;
         }
 
-        .header-logo {
-            font-family: 'Crimson Text', serif;
-            font-size: 1.6rem;
-            color: var(--header-text);
-            white-space: nowrap;
-            text-decoration: none;
+        /* GEAR NAV */
+        .gear-wrap {
+            position: relative;
         }
 
-        .header-nav {
+        .gear-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.3rem;
             display: flex;
-            gap: 1.6rem;
             align-items: center;
-            flex: 1;
-            justify-content: center;
-        }
-
-        .header-nav a {
             color: var(--header-text);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            opacity: 0.9;
-            transition: opacity 0.2s;
-            white-space: nowrap;
+            line-height: 1;
         }
 
-        .header-nav a:hover { opacity: 1; text-decoration: underline; }
+        .gear-svg {
+            width: 30px;
+            height: 30px;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .gear-btn.open .gear-svg {
+            animation: gearSpin 4s linear infinite;
+        }
+
+        @keyframes gearSpin {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+
+        .gear-dropdown {
+            position: absolute;
+            top: calc(100% + 1rem);
+            left: 0;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.4rem 0;
+            min-width: 200px;
+            box-shadow: 0 12px 40px var(--shadow);
+            opacity: 0;
+            transform: translateY(-8px) scale(0.96);
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            z-index: 999;
+        }
+
+        .gear-dropdown.open {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+
+        .gear-dropdown a {
+            display: block;
+            padding: 0.65rem 1.3rem;
+            color: var(--text);
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.92rem;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: opacity 0.18s ease, transform 0.18s ease, background 0.15s, color 0.15s;
+        }
+
+        .gear-dropdown.open a { opacity: 1; transform: translateX(0); }
+        .gear-dropdown.open a:nth-child(1) { transition-delay: 0.04s; }
+        .gear-dropdown.open a:nth-child(2) { transition-delay: 0.08s; }
+        .gear-dropdown.open a:nth-child(3) { transition-delay: 0.12s; }
+        .gear-dropdown.open a:nth-child(4) { transition-delay: 0.16s; }
+        .gear-dropdown.open a:nth-child(5) { transition-delay: 0.20s; }
+        .gear-dropdown.open a:nth-child(6) { transition-delay: 0.24s; }
+        .gear-dropdown.open a:nth-child(7) { transition-delay: 0.28s; }
+        .gear-dropdown.open a:nth-child(8) { transition-delay: 0.32s; }
+
+        .gear-dropdown a:hover { background: var(--bg2); color: var(--accent); padding-left: 1.6rem; }
+
+        .header-nav { display: none; }
 
         .header-right {
             display: flex;
@@ -1194,18 +1247,26 @@
 
     <!-- HEADER -->
     <header>
-        <a href="#hero" class="header-logo">⚙️ Pablo Morilla Cabello</a>
+        <div class="gear-wrap">
+            <button class="gear-btn" id="gearBtn" aria-label="Open navigation" aria-expanded="false">
+                <svg class="gear-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+            </button>
+            <nav class="gear-dropdown" id="gearDropdown" aria-label="Site navigation">
+                <a href="#hero">🏠 Home</a>
+                <a href="#about">👤 About</a>
+                <a href="#career">💼 Career</a>
+                <a href="#publications">📄 Publications</a>
+                <a href="#projects">🚀 Projects</a>
+                <a href="#skills">⚡ Skills</a>
+                <a href="#recommendations">💬 Recommendations</a>
+                <a href="#contact">✉️ Contact</a>
+            </nav>
+        </div>
 
-        <nav class="header-nav" aria-label="Main navigation">
-            <a href="#hero">Home</a>
-            <a href="#about">About</a>
-            <a href="#career">Career</a>
-            <a href="#publications">Publications</a>
-            <a href="#projects">Projects</a>
-            <a href="#skills">Skills</a>
-            <a href="#recommendations">Recommendations</a>
-            <a href="#contact">Contact</a>
-        </nav>
+        <nav class="header-nav" aria-label="Main navigation"></nav>
 
         <div class="header-right">
             <button id="theme-toggle" aria-label="Toggle dark mode">🌙 Dark</button>
@@ -1631,6 +1692,39 @@
     document.querySelectorAll('.mobile-nav-link').forEach(function(link) {
         link.addEventListener('click', closeNav);
     });
+
+    /* ================================================================
+       GEAR NAVIGATION
+    ================================================================ */
+    (function() {
+        var btn      = document.getElementById('gearBtn');
+        var dropdown = document.getElementById('gearDropdown');
+
+        function openGear() {
+            btn.classList.add('open');
+            dropdown.classList.add('open');
+            btn.setAttribute('aria-expanded', 'true');
+        }
+
+        function closeGear() {
+            btn.classList.remove('open');
+            dropdown.classList.remove('open');
+            btn.setAttribute('aria-expanded', 'false');
+        }
+
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            btn.classList.contains('open') ? closeGear() : openGear();
+        });
+
+        dropdown.querySelectorAll('a').forEach(function(link) {
+            link.addEventListener('click', closeGear);
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!btn.contains(e.target) && !dropdown.contains(e.target)) closeGear();
+        });
+    })();
 
     /* ================================================================
        SMOOTH SCROLL (internal links)
