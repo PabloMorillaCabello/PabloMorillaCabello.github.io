@@ -601,64 +601,225 @@
         .career-item .location { font-size: 0.85rem; color: var(--text3); margin-bottom: 0.4rem; }
         .career-item p         { color: var(--text); font-size: 0.92rem; }
 
-        /* ===== SKILLS CANVAS ===== */
+        /* ===== SKILLS ===== */
         #skills-wrapper { background-color: var(--bg3); transition: background-color 0.3s; }
 
-        #skillsCanvas {
-            display: block;
-            /* NO CSS width/height — JS controls canvas dimensions directly */
-            margin: 1.5rem auto;
-            border-radius: 12px;
-            background: linear-gradient(180deg, rgba(250,248,245,0) 0%, rgba(245,241,234,0.3) 100%);
-            border: 1px solid var(--border);
-        }
-
-        [data-theme="dark"] #skillsCanvas {
-            background: linear-gradient(180deg, rgba(30,26,22,0) 0%, rgba(38,33,25,0.3) 100%);
-        }
-
-        .skills-legend {
+        .skills-filter {
             display: flex;
-            gap: 1.5rem;
+            gap: 0.75rem;
             justify-content: center;
             flex-wrap: wrap;
-            margin-bottom: 1.2rem;
-            font-size: 0.88rem;
+            margin-bottom: 2rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.4rem;
+            border-radius: 20px;
+            border: 2px solid var(--border);
+            background: transparent;
             color: var(--text2);
-        }
-
-        .skills-legend span {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .legend-dot {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            display: inline-block;
-            flex-shrink: 0;
-        }
-
-        .skill-btn {
-            display: inline-block;
-            margin: 0.4rem;
-            padding: 0.9rem 2rem;
-            background: linear-gradient(135deg, var(--accent-light) 0%, var(--accent) 100%);
-            color: #FAF8F5;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.88rem;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 4px 15px var(--shadow-accent);
-            transition: transform 0.2s, box-shadow 0.2s;
-            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+            letter-spacing: 0.02em;
         }
 
-        .skill-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px var(--shadow-accent); }
-        .skill-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #FAF8F5; }
+
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: center;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .skill-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.55rem 1.1rem;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: default;
+            user-select: none;
+            transition: transform 0.2s, box-shadow 0.2s, opacity 0.25s;
+        }
+
+        .skill-tag:hover { transform: translateY(-3px); box-shadow: 0 6px 16px var(--shadow-accent); }
+
+        .skill-tag.hidden { display: none; }
+
+        .skill-tag[data-cat="lang"] {
+            background: rgba(212,165,116,0.15);
+            color: var(--accent-dark);
+            border: 1.5px solid rgba(212,165,116,0.4);
+        }
+
+        .skill-tag[data-cat="tool"] {
+            background: rgba(163,184,154,0.15);
+            color: #6B8F63;
+            border: 1.5px solid rgba(163,184,154,0.4);
+        }
+
+        [data-theme="dark"] .skill-tag[data-cat="tool"] { color: #A3B89A; }
+
+        .skill-tag[data-cat="soft"] {
+            background: rgba(189,179,216,0.15);
+            color: #7A6EA8;
+            border: 1.5px solid rgba(189,179,216,0.4);
+        }
+
+        [data-theme="dark"] .skill-tag[data-cat="soft"] { color: #BDB3D8; }
+
+        /* ===== RECOMMENDATIONS ===== */
+        #recommendations-wrapper { background-color: var(--bg2); transition: background-color 0.3s; }
+
+        .rec-carousel {
+            position: relative;
+            max-width: 780px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 16px;
+        }
+
+        .rec-track {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .rec-card {
+            min-width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            padding: 0.5rem;
+        }
+
+        .rec-card-inner {
+            background: var(--bg3);
+            border-radius: 16px;
+            padding: 2.5rem 2.5rem 2rem;
+            box-shadow: 0 4px 24px var(--shadow);
+            border: 1px solid var(--border);
+            width: 100%;
+            text-align: center;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .rec-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent);
+            margin: 0 auto 1.2rem;
+            display: block;
+        }
+
+        .rec-avatar-placeholder {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            margin: 0 auto 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--accent-light), var(--accent));
+            font-size: 2rem;
+            color: #FAF8F5;
+        }
+
+        .rec-quote {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.22rem;
+            line-height: 1.75;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            font-style: italic;
+            position: relative;
+            padding: 0 0.5rem;
+        }
+
+        .rec-quote::before {
+            content: '\201C';
+            font-size: 4rem;
+            color: var(--accent);
+            opacity: 0.3;
+            position: absolute;
+            top: -1.2rem;
+            left: -0.3rem;
+            line-height: 1;
+            font-style: normal;
+        }
+
+        .rec-name {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text2);
+            margin-bottom: 0.3rem;
+        }
+
+        .rec-role {
+            font-size: 0.85rem;
+            color: var(--text3);
+            margin-bottom: 0.4rem;
+        }
+
+        .rec-email {
+            font-size: 0.85rem;
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .rec-email:hover { color: var(--accent-light); text-decoration: underline; }
+
+        .rec-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .rec-btn {
+            background: var(--bg3);
+            border: 2px solid var(--border);
+            color: var(--text2);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .rec-btn:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.1); }
+
+        .rec-dots { display: flex; gap: 0.5rem; }
+
+        .rec-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--border);
+            cursor: pointer;
+            transition: background 0.25s, transform 0.25s;
+        }
+
+        .rec-dot.active { background: var(--accent); transform: scale(1.4); }
 
         /* ===== PUBLICATIONS ===== */
         #publications-wrapper { background-color: var(--bg2); transition: background-color 0.3s; }
@@ -1060,6 +1221,7 @@
             <a href="#skills">Skills</a>
             <a href="#publications">Publications</a>
             <a href="#projects">Projects</a>
+            <a href="#recommendations">Testimonials</a>
             <a href="#contact">Contact</a>
         </nav>
 
@@ -1211,15 +1373,31 @@
     <div id="skills-wrapper">
         <section id="skills">
             <h2>Technical Skills</h2>
-            <div class="skills-legend">
-                <span><span class="legend-dot" style="background:#D4A574;"></span> 🐍 Languages</span>
-                <span><span class="legend-dot" style="background:#A3B89A;"></span> ⚙️ Tools &amp; Frameworks</span>
-                <span><span class="legend-dot" style="background:#BDB3D8;"></span> 🤝 Soft Skills</span>
+            <div class="skills-filter">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="lang">🐍 Languages</button>
+                <button class="filter-btn" data-filter="tool">⚙️ Tools &amp; Frameworks</button>
+                <button class="filter-btn" data-filter="soft">🤝 Soft Skills</button>
             </div>
-            <div style="text-align:center;margin-bottom:1.2rem;">
-                <button id="organizeBtn" class="skill-btn">📊 Organize as Neural Network</button>
+            <div class="skills-grid" id="skillsGrid">
+                <span class="skill-tag" data-cat="lang">🐍 Python</span>
+                <span class="skill-tag" data-cat="lang">⚡ C / C++</span>
+                <span class="skill-tag" data-cat="lang">☕ Java</span>
+                <span class="skill-tag" data-cat="lang">🤖 RAPID</span>
+                <span class="skill-tag" data-cat="lang">📊 MATLAB</span>
+                <span class="skill-tag" data-cat="tool">🔌 Arduino</span>
+                <span class="skill-tag" data-cat="tool">🦾 RobotStudio</span>
+                <span class="skill-tag" data-cat="tool">📡 MQTT</span>
+                <span class="skill-tag" data-cat="tool">🔴 Node-RED</span>
+                <span class="skill-tag" data-cat="tool">🏭 PLC</span>
+                <span class="skill-tag" data-cat="tool">🔧 Git</span>
+                <span class="skill-tag" data-cat="soft">📈 Statistics</span>
+                <span class="skill-tag" data-cat="soft">🧩 Problem Solving</span>
+                <span class="skill-tag" data-cat="soft">🔬 Research</span>
+                <span class="skill-tag" data-cat="soft">👥 Teamwork</span>
+                <span class="skill-tag" data-cat="soft">📋 Management</span>
+                <span class="skill-tag" data-cat="soft">💬 Communication</span>
             </div>
-            <canvas id="skillsCanvas"></canvas>
         </section>
     </div>
 
@@ -1250,6 +1428,58 @@
                     <button class="carousel-btn" id="prevBtn" onclick="scrollCarousel(-1)">← Previous</button>
                     <button class="carousel-btn" id="nextBtn" onclick="scrollCarousel(1)">Next →</button>
                 </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- RECOMMENDATIONS -->
+    <div id="recommendations-wrapper">
+        <section id="recommendations">
+            <h2>What People Say</h2>
+            <p class="about-intro" style="text-align:center;color:var(--text3);margin-bottom:2rem;">"Feedback from colleagues, mentors and collaborators."</p>
+            <div class="rec-carousel" id="recCarousel">
+                <div class="rec-track" id="recTrack">
+
+                    <div class="rec-card">
+                        <div class="rec-card-inner">
+                            <div class="rec-avatar-placeholder">👤</div>
+                            <p class="rec-quote">An outstanding engineer who brings precision and creativity to every project. Pablo's ability to bridge theory and practice is truly remarkable.</p>
+                            <div class="rec-name">Dr. Jane Smith</div>
+                            <div class="rec-role">Professor · University West</div>
+                            <a href="mailto:jane.smith@his.se" class="rec-email">jane.smith@his.se</a>
+                        </div>
+                    </div>
+
+                    <div class="rec-card">
+                        <div class="rec-card-inner">
+                            <div class="rec-avatar-placeholder">👤</div>
+                            <p class="rec-quote">Working with Pablo was a pleasure. He consistently delivered high-quality automation solutions and was always willing to share his knowledge with the team.</p>
+                            <div class="rec-name">Erik Andersson</div>
+                            <div class="rec-role">Senior Engineer · Elektroautomatik</div>
+                            <a href="mailto:erik.andersson@elektroautomatik.se" class="rec-email">erik.andersson@elektroautomatik.se</a>
+                        </div>
+                    </div>
+
+                    <div class="rec-card">
+                        <div class="rec-card-inner">
+                            <div class="rec-avatar-placeholder">👤</div>
+                            <p class="rec-quote">Pablo's research contributions to our publication were invaluable. His expertise in modular production systems and quick grasp of complex topics made collaboration seamless.</p>
+                            <div class="rec-name">Mirza Birtic</div>
+                            <div class="rec-role">Researcher · University of Skövde</div>
+                            <a href="mailto:mirza.birtic@his.se" class="rec-email">mirza.birtic@his.se</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="rec-controls">
+                <button class="rec-btn" id="recPrev" aria-label="Previous">&#8592;</button>
+                <div class="rec-dots" id="recDots">
+                    <div class="rec-dot active"></div>
+                    <div class="rec-dot"></div>
+                    <div class="rec-dot"></div>
+                </div>
+                <button class="rec-btn" id="recNext" aria-label="Next">&#8594;</button>
             </div>
         </section>
     </div>
@@ -1578,340 +1808,70 @@
     });
 
     /* ================================================================
-       SKILLS PHYSICS ENGINE
+       SKILLS FILTER
     ================================================================ */
-    var skillsDefs = [
-        { text: 'Python',         cat: 'lang' },
-        { text: 'C / C++',        cat: 'lang' },
-        { text: 'Java',           cat: 'lang' },
-        { text: 'RAPID',          cat: 'lang' },
-        { text: 'MATLAB',         cat: 'lang' },
-        { text: 'Arduino',        cat: 'tool' },
-        { text: 'RobotStudio',    cat: 'tool' },
-        { text: 'MQTT',           cat: 'tool' },
-        { text: 'Node-RED',       cat: 'tool' },
-        { text: 'PLC',            cat: 'tool' },
-        { text: 'Git',            cat: 'tool' },
-        { text: 'Statistics',     cat: 'soft' },
-        { text: 'Problem Solving',cat: 'soft' },
-        { text: 'Research',       cat: 'soft' },
-        { text: 'Teamwork',       cat: 'soft' },
-        { text: 'Management',     cat: 'soft' },
-        { text: 'Communication',  cat: 'soft' }
-    ];
+    (function() {
+        var filterBtns = document.querySelectorAll('.filter-btn');
+        var skillTags  = document.querySelectorAll('.skill-tag');
 
-    var BALL_COLORS = {
-        lang: { inner: '#D4A574', outer: '#B8956A' },   // golden
-        tool: { inner: '#A3B89A', outer: '#8B9D83' },   // green
-        soft: { inner: '#BDB3D8', outer: '#9B8EC4' }    // purple
-    };
+        filterBtns.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var filter = this.getAttribute('data-filter');
+                filterBtns.forEach(function(b) { b.classList.remove('active'); });
+                this.classList.add('active');
+                skillTags.forEach(function(tag) {
+                    if (filter === 'all' || tag.getAttribute('data-cat') === filter) {
+                        tag.classList.remove('hidden');
+                    } else {
+                        tag.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    })();
 
-    class Ball {
-        constructor(x, y, text, cat) {
-            this.x    = x;
-            this.y    = y;
-            this.vx   = (Math.random() - 0.5) * 8;
-            this.vy   = 0;
-            this.text = text;
-            this.cat  = cat;
+    /* ================================================================
+       RECOMMENDATIONS CAROUSEL
+    ================================================================ */
+    (function() {
+        var track   = document.getElementById('recTrack');
+        var dots    = document.querySelectorAll('.rec-dot');
+        var prevBtn = document.getElementById('recPrev');
+        var nextBtn = document.getElementById('recNext');
+        var cards   = document.querySelectorAll('.rec-card');
+        var current = 0;
+        var total   = cards.length;
+        var timer;
+        var startX  = 0;
 
-            var w = window.innerWidth;
-            this.radius = w < 400 ? 30 : (w < 480 ? 36 : (w < 768 ? 46 : 60));
+        if (!track || !total) return;
 
-            var isMobile        = w < 768;
-            this.gravity        = isMobile ? 0.45 : 0.6;
-            this.bounce         = isMobile ? 0.35 : 0.5;
-            this.friction       = isMobile ? 0.96 : 0.98;
-            this.settleThreshold = isMobile ? 0.5 : 0.3;
-            this.organizing     = false;
-            this.settled        = false;
-            this.targetX        = null;
-            this.targetY        = null;
+        function goTo(idx) {
+            current = (idx + total) % total;
+            track.style.transform = 'translateX(-' + (current * 100) + '%)';
+            dots.forEach(function(d, i) { d.classList.toggle('active', i === current); });
         }
 
-        update(width, height, balls) {
-            if (this.organizing && this.targetX !== null) {
-                var dx = this.targetX - this.x;
-                var dy = this.targetY - this.y;
-                this.x += dx * 0.08;
-                this.y += dy * 0.08;
-                if (Math.abs(dx) < 1 && Math.abs(dy) < 1) {
-                    this.x = this.targetX;
-                    this.y = this.targetY;
-                    this.organizing = false;
-                    this.settled    = true;
-                }
-                return;
-            }
+        function startAuto() { timer = setInterval(function() { goTo(current + 1); }, 4500); }
+        function stopAuto()  { clearInterval(timer); }
 
-            if (this.settled) return;
-
-            this.vy += this.gravity;
-            this.x  += this.vx;
-            this.y  += this.vy;
-            this.vx *= this.friction;
-
-            var floorY = height - this.radius;
-            if (this.y >= floorY - 1) {
-                this.y   = floorY;
-                this.vy *= -this.bounce;
-                if (Math.abs(this.vy) < this.settleThreshold) {
-                    this.vy = 0;
-                    this.vx *= 0.9;
-                    if (Math.abs(this.vx) < 0.1) { this.vx = 0; this.settled = true; }
-                }
-            }
-
-            if (this.x <= this.radius + 1)          { this.x = this.radius + 1; this.vx *= -this.bounce; }
-            if (this.x >= width - this.radius - 1)   { this.x = width - this.radius - 1; this.vx *= -this.bounce; }
-
-            for (var i = 0; i < balls.length; i++) {
-                var other = balls[i];
-                if (other === this || other.organizing) continue;
-                var dx   = other.x - this.x;
-                var dy   = other.y - this.y;
-                var dist = Math.sqrt(dx * dx + dy * dy);
-                var minD = this.radius + other.radius;
-                if (dist < minD && dist > 0) {
-                    var angle   = Math.atan2(dy, dx);
-                    var overlap = minD - dist;
-                    this.x  -= Math.cos(angle) * overlap / 2;
-                    this.y  -= Math.sin(angle) * overlap / 2;
-                    other.x += Math.cos(angle) * overlap / 2;
-                    other.y += Math.sin(angle) * overlap / 2;
-                    if (this.y  > height - this.radius)  this.y  = height - this.radius;
-                    if (other.y > height - other.radius) other.y = height - other.radius;
-                    var tvx = this.vx, tvy = this.vy;
-                    this.vx  = other.vx * 0.8;
-                    this.vy  = other.vy * 0.8;
-                    other.vx = tvx * 0.8;
-                    other.vy = tvy * 0.8;
-                }
-            }
-        }
-
-        draw(ctx) {
-            var colors = BALL_COLORS[this.cat] || BALL_COLORS.lang;
-            ctx.save();
-            ctx.translate(this.x, this.y);
-
-            // Ball gradient (off-centre highlight for 3D look)
-            var grad = ctx.createRadialGradient(
-                -this.radius * 0.3, -this.radius * 0.3, this.radius * 0.1,
-                0, 0, this.radius
-            );
-            grad.addColorStop(0, colors.inner);
-            grad.addColorStop(1, colors.outer);
-            ctx.fillStyle   = grad;
-            ctx.shadowColor = 'rgba(0,0,0,0.25)';
-            ctx.shadowBlur  = 10;
-            ctx.beginPath();
-            ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Text — wrap words to fit inside ball using measureText
-            ctx.shadowBlur   = 0;
-            ctx.fillStyle    = '#FAF8F5';
-            ctx.textAlign    = 'center';
-            ctx.textBaseline = 'middle';
-
-            var fontSize = Math.max(11, Math.floor(this.radius * 0.28));
-            ctx.font = 'bold ' + fontSize + 'px Inter, sans-serif';
-            var maxLineW = this.radius * 1.65;
-
-            // Wrap into lines based on measured pixel width
-            var words = this.text.split(' ');
-            var lines = [];
-            var cur   = '';
-            for (var wi = 0; wi < words.length; wi++) {
-                var test = cur ? cur + ' ' + words[wi] : words[wi];
-                if (cur && ctx.measureText(test).width > maxLineW) {
-                    lines.push(cur);
-                    cur = words[wi];
-                } else {
-                    cur = test;
-                }
-            }
-            if (cur) lines.push(cur);
-
-            // If a single line still overflows, shrink the font
-            var maxW = 0;
-            for (var li = 0; li < lines.length; li++) {
-                var w = ctx.measureText(lines[li]).width;
-                if (w > maxW) maxW = w;
-            }
-            if (maxW > maxLineW) {
-                fontSize = Math.floor(fontSize * (maxLineW / maxW));
-                ctx.font = 'bold ' + fontSize + 'px Inter, sans-serif';
-            }
-
-            var lineH  = fontSize * 1.3;
-            var startY = -((lines.length - 1) * lineH) / 2;
-            for (var i = 0; i < lines.length; i++) {
-                ctx.fillText(lines[i], 0, startY + i * lineH);
-            }
-
-            ctx.restore();
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        var canvas = document.getElementById('skillsCanvas');
-        if (!canvas) return;
-        var ctx = canvas.getContext('2d');
-
-        var isOrganized  = false;
-        var animationLoop = null;
-
-        function getBallRadius() {
-            // Base radius on canvas width (not window width)
-            var cw = canvas.parentElement.clientWidth;
-            return cw < 400 ? 30 : (cw < 480 ? 36 : (cw < 768 ? 46 : 62));
-        }
-
-        function resizeCanvas() {
-            // Set canvas bitmap size = CSS display size so no scaling distortion
-            var cw = canvas.parentElement.clientWidth;
-            canvas.width = cw;
-            if (!isOrganized) canvas.height = cw < 480 ? 620 : (cw < 768 ? 580 : 520);
-            // Sync ball radii to new canvas width
-            var r = getBallRadius();
-            balls.forEach(function(b) { b.radius = r; });
-        }
-
-        // Create balls before first resize so resizeCanvas can update their radius
-        var balls = skillsDefs.map(function(s) {
-            return new Ball(0, 0, s.text, s.cat);
+        prevBtn.addEventListener('click', function() { stopAuto(); goTo(current - 1); startAuto(); });
+        nextBtn.addEventListener('click', function() { stopAuto(); goTo(current + 1); startAuto(); });
+        dots.forEach(function(dot, i) {
+            dot.addEventListener('click', function() { stopAuto(); goTo(i); startAuto(); });
         });
 
-        resizeCanvas();
+        var carousel = document.getElementById('recCarousel');
+        carousel.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; }, { passive: true });
+        carousel.addEventListener('touchend', function(e) {
+            var dx = e.changedTouches[0].clientX - startX;
+            if (Math.abs(dx) > 50) { stopAuto(); goTo(current + (dx < 0 ? 1 : -1)); startAuto(); }
+        }, { passive: true });
+        carousel.addEventListener('mouseenter', stopAuto);
+        carousel.addEventListener('mouseleave', startAuto);
 
-        // Position balls above canvas after sizing is known
-        var isMobileInit = canvas.width < 768;
-        var margin = isMobileInit ? 60 : 100;
-        var maxVx  = isMobileInit ? 3 : 8;
-        balls.forEach(function(b) {
-            b.x  = Math.random() * (canvas.width - margin * 2) + margin;
-            b.y  = -150 - Math.random() * 300;
-            b.vx = (Math.random() - 0.5) * maxVx;
-        });
-
-        window.addEventListener('resize', resizeCanvas);
-
-        function animateFalling() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            balls.forEach(function(b) {
-                b.update(canvas.width, canvas.height, balls);
-                b.draw(ctx);
-            });
-            animationLoop = requestAnimationFrame(animateFalling);
-        }
-
-        function animateOrganize() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            var layerNames  = ['Input Layer', 'Hidden Layer 1', 'Hidden Layer 2', 'Output Layer'];
-            var LAYERS      = layerNames.length;
-            var colSpacing  = canvas.width / (LAYERS + 1);
-            var topMargin   = canvas.height * 0.05;
-            var labelFontSz = Math.max(14, canvas.width * 0.025);
-            var lineWidth   = Math.max(1, canvas.width * 0.002);
-            var maxConnDx   = colSpacing * 1.3;
-
-            ctx.fillStyle    = '#6B5D52';
-            ctx.font         = 'bold ' + labelFontSz + 'px "Crimson Text", serif';
-            ctx.textAlign    = 'center';
-            ctx.textBaseline = 'top';
-            for (var i = 0; i < LAYERS; i++) {
-                ctx.fillText(layerNames[i], colSpacing * (i + 1), topMargin);
-            }
-
-            ctx.strokeStyle = 'rgba(184,149,106,0.15)';
-            ctx.lineWidth   = lineWidth;
-            for (var ii = 0; ii < balls.length - 1; ii++) {
-                for (var jj = ii + 1; jj < balls.length; jj++) {
-                    var dx = Math.abs(balls[jj].x - balls[ii].x);
-                    if (dx > canvas.width * 0.03 && dx < maxConnDx) {
-                        ctx.beginPath();
-                        ctx.moveTo(balls[ii].x, balls[ii].y);
-                        ctx.lineTo(balls[jj].x, balls[jj].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-
-            balls.forEach(function(b) {
-                b.update(canvas.width, canvas.height, balls);
-                b.draw(ctx);
-            });
-
-            if (!balls.every(function(b) { return !b.organizing; })) {
-                animationLoop = requestAnimationFrame(animateOrganize);
-            }
-        }
-
-        // Start when scrolled into view
-        var started = false;
-        var skillsObs = new IntersectionObserver(function(entries) {
-            if (entries[0].isIntersecting && !started) {
-                started = true;
-                animateFalling();
-                skillsObs.disconnect();
-            }
-        }, { threshold: 0.2 });
-        skillsObs.observe(document.getElementById('skills'));
-
-        // Organize / Reset button
-        var btn = document.getElementById('organizeBtn');
-        if (btn) {
-            btn.onclick = function() {
-                if (!isOrganized) {
-                    var layers = 4;
-                    var bpl    = Math.ceil(balls.length / layers);
-                    var hs     = canvas.width / (layers + 1);
-                    var vs     = Math.max(Math.max.apply(null, balls.map(function(b) { return b.radius; })) * 2.8, 100);
-                    var reqH   = (bpl + 2) * vs + 80;
-                    canvas.height = Math.max(reqH, 650);
-
-                    var idx = 0;
-                    for (var L = 0; L < layers; L++) {
-                        var lx  = hs * (L + 1);
-                        var bil = Math.min(bpl, balls.length - idx);
-                        var startY = 80 + (canvas.height - 80 - (bil - 1) * vs) / 2;
-                        for (var i = 0; i < bil; i++) {
-                            balls[idx].targetX    = lx;
-                            balls[idx].targetY    = startY + i * vs;
-                            balls[idx].organizing = true;
-                            balls[idx].vy = balls[idx].vx = 0;
-                            balls[idx].settled = false;
-                            idx++;
-                        }
-                    }
-                    if (animationLoop) cancelAnimationFrame(animationLoop);
-                    animateOrganize();
-                    this.textContent = '🔄 Reset to Free Fall';
-                    isOrganized = true;
-                } else {
-                    canvas.height = canvas.width < 480 ? 620 : (canvas.width < 768 ? 580 : 550);
-                    var resetMobile = canvas.width < 768;
-                    var resetMargin = resetMobile ? 60 : 100;
-                    var resetVx     = resetMobile ? 3 : 8;
-                    balls.forEach(function(b) {
-                        b.x = Math.random() * (canvas.width - resetMargin * 2) + resetMargin;
-                        b.y = -150 - Math.random() * 300;
-                        b.vx = (Math.random() - 0.5) * resetVx;
-                        b.vy = 0;
-                        b.organizing = b.settled = false;
-                        b.targetX = b.targetY = null;
-                    });
-                    if (animationLoop) cancelAnimationFrame(animationLoop);
-                    animateFalling();
-                    this.textContent = '📊 Organize as Neural Network';
-                    isOrganized = false;
-                }
-            };
-        }
-    });
+        startAuto();
+    })();
 
     /* ================================================================
        GITHUB PROJECTS
