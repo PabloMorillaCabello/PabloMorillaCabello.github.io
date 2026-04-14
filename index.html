@@ -281,6 +281,7 @@
             max-width: 1200px;
             margin-left: auto;
             margin-right: auto;
+            scroll-margin-top: 75px;
         }
 
         section:first-of-type { padding-top: 0; }
@@ -1221,7 +1222,7 @@
             <a href="#skills">Skills</a>
             <a href="#publications">Publications</a>
             <a href="#projects">Projects</a>
-            <a href="#recommendations">Testimonials</a>
+            <a href="#recommendations">Recommendations</a>
             <a href="#contact">Contact</a>
         </nav>
 
@@ -1382,7 +1383,9 @@
             <div class="skills-grid" id="skillsGrid">
                 <span class="skill-tag" data-cat="lang">🐍 Python</span>
                 <span class="skill-tag" data-cat="lang">⚡ C / C++</span>
+                <span class="skill-tag" data-cat="lang">🔷 C#</span>
                 <span class="skill-tag" data-cat="lang">☕ Java</span>
+                <span class="skill-tag" data-cat="lang">🌐 JavaScript</span>
                 <span class="skill-tag" data-cat="lang">🤖 RAPID</span>
                 <span class="skill-tag" data-cat="lang">📊 MATLAB</span>
                 <span class="skill-tag" data-cat="tool">🔌 Arduino</span>
@@ -1391,6 +1394,11 @@
                 <span class="skill-tag" data-cat="tool">🔴 Node-RED</span>
                 <span class="skill-tag" data-cat="tool">🏭 PLC</span>
                 <span class="skill-tag" data-cat="tool">🔧 Git</span>
+                <span class="skill-tag" data-cat="tool">⚙️ Codesys</span>
+                <span class="skill-tag" data-cat="tool">🔗 OPC-UA</span>
+                <span class="skill-tag" data-cat="tool">📐 AutoCAD</span>
+                <span class="skill-tag" data-cat="tool">🍃 MongoDB</span>
+                <span class="skill-tag" data-cat="tool">🔬 Xilinx</span>
                 <span class="skill-tag" data-cat="soft">📈 Statistics</span>
                 <span class="skill-tag" data-cat="soft">🧩 Problem Solving</span>
                 <span class="skill-tag" data-cat="soft">🔬 Research</span>
@@ -1654,7 +1662,9 @@
             var target = document.querySelector(this.getAttribute('href'));
             if (target) {
                 e.preventDefault();
-                target.scrollIntoView({ behavior: 'smooth' });
+                var headerH = document.querySelector('header').offsetHeight;
+                var top = target.getBoundingClientRect().top + window.scrollY - headerH - 8;
+                window.scrollTo({ top: top, behavior: 'smooth' });
             }
         });
     });
