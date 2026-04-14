@@ -706,7 +706,7 @@
         .rec-card-inner {
             background: var(--bg3);
             border-radius: 16px;
-            padding: 2.5rem 2.5rem 2rem;
+            padding: 2.5rem 2.5rem 3.5rem;
             box-shadow: 0 4px 24px var(--shadow);
             border: 1px solid var(--border);
             width: 100%;
@@ -757,6 +757,18 @@
             position: absolute;
             top: -1.2rem;
             left: -0.3rem;
+            line-height: 1;
+            font-style: normal;
+        }
+
+        .rec-quote::after {
+            content: '\201D';
+            font-size: 4rem;
+            color: var(--accent);
+            opacity: 0.3;
+            position: absolute;
+            bottom: -2.2rem;
+            right: -0.3rem;
             line-height: 1;
             font-style: normal;
         }
@@ -1450,7 +1462,6 @@
 
                     <div class="rec-card">
                         <div class="rec-card-inner">
-                            <div class="rec-avatar-placeholder">👤</div>
                             <p class="rec-quote">An outstanding engineer who brings precision and creativity to every project. Pablo's ability to bridge theory and practice is truly remarkable.</p>
                             <div class="rec-name">Dr. Jane Smith</div>
                             <div class="rec-role">Professor · University West</div>
@@ -1460,7 +1471,6 @@
 
                     <div class="rec-card">
                         <div class="rec-card-inner">
-                            <div class="rec-avatar-placeholder">👤</div>
                             <p class="rec-quote">Working with Pablo was a pleasure. He consistently delivered high-quality automation solutions and was always willing to share his knowledge with the team.</p>
                             <div class="rec-name">Erik Andersson</div>
                             <div class="rec-role">Senior Engineer · Elektroautomatik</div>
@@ -1470,7 +1480,6 @@
 
                     <div class="rec-card">
                         <div class="rec-card-inner">
-                            <div class="rec-avatar-placeholder">👤</div>
                             <p class="rec-quote">Pablo's research contributions to our publication were invaluable. His expertise in modular production systems and quick grasp of complex topics made collaboration seamless.</p>
                             <div class="rec-name">Mirza Birtic</div>
                             <div class="rec-role">Researcher · University of Skövde</div>
