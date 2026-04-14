@@ -1205,9 +1205,9 @@
         <a href="#hero"         class="mobile-nav-link">Home</a>
         <a href="#about"        class="mobile-nav-link">About</a>
         <a href="#career"       class="mobile-nav-link">Career</a>
-        <a href="#skills"       class="mobile-nav-link">Skills</a>
         <a href="#publications" class="mobile-nav-link">Publications</a>
         <a href="#projects"     class="mobile-nav-link">Projects</a>
+        <a href="#skills"       class="mobile-nav-link">Skills</a>
         <a href="#contact"      class="mobile-nav-link">Contact</a>
     </nav>
 
@@ -1219,9 +1219,9 @@
             <a href="#hero">Home</a>
             <a href="#about">About</a>
             <a href="#career">Career</a>
-            <a href="#skills">Skills</a>
             <a href="#publications">Publications</a>
             <a href="#projects">Projects</a>
+            <a href="#skills">Skills</a>
             <a href="#recommendations">Recommendations</a>
             <a href="#contact">Contact</a>
         </nav>
@@ -1370,6 +1370,37 @@
         </section>
     </div>
 
+    <!-- PUBLICATIONS -->
+    <div id="publications-wrapper">
+        <section id="publications">
+            <h2>Publications</h2>
+            <div class="pub-card">
+                <span class="pub-badge">Conference Paper</span>
+                <h3>Exploring the Synergies of Modularization, Interface Standardization, and Service-Orientation in Production System Simulation</h3>
+                <p class="pub-authors">M. Birtic, P. Morilla Cabello, Á. Muñoz, A. Syberfeldt</p>
+                <p class="pub-venue">SPS 2024 · Advances in Transdisciplinary Engineering, Vol. 52, pp. 185–195 · <a href="https://doi.org/10.3233/ATDE240164" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;font-weight:600;">DOI: 10.3233/ATDE240164</a></p>
+                <p class="pub-desc">This paper investigates a combination of concepts that promote reconfigurability and flexibility in production systems. By integrating modularization, interface standardization, and a service-oriented architecture, the work explores whether these synergies can positively influence the simulation process for production systems that may be in constant flux and reconfiguration — supporting faster and easier creation and updates of digital models.</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- PROJECTS -->
+    <div id="projects-wrapper">
+        <section id="projects">
+            <h2>Featured Projects</h2>
+            <p class="about-intro" style="text-align:center;color:var(--text3);margin-bottom:1.5rem;">"From side projects to major achievements — highlights in my CV, everything on GitHub."</p>
+            <div class="carousel-container">
+                <div class="carousel-wrapper" id="projectCarousel">
+                    <div class="loading-message">Loading projects from GitHub...</div>
+                </div>
+                <div class="carousel-nav">
+                    <button class="carousel-btn" id="prevBtn" onclick="scrollCarousel(-1)">← Previous</button>
+                    <button class="carousel-btn" id="nextBtn" onclick="scrollCarousel(1)">Next →</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
     <!-- SKILLS -->
     <div id="skills-wrapper">
         <section id="skills">
@@ -1405,37 +1436,6 @@
                 <span class="skill-tag" data-cat="soft">👥 Teamwork</span>
                 <span class="skill-tag" data-cat="soft">📋 Management</span>
                 <span class="skill-tag" data-cat="soft">💬 Communication</span>
-            </div>
-        </section>
-    </div>
-
-    <!-- PUBLICATIONS -->
-    <div id="publications-wrapper">
-        <section id="publications">
-            <h2>Publications</h2>
-            <div class="pub-card">
-                <span class="pub-badge">Conference Paper</span>
-                <h3>Exploring the Synergies of Modularization, Interface Standardization, and Service-Orientation in Production System Simulation</h3>
-                <p class="pub-authors">M. Birtic, P. Morilla Cabello, Á. Muñoz, A. Syberfeldt</p>
-                <p class="pub-venue">SPS 2024 · Advances in Transdisciplinary Engineering, Vol. 52, pp. 185–195 · <a href="https://doi.org/10.3233/ATDE240164" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;font-weight:600;">DOI: 10.3233/ATDE240164</a></p>
-                <p class="pub-desc">This paper investigates a combination of concepts that promote reconfigurability and flexibility in production systems. By integrating modularization, interface standardization, and a service-oriented architecture, the work explores whether these synergies can positively influence the simulation process for production systems that may be in constant flux and reconfiguration — supporting faster and easier creation and updates of digital models.</p>
-            </div>
-        </section>
-    </div>
-
-    <!-- PROJECTS -->
-    <div id="projects-wrapper">
-        <section id="projects">
-            <h2>Featured Projects</h2>
-            <p class="about-intro" style="text-align:center;color:var(--text3);margin-bottom:1.5rem;">"From side projects to major achievements — highlights in my CV, everything on GitHub."</p>
-            <div class="carousel-container">
-                <div class="carousel-wrapper" id="projectCarousel">
-                    <div class="loading-message">Loading projects from GitHub...</div>
-                </div>
-                <div class="carousel-nav">
-                    <button class="carousel-btn" id="prevBtn" onclick="scrollCarousel(-1)">← Previous</button>
-                    <button class="carousel-btn" id="nextBtn" onclick="scrollCarousel(1)">Next →</button>
-                </div>
             </div>
         </section>
     </div>
