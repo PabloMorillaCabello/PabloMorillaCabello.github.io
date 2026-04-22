@@ -288,7 +288,7 @@
             white-space: nowrap;
         }
 
-        #theme-toggle:hover { background: rgba(255,255,255,0.25); transform: none; }
+        #lang-toggle:hover, #theme-toggle:hover { background: rgba(255,255,255,0.25); transform: none; }
 
         /* Hamburger */
         #hamburger {
@@ -411,8 +411,8 @@
         }
 
         .hero-photo {
-            width: 180px;
-            height: 180px;
+            width: 300px;
+            height: 300px;
             border-radius: 50%;
             overflow: hidden;
             margin-bottom: 1.8rem;
@@ -787,7 +787,14 @@
             border: 1px solid var(--border);
             width: 100%;
             text-align: center;
-            transition: background-color 0.3s, box-shadow 0.3s;
+            transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s ease, border-color 0.3s;
+        }
+
+        .rec-card-inner:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 14px 40px var(--shadow-accent);
+            border-color: var(--accent);
+            background-color: var(--bg2);
         }
 
         .rec-quote {
@@ -938,6 +945,8 @@
             padding: 0.5rem 0.5rem 1rem;
             scrollbar-width: thin;
             scrollbar-color: var(--accent) var(--bg2);
+            mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
         }
 
         .carousel-wrapper::-webkit-scrollbar       { height: 6px; }
@@ -1258,13 +1267,13 @@
     <!-- MOBILE OVERLAY NAV -->
     <nav id="mobile-nav" role="dialog" aria-modal="true" aria-label="Navigation menu">
         <button id="close-mobile-nav" aria-label="Close menu">&times;</button>
-        <a href="#hero"         class="mobile-nav-link">Home</a>
-        <a href="#about"        class="mobile-nav-link">About</a>
-        <a href="#career"       class="mobile-nav-link">Career</a>
-        <a href="#publications" class="mobile-nav-link">Publications</a>
-        <a href="#projects"     class="mobile-nav-link">Projects</a>
-        <a href="#skills"       class="mobile-nav-link">Skills</a>
-        <a href="#contact"      class="mobile-nav-link">Contact</a>
+        <a href="#hero"         class="mobile-nav-link" data-i18n="nav.home.mobile">Home</a>
+        <a href="#about"        class="mobile-nav-link" data-i18n="nav.about">About</a>
+        <a href="#career"       class="mobile-nav-link" data-i18n="nav.career">Career</a>
+        <a href="#publications" class="mobile-nav-link" data-i18n="nav.publications">Publications</a>
+        <a href="#projects"     class="mobile-nav-link" data-i18n="nav.projects">Projects</a>
+        <a href="#skills"       class="mobile-nav-link" data-i18n="nav.skills">Skills</a>
+        <a href="#contact"      class="mobile-nav-link" data-i18n="nav.contact">Contact</a>
     </nav>
 
     <!-- HEADER -->
@@ -1277,28 +1286,29 @@
                 </svg>
             </button>
             <nav class="gear-dropdown" id="gearDropdown" aria-label="Site navigation">
-                <a href="#hero">🏠 Home</a>
-                <a href="#about">👤 About</a>
-                <a href="#career">💼 Career</a>
-                <a href="#publications">📄 Publications</a>
-                <a href="#projects">🚀 Projects</a>
-                <a href="#skills">⚡ Skills</a>
-                <a href="#recommendations">💬 Recommendations</a>
-                <a href="#contact">✉️ Contact</a>
+                <a href="#hero" data-i18n="nav.home">🏠 Home</a>
+                <a href="#about" data-i18n="nav.about.gear">👤 About</a>
+                <a href="#career" data-i18n="nav.career.gear">💼 Career</a>
+                <a href="#publications" data-i18n="nav.publications.gear">📄 Publications</a>
+                <a href="#projects" data-i18n="nav.projects.gear">🚀 Projects</a>
+                <a href="#skills" data-i18n="nav.skills.gear">⚡ Skills</a>
+                <a href="#recommendations" data-i18n="nav.recommendations.gear">💬 Recommendations</a>
+                <a href="#contact" data-i18n="nav.contact.gear">✉️ Contact</a>
             </nav>
         </div>
 
         <nav class="header-nav" aria-label="Main navigation">
-            <a href="#about">About</a>
-            <a href="#career">Career</a>
-            <a href="#publications">Publications</a>
-            <a href="#projects">Projects</a>
-            <a href="#skills">Skills</a>
-            <a href="#recommendations">Recommendations</a>
-            <a href="#contact">Contact</a>
+            <a href="#about" data-i18n="nav.about">About</a>
+            <a href="#career" data-i18n="nav.career">Career</a>
+            <a href="#publications" data-i18n="nav.publications">Publications</a>
+            <a href="#projects" data-i18n="nav.projects">Projects</a>
+            <a href="#skills" data-i18n="nav.skills">Skills</a>
+            <a href="#recommendations" data-i18n="nav.recommendations">Recommendations</a>
+            <a href="#contact" data-i18n="nav.contact">Contact</a>
         </nav>
 
         <div class="header-right">
+            <button id="lang-toggle" aria-label="Switch language" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:var(--header-text);padding:0.4rem 0.9rem;border-radius:20px;cursor:pointer;font-size:0.8rem;font-weight:600;transition:background 0.2s;white-space:nowrap;display:inline-flex;align-items:center;gap:0.4rem;"><img src="https://flagcdn.com/w20/es.png" width="16" height="12" alt="ES" style="vertical-align:middle;border-radius:2px;"> ESP</button>
             <button id="theme-toggle" aria-label="Toggle dark mode">🌙 Dark</button>
             <button id="hamburger" aria-label="Open menu" aria-expanded="false">
                 <span></span><span></span><span></span>
@@ -1315,28 +1325,28 @@
                 <img src="https://raw.githubusercontent.com/PabloMorillaCabello/PabloMorillaCabello.github.io/refs/heads/main/PP.JPG" alt="Pablo Morilla Cabello">
             </div>
             <h1>Pablo Morilla Cabello</h1>
-            <p class="subtitle">Automation Engineer, Robotics &amp; AI</p>
-            <p class="tagline" id="tagline">Building intelligent systems with precision ⚙️</p>
+            <p class="subtitle" data-i18n="hero.subtitle">Automation Engineer, Robotics &amp; AI</p>
+            <p class="tagline" id="tagline" data-i18n="hero.tagline">Building intelligent systems with precision ⚙️</p>
 
             <div class="hero-stats">
                 <div class="hero-stat">
                     <span class="stat-number">2+</span>
-                    <span class="stat-label">Years Experience</span>
+                    <span class="stat-label" data-i18n="hero.stat.experience">Years Experience</span>
                 </div>
                 <div class="hero-stat">
                     <span class="stat-number" id="repo-count">...</span>
-                    <span class="stat-label">GitHub Projects</span>
+                    <span class="stat-label" data-i18n="hero.stat.projects">GitHub Projects</span>
                 </div>
                 <div class="hero-stat">
                     <span class="stat-number">1</span>
-                    <span class="stat-label">Publication</span>
+                    <span class="stat-label" data-i18n="hero.stat.publication">Publication</span>
                 </div>
             </div>
 
             <div class="hero-buttons">
-                <a href="#" class="btn btn-secondary" onclick="openCV(event); return false;">📄 View CV</a>
-                <button class="btn btn-primary" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">🚀 View Projects</button>
-                <button class="btn btn-outline" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">✉️ Get in Touch</button>
+                <a href="#" class="btn btn-secondary" onclick="openCV(event); return false;" data-i18n="hero.btn.cv">📄 View CV</a>
+                <button class="btn btn-primary" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})" data-i18n="hero.btn.projects">🚀 View Projects</button>
+                <button class="btn btn-outline" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})" data-i18n="hero.btn.contact">✉️ Get in Touch</button>
             </div>
         </section>
     </div>
@@ -1344,49 +1354,49 @@
     <!-- ABOUT -->
     <div class="section-bg">
         <section id="about">
-            <h2>About Me</h2>
+            <h2 data-i18n="about.title">About Me</h2>
             <div class="about-content">
-                <p class="about-intro">I'm an automation engineer and roboticist passionate about designing intelligent systems that solve real-world problems. Currently pursuing my Master's in AI and Automation while working on cutting-edge industrial automation projects.</p>
+                <p class="about-intro" data-i18n="about.intro">Robotics engineer from Málaga, industrial engineer from Skövde, and MS in AI &amp; Automation from Trollhättan. Three degrees, two countries, one mission: building smarter factories. With 2+ years commissioning robot cells for Volvo, SCANIA, and Hitachi, I combine hands-on industrial experience with deep learning, computer vision, and a natural drive to lead, communicate, and solve problems that others walk away from.</p>
                 <div class="about-details">
                     <div class="about-card">
-                        <h3>📍 Location</h3>
-                        <p>Trollhättan, Sweden</p>
+                        <h3 data-i18n="about.location.title">📍 Location</h3>
+                        <p data-i18n="about.location.value">Trollhättan, Sweden</p>
                     </div>
                     <div class="about-card">
-                        <h3>🎓 Education</h3>
-                        <p>MS in AI &amp; Automation<br>University West (2025–Present)</p>
+                        <h3 data-i18n="about.education.title">🎓 Education</h3>
+                        <p data-i18n="about.education.value">MS in AI &amp; Automation<br>University West (2025–2026)</p>
                     </div>
                     <div class="about-card">
-                        <h3>⚙️ Current Role</h3>
-                        <p>Automation Engineer<br>Elektroautomatik, Skövde</p>
+                        <h3 data-i18n="about.role.title">⚙️ Current Role</h3>
+                        <p data-i18n="about.role.value">Automation Engineer<br>Elektroautomatik, Skövde</p>
                     </div>
                     <div class="about-card">
-                        <h3>🌞 Origin</h3>
-                        <p>Málaga, Spain</p>
+                        <h3 data-i18n="about.origin.title">🌞 Origin</h3>
+                        <p data-i18n="about.origin.value">Málaga, Spain</p>
                     </div>
                 </div>
 
                 <div class="focus-areas-section">
-                    <h3 style="font-family:'Crimson Text',serif;font-size:1.5rem;color:var(--text2);text-align:center;margin:2rem 0 1rem;">💡 Focus Areas</h3>
+                    <h3 style="font-family:'Crimson Text',serif;font-size:1.5rem;color:var(--text2);text-align:center;margin:2rem 0 1rem;" data-i18n="about.focus.title">💡 Focus Areas</h3>
                     <div class="carousel-track-container">
                         <div class="carousel-track">
-                            <div class="focus-badge">🤖 Industrial Robotics</div>
-                            <div class="focus-badge">⚙️ Automation Systems</div>
-                            <div class="focus-badge">🧠 Artificial Intelligence</div>
-                            <div class="focus-badge">🔧 Control Systems</div>
-                            <div class="focus-badge">💡 Innovation</div>
-                            <div class="focus-badge">📊 Research &amp; Development</div>
-                            <div class="focus-badge">🎯 System Optimization</div>
-                            <div class="focus-badge">🤝 Human-Robot Collaboration</div>
+                            <div class="focus-badge" data-i18n="focus.robotics">🤖 Industrial Robotics</div>
+                            <div class="focus-badge" data-i18n="focus.automation">⚙️ Automation Systems</div>
+                            <div class="focus-badge" data-i18n="focus.ai">🧠 Artificial Intelligence</div>
+                            <div class="focus-badge" data-i18n="focus.control">🔧 Control Systems</div>
+                            <div class="focus-badge" data-i18n="focus.innovation">💡 Innovation</div>
+                            <div class="focus-badge" data-i18n="focus.rnd">📊 Research &amp; Development</div>
+                            <div class="focus-badge" data-i18n="focus.optimization">🎯 System Optimization</div>
+                            <div class="focus-badge" data-i18n="focus.hrc">🤝 Human-Robot Collaboration</div>
                             <!-- Duplicate for seamless loop -->
-                            <div class="focus-badge">🤖 Industrial Robotics</div>
-                            <div class="focus-badge">⚙️ Automation Systems</div>
-                            <div class="focus-badge">🧠 Artificial Intelligence</div>
-                            <div class="focus-badge">🔧 Control Systems</div>
-                            <div class="focus-badge">💡 Innovation</div>
-                            <div class="focus-badge">📊 Research &amp; Development</div>
-                            <div class="focus-badge">🎯 System Optimization</div>
-                            <div class="focus-badge">🤝 Human-Robot Collaboration</div>
+                            <div class="focus-badge" data-i18n="focus.robotics2">🤖 Industrial Robotics</div>
+                            <div class="focus-badge" data-i18n="focus.automation2">⚙️ Automation Systems</div>
+                            <div class="focus-badge" data-i18n="focus.ai2">🧠 Artificial Intelligence</div>
+                            <div class="focus-badge" data-i18n="focus.control2">🔧 Control Systems</div>
+                            <div class="focus-badge" data-i18n="focus.innovation2">💡 Innovation</div>
+                            <div class="focus-badge" data-i18n="focus.rnd2">📊 Research &amp; Development</div>
+                            <div class="focus-badge" data-i18n="focus.optimization2">🎯 System Optimization</div>
+                            <div class="focus-badge" data-i18n="focus.hrc2">🤝 Human-Robot Collaboration</div>
                         </div>
                     </div>
                 </div>
@@ -1397,46 +1407,46 @@
     <!-- CAREER -->
     <div class="section-bg2">
         <section id="career">
-            <h2>My Career Path</h2>
+            <h2 data-i18n="career.title">My Career Path</h2>
             <div class="timeline">
                 <div class="career-item left" data-icon="🎓" onclick="window.open('https://www.hv.se/en/','_blank')">
                     <h3>University West</h3>
-                    <div class="role">Student — MS in AI and Automation</div>
-                    <div class="period">August 2025 – Present</div>
+                    <div class="role" data-i18n="career.uwest.role">Student — MS in AI and Automation</div>
+                    <div class="period" data-i18n="career.uwest.period">August 2025 – June 2026</div>
                     <div class="location">📍 Trollhättan, Sweden</div>
-                    <p>Master's program in Artificial Intelligence and Automation Engineering.</p>
+                    <p data-i18n="career.uwest.desc">AI/ML, Deep Learning, Sensor Technology &amp; Image Analysis, Big Data Processing, Systems &amp; Control. Automation systems, mechatronics, and ABB Robot Certificate. Work-Integrated Learning (WIL) Certificate — industry projects at Production Technology Centre (PTC).</p>
                 </div>
 
                 <div class="career-item right" data-icon="⚙️" onclick="window.open('https://elektroautomatik.se/','_blank')">
                     <h3>Elektroautomatik</h3>
-                    <div class="role">Automation Engineer</div>
-                    <div class="period">April 2024 – Present</div>
+                    <div class="role" data-i18n="career.elektro.role">Automation Engineer</div>
+                    <div class="period" data-i18n="career.elektro.period">April 2024 – June 2026</div>
                     <div class="location">📍 Skövde, Sweden</div>
-                    <p>Designing and implementing industrial automation solutions, control systems, and process optimization.</p>
+                    <p data-i18n="career.elektro.desc">Programmed and commissioned industrial robot cells and PLC-based automation lines for Volvo Group, SCANIA, and Hitachi. Developed reusable programming standards. Delivered on-site commissioning internationally. Specialized in RAPID, PLC logic (TIA Portal, TwinCAT, CODESYS), and system integration.</p>
                 </div>
 
                 <div class="career-item left" data-icon="🔬" onclick="window.open('https://assarinnovation.se/','_blank')">
                     <h3>ASSAR Industrial Innovation Arena</h3>
-                    <div class="role">Research Assistant</div>
-                    <div class="period">June 2023 – August 2023</div>
+                    <div class="role" data-i18n="career.assar.role">Research Assistant</div>
+                    <div class="period" data-i18n="career.assar.period">June 2023 – August 2023</div>
                     <div class="location">📍 Skövde, Sweden</div>
-                    <p>Conducted a summer research project in automation, resulting in a peer-reviewed publication and presentation at SPS 2024.</p>
+                    <p data-i18n="career.assar.desc">Built and integrated simulation software for a 3D industrial robotic system using modular architecture. Led a summer research project from planning through delivery, resulting in a peer-reviewed publication (DOI: 10.3233/ATDE240164).</p>
                 </div>
 
                 <div class="career-item right" data-icon="🎓" onclick="window.open('https://www.his.se/en/','_blank')">
                     <h3>Högskolan i Skövde</h3>
-                    <div class="role">Student — Erasmus BS in Industrial Engineering</div>
-                    <div class="period">August 2022 – June 2023</div>
+                    <div class="role" data-i18n="career.skovde.role">Student — BS in Industrial Engineering</div>
+                    <div class="period" data-i18n="career.skovde.period">August 2022 – June 2023</div>
                     <div class="location">📍 Skövde, Sweden</div>
-                    <p>ERASMUS exchange program, Industrial Engineering focus.</p>
+                    <p data-i18n="career.skovde.desc">Industrial robotics and offline programming using ABB RobotStudio. Process planning, lean manufacturing, and product realization. Logistics simulation and industrial control engineering.</p>
                 </div>
 
                 <div class="career-item left" data-icon="🎓" onclick="window.open('https://www.uma.es/','_blank')">
                     <h3>University of Málaga</h3>
-                    <div class="role">Student — Degree in Robotics, Electronics &amp; Mechatronics</div>
-                    <div class="period">August 2019 – February 2024</div>
+                    <div class="role" data-i18n="career.malaga.role">Student — Degree in Robotics, Electronics &amp; Mechatronics</div>
+                    <div class="period" data-i18n="career.malaga.period">August 2019 – February 2024</div>
                     <div class="location">📍 Málaga, Spain</div>
-                    <p>GPA: 7.31 — Robotics, automation, computer vision.</p>
+                    <p data-i18n="career.malaga.desc">GPA: 7.31 — Robotics, automation, computer vision.</p>
                 </div>
             </div>
         </section>
@@ -1445,13 +1455,13 @@
     <!-- PUBLICATIONS -->
     <div id="publications-wrapper">
         <section id="publications">
-            <h2>Publications</h2>
+            <h2 data-i18n="pub.title">Publications</h2>
             <div class="pub-card">
-                <span class="pub-badge">Conference Paper</span>
+                <span class="pub-badge" data-i18n="pub.badge">Conference Paper</span>
                 <h3>Exploring the Synergies of Modularization, Interface Standardization, and Service-Orientation in Production System Simulation</h3>
                 <p class="pub-authors">M. Birtic, P. Morilla Cabello, Á. Muñoz, A. Syberfeldt</p>
                 <p class="pub-venue">SPS 2024 · Advances in Transdisciplinary Engineering, Vol. 52, pp. 185–195 · <a href="https://doi.org/10.3233/ATDE240164" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;font-weight:600;">DOI: 10.3233/ATDE240164</a></p>
-                <p class="pub-desc">This paper investigates a combination of concepts that promote reconfigurability and flexibility in production systems. By integrating modularization, interface standardization, and a service-oriented architecture, the work explores whether these synergies can positively influence the simulation process for production systems that may be in constant flux and reconfiguration — supporting faster and easier creation and updates of digital models.</p>
+                <p class="pub-desc" data-i18n="pub.desc">This paper investigates a combination of concepts that promote reconfigurability and flexibility in production systems. By integrating modularization, interface standardization, and a service-oriented architecture, the work explores whether these synergies can positively influence the simulation process for production systems that may be in constant flux and reconfiguration — supporting faster and easier creation and updates of digital models.</p>
             </div>
         </section>
     </div>
@@ -1459,8 +1469,8 @@
     <!-- PROJECTS -->
     <div id="projects-wrapper">
         <section id="projects">
-            <h2>Featured Projects</h2>
-            <p class="about-intro" style="text-align:center;color:var(--text3);margin-bottom:1.5rem;">"From side projects to major achievements — highlights in my CV, everything on GitHub."</p>
+            <h2 data-i18n="projects.title">Featured Projects</h2>
+            <p class="about-intro" style="text-align:center;color:var(--text3);margin-bottom:1.5rem;" data-i18n="projects.subtitle">"From side projects to major achievements — highlights in my CV, everything on GitHub."</p>
             <div class="carousel-container">
                 <div class="carousel-wrapper" id="projectCarousel">
                     <div class="loading-message">Loading projects from GitHub...</div>
@@ -1476,12 +1486,12 @@
     <!-- SKILLS -->
     <div id="skills-wrapper">
         <section id="skills">
-            <h2>Technical Skills</h2>
+            <h2 data-i18n="skills.title">Technical Skills</h2>
             <div class="skills-filter">
-                <button class="filter-btn active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="lang">🐍 Languages</button>
-                <button class="filter-btn" data-filter="tool">⚙️ Tools &amp; Frameworks</button>
-                <button class="filter-btn" data-filter="soft">🤝 Soft Skills</button>
+                <button class="filter-btn active" data-filter="all" data-i18n="skills.all">All</button>
+                <button class="filter-btn" data-filter="lang" data-i18n="skills.lang">🐍 Languages</button>
+                <button class="filter-btn" data-filter="tool" data-i18n="skills.tools">⚙️ Tools &amp; Frameworks</button>
+                <button class="filter-btn" data-filter="soft" data-i18n="skills.soft">🤝 Soft Skills</button>
             </div>
             <div class="skills-grid" id="skillsGrid">
                 <span class="skill-tag" data-cat="lang">🐍 Python</span>
@@ -1495,19 +1505,25 @@
                 <span class="skill-tag" data-cat="tool">🦾 RobotStudio</span>
                 <span class="skill-tag" data-cat="tool">📡 MQTT</span>
                 <span class="skill-tag" data-cat="tool">🔴 Node-RED</span>
-                <span class="skill-tag" data-cat="tool">🏭 PLC</span>
-                <span class="skill-tag" data-cat="tool">🔧 Git</span>
-                <span class="skill-tag" data-cat="tool">⚙️ Codesys</span>
+                <span class="skill-tag" data-cat="tool">🏭 TIA Portal</span>
+                <span class="skill-tag" data-cat="tool">🏭 TwinCAT</span>
+                <span class="skill-tag" data-cat="tool">🏭 CODESYS</span>
+                <span class="skill-tag" data-cat="tool">🔧 Git / GitHub</span>
                 <span class="skill-tag" data-cat="tool">🔗 OPC-UA</span>
+                <span class="skill-tag" data-cat="tool">🐳 Docker</span>
+                <span class="skill-tag" data-cat="tool">🤖 ROS2</span>
+                <span class="skill-tag" data-cat="tool">👁️ OpenCV</span>
+                <span class="skill-tag" data-cat="tool">📊 Simulink</span>
                 <span class="skill-tag" data-cat="tool">📐 AutoCAD</span>
                 <span class="skill-tag" data-cat="tool">🍃 MongoDB</span>
-                <span class="skill-tag" data-cat="tool">🔬 Xilinx</span>
-                <span class="skill-tag" data-cat="soft">📈 Statistics</span>
-                <span class="skill-tag" data-cat="soft">🧩 Problem Solving</span>
-                <span class="skill-tag" data-cat="soft">🔬 Research</span>
-                <span class="skill-tag" data-cat="soft">👥 Teamwork</span>
-                <span class="skill-tag" data-cat="soft">📋 Management</span>
-                <span class="skill-tag" data-cat="soft">💬 Communication</span>
+                <span class="skill-tag" data-cat="tool">🔬 Xilinx FPGA</span>
+                <span class="skill-tag" data-cat="tool">🧠 TensorFlow / PyTorch</span>
+                <span class="skill-tag" data-cat="soft" data-i18n="skills.statistics">📈 Statistics</span>
+                <span class="skill-tag" data-cat="soft" data-i18n="skills.problemsolving">🧩 Problem Solving</span>
+                <span class="skill-tag" data-cat="soft" data-i18n="skills.research">🔬 Research</span>
+                <span class="skill-tag" data-cat="soft" data-i18n="skills.teamwork">👥 Teamwork</span>
+                <span class="skill-tag" data-cat="soft" data-i18n="skills.management">📋 Management</span>
+                <span class="skill-tag" data-cat="soft" data-i18n="skills.communication">💬 Communication</span>
             </div>
         </section>
     </div>
@@ -1515,35 +1531,28 @@
     <!-- RECOMMENDATIONS -->
     <div id="recommendations-wrapper">
         <section id="recommendations">
-            <h2>What People Say</h2>
-            <p class="about-intro" style="text-align:center;color:var(--text3);margin-bottom:2rem;">"Feedback from colleagues, mentors and collaborators."</p>
+            <h2 data-i18n="rec.title">What People Say</h2>
+            <p class="about-intro" style="text-align:center;color:var(--text3);margin-bottom:2rem;" data-i18n="rec.subtitle">"Feedback from colleagues, mentors and collaborators."</p>
             <div class="rec-carousel" id="recCarousel">
                 <div class="rec-track" id="recTrack">
 
-                    <div class="rec-card">
+                    <div class="rec-card" onclick="window.open('Recomendations/Martin%20Birtic.pdf','_blank')" style="cursor:pointer;" title="Click to read the full recommendation letter">
                         <div class="rec-card-inner">
-                            <p class="rec-quote">An outstanding engineer who brings precision and creativity to every project. Pablo's ability to bridge theory and practice is truly remarkable.</p>
-                            <div class="rec-name">Dr. Jane Smith</div>
-                            <div class="rec-role">Professor · University West</div>
-                            <a href="mailto:jane.smith@his.se" class="rec-email">jane.smith@his.se</a>
+                            <p class="rec-quote" data-i18n="rec.martin.quote">His analytical approach and ability to tackle complex problems independently made him indispensable to the project's success.</p>
+                            <div class="rec-name">Martin Birtic</div>
+                            <div class="rec-role">Lecturer in Production Engineering · Högskolan i Skövde</div>
+                            <a href="mailto:martin.birtic@his.se" class="rec-email" onclick="event.stopPropagation()">martin.birtic@his.se</a>
+                            <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--text3);">📄 Click to read full letter</div>
                         </div>
                     </div>
 
-                    <div class="rec-card">
+                    <div class="rec-card" onclick="window.open('Recomendations/Nasjwa.pdf','_blank')" style="cursor:pointer;" title="Click to read the full recommendation letter">
                         <div class="rec-card-inner">
-                            <p class="rec-quote">Working with Pablo was a pleasure. He consistently delivered high-quality automation solutions and was always willing to share his knowledge with the team.</p>
-                            <div class="rec-name">Erik Andersson</div>
-                            <div class="rec-role">Senior Engineer · Elektroautomatik</div>
-                            <a href="mailto:erik.andersson@elektroautomatik.se" class="rec-email">erik.andersson@elektroautomatik.se</a>
-                        </div>
-                    </div>
-
-                    <div class="rec-card">
-                        <div class="rec-card-inner">
-                            <p class="rec-quote">Pablo's research contributions to our publication were invaluable. His expertise in modular production systems and quick grasp of complex topics made collaboration seamless.</p>
-                            <div class="rec-name">Mirza Birtic</div>
-                            <div class="rec-role">Researcher · University of Skövde</div>
-                            <a href="mailto:mirza.birtic@his.se" class="rec-email">mirza.birtic@his.se</a>
+                            <p class="rec-quote" data-i18n="rec.najwa.quote">He introduced new tools and developed smart components that improved our work with simulations. Pablo's creativity and dedication to finding solutions have significantly benefited our team.</p>
+                            <div class="rec-name">Najwa Yattou Belkhrouf</div>
+                            <div class="rec-role">Automation Engineer &amp; Mentor · Elektroautomatik</div>
+                            <a href="mailto:najwayattou.svk@gmail.com" class="rec-email" onclick="event.stopPropagation()">najwayattou.svk@gmail.com</a>
+                            <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--text3);">📄 Click to read full letter</div>
                         </div>
                     </div>
 
@@ -1554,7 +1563,6 @@
                 <div class="rec-dots" id="recDots">
                     <div class="rec-dot active"></div>
                     <div class="rec-dot"></div>
-                    <div class="rec-dot"></div>
                 </div>
                 <button class="rec-btn" id="recNext" aria-label="Next">&#8594;</button>
             </div>
@@ -1564,39 +1572,39 @@
     <!-- CONTACT -->
     <div id="contact-wrapper">
         <section id="contact">
-            <h2>Let's build something together!</h2>
+            <h2 data-i18n="contact.title">Let's build something together!</h2>
             <div class="contact-container">
                 <!-- Contact Form -->
                 <div class="contact-form">
-                    <h3 style="font-family:'Crimson Text',serif;color:var(--text2);margin-bottom:0.5rem;">Send me a message</h3>
+                    <h3 style="font-family:'Crimson Text',serif;color:var(--text2);margin-bottom:0.5rem;" data-i18n="contact.form.title">Send me a message</h3>
 
                     <div id="form-status" role="alert" style="display:none;padding:0.75rem 1rem;border-radius:8px;font-size:0.95rem;"></div>
 
                     <div class="form-group">
-                        <label for="contact-name">Name *</label>
-                        <input type="text" id="contact-name" name="name" placeholder="Your name" required>
+                        <label for="contact-name" data-i18n="contact.form.name">Name *</label>
+                        <input type="text" id="contact-name" name="name" data-i18n-placeholder="contact.form.name.ph" placeholder="Your name" required>
                     </div>
                     <div class="form-group">
-                        <label for="contact-email">Email *</label>
+                        <label for="contact-email" data-i18n="contact.form.email">Email *</label>
                         <input type="email" id="contact-email" name="email" placeholder="your@email.com" required>
                     </div>
                     <div class="form-group">
-                        <label for="contact-subject">Subject</label>
-                        <input type="text" id="contact-subject" name="subject" placeholder="What's this about?">
+                        <label for="contact-subject" data-i18n="contact.form.subject">Subject</label>
+                        <input type="text" id="contact-subject" name="subject" data-i18n-placeholder="contact.form.subject.ph" placeholder="What's this about?">
                     </div>
                     <div class="form-group">
-                        <label for="contact-message">Message *</label>
-                        <textarea id="contact-message" name="message" rows="5" placeholder="Your message..." required></textarea>
+                        <label for="contact-message" data-i18n="contact.form.message">Message *</label>
+                        <textarea id="contact-message" name="message" rows="5" data-i18n-placeholder="contact.form.message.ph" placeholder="Your message..." required></textarea>
                     </div>
 
-                    <button id="contact-btn" class="btn btn-primary" style="align-self:flex-start;margin-top:0.5rem;" onclick="submitContactForm()">
+                    <button id="contact-btn" class="btn btn-primary" style="align-self:flex-start;margin-top:0.5rem;" onclick="submitContactForm()" data-i18n="contact.form.send">
                         ⚙️ Send Message
                     </button>
                 </div>
 
                 <!-- Contact Info -->
                 <div class="contact-info">
-                    <h3 style="font-family:'Crimson Text',serif;color:var(--text2);margin-bottom:0.2rem;">Contact Information</h3>
+                    <h3 style="font-family:'Crimson Text',serif;color:var(--text2);margin-bottom:0.2rem;" data-i18n="contact.info.title">Contact Information</h3>
 
                     <div class="info-item">
                         <h3>📧 Email</h3>
@@ -1614,7 +1622,7 @@
                     </div>
 
                     <div class="info-item">
-                        <h3>🌍 Location</h3>
+                        <h3 data-i18n="contact.info.location">🌍 Location</h3>
                         <p>Trollhättan, Sweden</p>
                     </div>
                 </div>
@@ -1631,7 +1639,7 @@
                 <a href="mailto:pablomorillacabello@gmail.com">📧 Email</a>
                 <a href="#hero">↑ Back to top</a>
             </div>
-            <p class="footer-copy">Made with ⚙️ and 💛 by Pablo Morilla Cabello &nbsp;·&nbsp; © 2025 All rights reserved</p>
+            <p class="footer-copy" data-i18n="footer.copy">Made with ⚙️ and 💛 by Pablo Morilla Cabello &nbsp;·&nbsp; © 2025 All rights reserved</p>
         </div>
     </footer>
 
@@ -1969,11 +1977,13 @@
             dots.forEach(function(d, i) { d.classList.toggle('active', i === current); });
         }
 
-        function startAuto() { timer = setInterval(function() { goTo(current + 1); }, 4500); }
+        var autoDelay = 12000;
+        function startAuto() { timer = setInterval(function() { goTo(current + 1); }, autoDelay); }
         function stopAuto()  { clearInterval(timer); }
+        function startAutoSlow() { autoDelay = 18000; startAuto(); }
 
-        prevBtn.addEventListener('click', function() { stopAuto(); goTo(current - 1); startAuto(); });
-        nextBtn.addEventListener('click', function() { stopAuto(); goTo(current + 1); startAuto(); });
+        prevBtn.addEventListener('click', function() { stopAuto(); goTo(current - 1); startAutoSlow(); });
+        nextBtn.addEventListener('click', function() { stopAuto(); goTo(current + 1); startAutoSlow(); });
         dots.forEach(function(dot, i) {
             dot.addEventListener('click', function() { stopAuto(); goTo(i); startAuto(); });
         });
@@ -2123,17 +2133,211 @@
     ================================================================ */
     function openCV(event) {
         event.preventDefault();
-        fetch('CV.pdf', { method: 'HEAD' })
+        var cvFile = currentLang === 'es' ? 'CV_ES.pdf' : 'CV.pdf';
+        var cvFallback = currentLang === 'es' ? 'CV_ES.html' : 'CV.html';
+        fetch(cvFile, { method: 'HEAD' })
             .then(function(r) {
-                if (r.ok) { window.open('CV.pdf', '_blank'); }
-                else       { return fetch('CV.html', { method: 'HEAD' }); }
+                if (r.ok) { window.open(cvFile, '_blank'); }
+                else       { return fetch(cvFallback, { method: 'HEAD' }); }
             })
             .then(function(r) {
-                if (r && r.ok)  { window.open('CV.html', '_blank'); }
-                else if (r && !r.ok) { alert('CV not found. Please make sure CV.pdf or CV.html exists in the repository.'); }
+                if (r && r.ok)  { window.open(cvFallback, '_blank'); }
+                else if (r && !r.ok) {
+                    // Fallback to English CV if Spanish not found
+                    if (currentLang === 'es') { window.open('CV.pdf', '_blank'); }
+                    else { alert('CV not found.'); }
+                }
             })
-            .catch(function() { window.open('CV.html', '_blank'); });
+            .catch(function() { window.open(cvFallback, '_blank'); });
     }
+
+    /* ================================================================
+       LANGUAGE TOGGLE (ESP / ENG)
+    ================================================================ */
+    var currentLang = 'en';
+
+    var translations = {
+        es: {
+            // Nav
+            'nav.home.mobile': 'Inicio',
+            'nav.about': 'Sobre mí', 'nav.career': 'Trayectoria', 'nav.publications': 'Publicaciones',
+            'nav.projects': 'Proyectos', 'nav.skills': 'Habilidades', 'nav.recommendations': 'Recomendaciones',
+            'nav.contact': 'Contacto',
+            'nav.home': '🏠 Inicio', 'nav.about.gear': '👤 Sobre mí', 'nav.career.gear': '💼 Trayectoria',
+            'nav.publications.gear': '📄 Publicaciones', 'nav.projects.gear': '🚀 Proyectos',
+            'nav.skills.gear': '⚡ Habilidades', 'nav.recommendations.gear': '💬 Recomendaciones',
+            'nav.contact.gear': '✉️ Contacto',
+
+            // Hero
+            'hero.subtitle': 'Ingeniero de Automatización, Robótica e IA',
+            'hero.tagline': 'Construyendo sistemas inteligentes con precisión ⚙️',
+            'hero.stat.experience': 'Años de Experiencia', 'hero.stat.projects': 'Proyectos en GitHub',
+            'hero.stat.publication': 'Publicación',
+            'hero.btn.cv': '📄 Ver CV', 'hero.btn.projects': '🚀 Ver Proyectos', 'hero.btn.contact': '✉️ Contactar',
+
+            // About
+            'about.title': 'Sobre Mí',
+            'about.intro': 'Ingeniero en robótica de Málaga, ingeniero industrial de Skövde y Máster en IA y Automatización de Trollhättan. Tres títulos, dos países, una misión: construir fábricas más inteligentes. Con más de 2 años de puesta en marcha de celdas robóticas para Volvo, SCANIA y Hitachi, combino experiencia industrial práctica con deep learning, visión por computador y un impulso natural para liderar, comunicar y resolver problemas de los que otros se alejan.',
+            'about.location.title': '📍 Ubicación', 'about.location.value': 'Trollhättan, Suecia',
+            'about.education.title': '🎓 Educación', 'about.education.value': 'Máster en IA y Automatización<br>University West (2025–2026)',
+            'about.role.title': '⚙️ Puesto Actual', 'about.role.value': 'Ingeniero de Automatización<br>Elektroautomatik, Skövde',
+            'about.origin.title': '🌞 Origen', 'about.origin.value': 'Málaga, España',
+            'about.focus.title': '💡 Áreas de Enfoque',
+            'focus.robotics': '🤖 Robótica Industrial', 'focus.automation': '⚙️ Sistemas de Automatización',
+            'focus.ai': '🧠 Inteligencia Artificial', 'focus.control': '🔧 Sistemas de Control',
+            'focus.innovation': '💡 Innovación', 'focus.rnd': '📊 Investigación y Desarrollo',
+            'focus.optimization': '🎯 Optimización de Sistemas', 'focus.hrc': '🤝 Colaboración Humano-Robot',
+            'focus.robotics2': '🤖 Robótica Industrial', 'focus.automation2': '⚙️ Sistemas de Automatización',
+            'focus.ai2': '🧠 Inteligencia Artificial', 'focus.control2': '🔧 Sistemas de Control',
+            'focus.innovation2': '💡 Innovación', 'focus.rnd2': '📊 Investigación y Desarrollo',
+            'focus.optimization2': '🎯 Optimización de Sistemas', 'focus.hrc2': '🤝 Colaboración Humano-Robot',
+
+            // Career
+            'career.title': 'Mi Trayectoria Profesional',
+            'career.uwest.role': 'Estudiante — Máster en IA y Automatización',
+            'career.uwest.period': 'Agosto 2025 – Junio 2026',
+            'career.uwest.desc': 'IA/ML, Deep Learning, Tecnología de Sensores y Análisis de Imagen, Procesamiento de Big Data, Sistemas y Control. Sistemas de automatización, mecatrónica y Certificado de Robot ABB. Certificado Work-Integrated Learning (WIL) — proyectos industriales en el Production Technology Centre (PTC).',
+            'career.elektro.role': 'Ingeniero de Automatización',
+            'career.elektro.period': 'Abril 2024 – Junio 2026',
+            'career.elektro.desc': 'Programación y puesta en marcha de celdas robóticas industriales y líneas de automatización basadas en PLC para Volvo Group, SCANIA y Hitachi. Desarrollo de estándares de programación reutilizables. Puesta en marcha internacional. Especializado en RAPID, lógica PLC (TIA Portal, TwinCAT, CODESYS) e integración de sistemas.',
+            'career.assar.role': 'Asistente de Investigación',
+            'career.assar.period': 'Junio 2023 – Agosto 2023',
+            'career.assar.desc': 'Construcción e integración de software de simulación para un sistema robótico industrial 3D con arquitectura modular. Liderazgo de un proyecto de investigación de verano desde la planificación hasta la entrega, resultando en una publicación revisada por pares (DOI: 10.3233/ATDE240164).',
+            'career.skovde.role': 'Estudiante — Grado en Ingeniería Industrial',
+            'career.skovde.period': 'Agosto 2022 – Junio 2023',
+            'career.skovde.desc': 'Robótica industrial y programación offline con ABB RobotStudio. Planificación de procesos, manufactura lean y realización de productos. Simulación logística e ingeniería de control industrial.',
+            'career.malaga.role': 'Estudiante — Grado en Robótica, Electrónica y Mecatrónica',
+            'career.malaga.period': 'Agosto 2019 – Febrero 2024',
+            'career.malaga.desc': 'Nota media: 7.31 — Robótica, automatización, visión por computador.',
+
+            // Publications
+            'pub.title': 'Publicaciones', 'pub.badge': 'Artículo de Conferencia',
+            'pub.desc': 'Este artículo investiga una combinación de conceptos que promueven la reconfigurabilidad y flexibilidad en sistemas de producción. Al integrar modularización, estandarización de interfaces y una arquitectura orientada a servicios, el trabajo explora si estas sinergias pueden influir positivamente en el proceso de simulación de sistemas de producción en constante cambio y reconfiguración — facilitando la creación y actualización más rápida de modelos digitales.',
+
+            // Projects
+            'projects.title': 'Proyectos Destacados',
+            'projects.subtitle': '"Desde proyectos personales hasta grandes logros — lo destacado en mi CV, todo en GitHub."',
+
+            // Skills
+            'skills.title': 'Habilidades Técnicas',
+            'skills.all': 'Todas', 'skills.lang': '🐍 Lenguajes', 'skills.tools': '⚙️ Herramientas y Frameworks',
+            'skills.soft': '🤝 Habilidades Blandas',
+            'skills.statistics': '📈 Estadística', 'skills.problemsolving': '🧩 Resolución de Problemas',
+            'skills.research': '🔬 Investigación', 'skills.teamwork': '👥 Trabajo en Equipo',
+            'skills.management': '📋 Gestión', 'skills.communication': '💬 Comunicación',
+
+            // Recommendations
+            'rec.title': 'Lo Que Dicen de Mí',
+            'rec.subtitle': '"Comentarios de colegas, mentores y colaboradores."',
+            'rec.martin.quote': 'Su enfoque analítico y su capacidad para resolver problemas complejos de forma independiente lo hicieron indispensable para el éxito del proyecto.',
+            'rec.najwa.quote': 'Introdujo nuevas herramientas y desarrolló componentes inteligentes que mejoraron eficientemente nuestro trabajo con simulaciones. La creatividad y dedicación de Pablo para encontrar soluciones han beneficiado significativamente a nuestro equipo.',
+
+            // Contact
+            'contact.title': '¡Construyamos algo juntos!',
+            'contact.form.title': 'Envíame un mensaje',
+            'contact.form.name': 'Nombre *', 'contact.form.name.ph': 'Tu nombre',
+            'contact.form.email': 'Email *',
+            'contact.form.subject': 'Asunto', 'contact.form.subject.ph': '¿De qué se trata?',
+            'contact.form.message': 'Mensaje *', 'contact.form.message.ph': 'Tu mensaje...',
+            'contact.form.send': '⚙️ Enviar Mensaje',
+            'contact.info.title': 'Información de Contacto',
+            'contact.info.location': '🌍 Ubicación',
+
+            // Footer
+            'footer.copy': 'Hecho con ⚙️ y 💛 por Pablo Morilla Cabello &nbsp;·&nbsp; © 2025 Todos los derechos reservados'
+        }
+    };
+
+    // Store original English text
+    var englishTexts = {};
+
+    function initI18n() {
+        document.querySelectorAll('[data-i18n]').forEach(function(el) {
+            englishTexts[el.getAttribute('data-i18n')] = el.innerHTML;
+        });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+            englishTexts[el.getAttribute('data-i18n-placeholder')] = el.getAttribute('placeholder');
+        });
+    }
+
+    function setLanguage(lang) {
+        currentLang = lang;
+        var btn = document.getElementById('lang-toggle');
+
+        if (lang === 'es') {
+            btn.innerHTML = '<img src="https://flagcdn.com/w20/gb.png" width="16" height="12" alt="EN" style="vertical-align:middle;border-radius:2px;"> ENG';
+            document.querySelectorAll('[data-i18n]').forEach(function(el) {
+                var key = el.getAttribute('data-i18n');
+                if (translations.es[key]) el.innerHTML = translations.es[key];
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+                var key = el.getAttribute('data-i18n-placeholder');
+                if (translations.es[key]) el.setAttribute('placeholder', translations.es[key]);
+            });
+        } else {
+            btn.innerHTML = '<img src="https://flagcdn.com/w20/es.png" width="16" height="12" alt="ES" style="vertical-align:middle;border-radius:2px;"> ESP';
+            document.querySelectorAll('[data-i18n]').forEach(function(el) {
+                var key = el.getAttribute('data-i18n');
+                if (englishTexts[key]) el.innerHTML = englishTexts[key];
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+                var key = el.getAttribute('data-i18n-placeholder');
+                if (englishTexts[key]) el.setAttribute('placeholder', englishTexts[key]);
+            });
+        }
+
+        // Update taglines
+        updateTaglines(lang);
+
+        try { localStorage.setItem('lang', lang); } catch(e) {}
+    }
+
+    var taglinesEN = [
+        "Building intelligent systems with precision ⚙️",
+        "Automating the future, one robot at a time 🤖",
+        "Your automation needs, solved with creativity!",
+        "Merging robotics, mechatronics, and AI",
+        "From code to control: engineering smarter factories",
+        "Making robots do the boring stuff so humans don't have to 😅",
+        "Yes, I talk to machines. They actually listen 🤝",
+        "Turning coffee into automation since 2019 ☕",
+        "If it moves and shouldn't — that's a bug. If it doesn't move and should — also a bug 🐛",
+        "Somewhere between a physicist and a software engineer having an existential crisis 🌀",
+        "I put the 'auto' in automation 🏎️"
+    ];
+
+    var taglinesES = [
+        "Construyendo sistemas inteligentes con precisión ⚙️",
+        "Automatizando el futuro, un robot a la vez 🤖",
+        "Tus necesidades de automatización, resueltas con creatividad!",
+        "Fusionando robótica, mecatrónica e IA",
+        "Del código al control: ingeniería de fábricas más inteligentes",
+        "Haciendo que los robots hagan lo aburrido para que los humanos no tengan que hacerlo 😅",
+        "Sí, hablo con máquinas. Y me escuchan 🤝",
+        "Convirtiendo café en automatización desde 2019 ☕",
+        "Si se mueve y no debería — es un bug. Si no se mueve y debería — también es un bug 🐛",
+        "En algún lugar entre un físico y un ingeniero de software en crisis existencial 🌀",
+        "Yo pongo el 'auto' en automatización 🏎️"
+    ];
+
+    function updateTaglines(lang) {
+        taglines = lang === 'es' ? taglinesES : taglinesEN;
+        currentTagline = 0;
+        taglineEl.textContent = taglines[0];
+    }
+
+    // Init and load saved preference
+    initI18n();
+    (function() {
+        try {
+            var saved = localStorage.getItem('lang');
+            if (saved === 'es') setLanguage('es');
+        } catch(e) {}
+    })();
+
+    document.getElementById('lang-toggle').addEventListener('click', function() {
+        setLanguage(currentLang === 'en' ? 'es' : 'en');
+    });
 
     /* ================================================================
        PARALLAX FLOATING DECOR
