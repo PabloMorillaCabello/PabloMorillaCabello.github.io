@@ -1344,7 +1344,7 @@
             </div>
 
             <div class="hero-buttons">
-                <a href="#" class="btn btn-secondary" onclick="openCV(event); return false;" data-i18n="hero.btn.cv">📄 View CV</a>
+                <a href="CV.pdf" target="_blank" rel="noopener" id="cv-link" class="btn btn-secondary" data-i18n="hero.btn.cv">📄 View CV</a>
                 <button class="btn btn-primary" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})" data-i18n="hero.btn.projects">🚀 View Projects</button>
                 <button class="btn btn-outline" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})" data-i18n="hero.btn.contact">✉️ Get in Touch</button>
             </div>
@@ -1536,34 +1536,34 @@
             <div class="rec-carousel" id="recCarousel">
                 <div class="rec-track" id="recTrack">
 
-                    <div class="rec-card" onclick="window.open('Recomendations/Martin%20Birtic.pdf','_blank')" style="cursor:pointer;" title="Click to read the full recommendation letter">
+                    <a class="rec-card" href="Recomendations/Martin%20Birtic.pdf" target="_blank" rel="noopener" style="cursor:pointer;text-decoration:none;color:inherit;" title="Click to read the full recommendation letter">
                         <div class="rec-card-inner">
                             <p class="rec-quote" data-i18n="rec.martin.quote">His analytical approach and ability to tackle complex problems independently made him indispensable to the project's success.</p>
                             <div class="rec-name">Martin Birtic</div>
                             <div class="rec-role">Lecturer in Production Engineering · Högskolan i Skövde</div>
-                            <a href="mailto:martin.birtic@his.se" class="rec-email" onclick="event.stopPropagation()">martin.birtic@his.se</a>
+                            <span class="rec-email">martin.birtic@his.se</span>
                             <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--text3);">📄 Click to read full letter</div>
                         </div>
-                    </div>
+                    </a>
 
-                    <div class="rec-card" onclick="window.open('Recomendations/Nasjwa.pdf','_blank')" style="cursor:pointer;" title="Click to read the full recommendation letter">
+                    <a class="rec-card" href="Recomendations/Nasjwa.pdf" target="_blank" rel="noopener" style="cursor:pointer;text-decoration:none;color:inherit;" title="Click to read the full recommendation letter">
                         <div class="rec-card-inner">
                             <p class="rec-quote" data-i18n="rec.najwa.quote">He introduced new tools and developed smart components that improved our work with simulations. Pablo's creativity and dedication to finding solutions have significantly benefited our team.</p>
                             <div class="rec-name">Najwa Yattou Belkhrouf</div>
                             <div class="rec-role">Automation Engineer &amp; Mentor · Elektroautomatik</div>
-                            <a href="mailto:najwayattou.svk@gmail.com" class="rec-email" onclick="event.stopPropagation()">najwayattou.svk@gmail.com</a>
+                            <span class="rec-email">najwayattou.svk@gmail.com</span>
                             <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--text3);">📄 Click to read full letter</div>
                         </div>
-                    </div>
+                    </a>
 
-                    <div class="rec-card" onclick="window.open('Recomendations/Antonio%20Carrillo.pdf','_blank')" style="cursor:pointer;" title="Click to read the full recommendation letter">
+                    <a class="rec-card" href="Recomendations/Antonio%20Carrillo.pdf" target="_blank" rel="noopener" style="cursor:pointer;text-decoration:none;color:inherit;" title="Click to read the full recommendation letter">
                         <div class="rec-card-inner">
                             <p class="rec-quote" data-i18n="rec.antonio.quote">He is a motivated, ethical, and diligent individual, with a positive attitude that inspires his peers. His effective communication skills and teamwork contribute significantly to any professional environment he is in.</p>
                             <div class="rec-name">Antonio Luis Carrillo León</div>
                             <div class="rec-role">Professor, Dept. of Languages &amp; Computer Science · University of Málaga</div>
                             <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--text3);">📄 Click to read full letter</div>
                         </div>
-                    </div>
+                    </a>
 
                 </div>
             </div>
@@ -2141,25 +2141,6 @@
     /* ================================================================
        CV OPEN
     ================================================================ */
-    function openCV(event) {
-        event.preventDefault();
-        var cvFile = currentLang === 'es' ? 'CV_ES.pdf' : 'CV.pdf';
-        var cvFallback = currentLang === 'es' ? 'CV_ES.html' : 'CV.html';
-        fetch(cvFile, { method: 'HEAD' })
-            .then(function(r) {
-                if (r.ok) { window.open(cvFile, '_blank'); }
-                else       { return fetch(cvFallback, { method: 'HEAD' }); }
-            })
-            .then(function(r) {
-                if (r && r.ok)  { window.open(cvFallback, '_blank'); }
-                else if (r && !r.ok) {
-                    // Fallback to English CV if Spanish not found
-                    if (currentLang === 'es') { window.open('CV.pdf', '_blank'); }
-                    else { alert('CV not found.'); }
-                }
-            })
-            .catch(function() { window.open(cvFallback, '_blank'); });
-    }
 
     /* ================================================================
        LANGUAGE TOGGLE (ESP / ENG)
@@ -2297,8 +2278,10 @@
             });
         }
 
-        // Update taglines
+        // Update taglines and CV link
         updateTaglines(lang);
+        var cvLink = document.getElementById('cv-link');
+        if (cvLink) cvLink.setAttribute('href', lang === 'es' ? 'CV_ES.pdf' : 'CV.pdf');
 
         try { localStorage.setItem('lang', lang); } catch(e) {}
     }
