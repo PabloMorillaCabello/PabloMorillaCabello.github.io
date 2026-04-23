@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cp main.pdf CV.pdf)",
+      "Bash(cp main_es.pdf CV_ES.pdf)",
+      "Bash(rm main.pdf main_es.pdf CV2.html)",
+      "Bash(rm -rf backend/)"
+    ]
+  }
+}
