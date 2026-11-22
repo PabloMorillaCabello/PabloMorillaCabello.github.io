@@ -1,0 +1,405 @@
+\documentclass[10pt, letterpaper]{article}
+
+% Packages:
+\usepackage[
+    ignoreheadfoot, % set margins without considering header and footer
+    top=2 cm, % seperation between body and page edge from the top
+    bottom=2 cm, % seperation between body and page edge from the bottom
+    left=2 cm, % seperation between body and page edge from the left
+    right=2 cm, % seperation between body and page edge from the right
+    footskip=1.0 cm, % seperation between body and footer
+    % showframe % for debugging
+]{geometry} % for adjusting page geometry
+\usepackage{titlesec} % for customizing section titles
+\usepackage{tabularx} % for making tables with fixed width columns
+\usepackage{array} % tabularx requires this
+\usepackage[dvipsnames]{xcolor} % for coloring text
+\definecolor{primaryColor}{RGB}{0, 79, 144} % define primary color
+\usepackage{enumitem} % for customizing lists
+\usepackage{fontawesome5} % for using icons
+\usepackage{amsmath} % for math
+\usepackage[
+    pdftitle={CV de Pablo Morilla Cabello},
+    pdfauthor={Pablo Morilla Cabello},
+    pdfcreator={LaTeX with Overleaf},
+    colorlinks=true,
+    urlcolor=primaryColor
+]{hyperref} % for links, metadata and bookmarks
+\usepackage[pscoord]{eso-pic} % for floating text on the page
+\usepackage{calc} % for calculating lengths
+\usepackage{bookmark} % for bookmarks
+\usepackage{lastpage} % for getting the total number of pages
+\usepackage{changepage} % for one column entries (adjustwidth environment)
+\usepackage{paracol} % for two and three column entries
+\usepackage{ifthen} % for conditional statements
+\usepackage{needspace} % for avoiding page brake right after the section title
+\usepackage{iftex} % check if engine is pdflatex, xetex or luatex
+
+% Ensure that generate pdf is machine readable/ATS parsable:
+\ifPDFTeX
+    \input{glyphtounicode}
+    \pdfgentounicode=1
+    % \usepackage[T1]{fontenc} % this breaks sb2nov
+    \usepackage[utf8]{inputenc}
+    \usepackage{lmodern}
+\fi
+
+
+
+% Some settings:
+\AtBeginEnvironment{adjustwidth}{\partopsep0pt} % remove space before adjustwidth environment
+\pagestyle{empty} % no header or footer
+\setcounter{secnumdepth}{0} % no section numbering
+\setlength{\parindent}{0pt} % no indentation
+\setlength{\topskip}{0pt} % no top skip
+\setlength{\columnsep}{0cm} % set column seperation
+\makeatletter
+\let\ps@customFooterStyle\ps@plain % Copy the plain style to customFooterStyle
+\patchcmd{\ps@customFooterStyle}{\thepage}{
+    \color{gray}\textit{\small Pablo Morilla Cabello - Página \thepage{} de \pageref*{LastPage}}
+}{}{} % replace number by desired string
+\makeatother
+\pagestyle{customFooterStyle}
+
+\titleformat{\section}{\needspace{4\baselineskip}\bfseries\large}{}{0pt}{}[\vspace{1pt}\titlerule]
+
+\titlespacing{\section}{
+    % left space:
+    -1pt
+}{
+    % top space:
+    0.3 cm
+}{
+    % bottom space:
+    0.2 cm
+} % section title spacing
+
+\renewcommand\labelitemi{$\circ$} % custom bullet points
+\newenvironment{highlights}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=0.4 cm + 10pt
+    ]
+}{
+    \end{itemize}
+} % new environment for highlights
+
+\newenvironment{highlightsforbulletentries}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=10pt
+    ]
+}{
+    \end{itemize}
+} % new environment for highlights for bullet entries
+
+
+\newenvironment{onecolentry}{
+    \begin{adjustwidth}{
+        0.2 cm + 0.00001 cm
+    }{
+        0.2 cm + 0.00001 cm
+    }
+}{
+    \end{adjustwidth}
+} % new environment for one column entries
+
+\newenvironment{twocolentry}[2][]{
+    \onecolentry
+    \def\secondColumn{#2}
+    \setcolumnwidth{\fill, 5 cm}
+    \begin{paracol}{2}
+}{
+    \switchcolumn \raggedleft \secondColumn
+    \end{paracol}
+    \endonecolentry
+} % new environment for two column entries
+
+\newenvironment{header}{
+    \setlength{\topsep}{0pt}\par\kern\topsep\centering\linespread{1.5}
+}{
+    \par\kern\topsep
+} % new environment for the header
+
+\newcommand{\placelastupdatedtext}{% \placetextbox{<horizontal pos>}{<vertical pos>}{<stuff>}
+  \AddToShipoutPictureFG*{% Add <stuff> to current page foreground
+    \put(
+        \LenToUnit{\paperwidth-2 cm-0.2 cm+0.05cm},
+        \LenToUnit{\paperheight-1.0 cm}
+    ){\vtop{{\null}\makebox[0pt][c]{
+        \small\color{gray}\textit{Actualizado en noviembre de 2026}\hspace{\widthof{Actualizado en noviembre de 2026}}
+    }}}%
+  }%
+}%
+
+% save the original href command in a new command:
+\let\hrefWithoutArrow\href
+
+% new command for external links:
+\renewcommand{\href}[2]{\hrefWithoutArrow{#1}{\ifthenelse{\equal{#2}{}}{ }{#2 }\raisebox{.15ex}{\footnotesize \faExternalLink*}}}
+
+
+\begin{document}
+    \newcommand{\AND}{\unskip
+        \cleaders\copy\ANDbox\hskip\wd\ANDbox
+        \ignorespaces
+    }
+    \newsavebox\ANDbox
+    \sbox\ANDbox{}
+
+    \placelastupdatedtext
+    \begin{header}
+        \textbf{\fontsize{24 pt}{24 pt}\selectfont Pablo Morilla Cabello}
+
+        \vspace{0.3 cm}
+
+        \normalsize
+        \mbox{{\color{black}\footnotesize\faMapMarker*}\hspace*{0.13cm}Málaga, España}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{mailto:pablomorillacabello@gmail.com}{\color{black}{\footnotesize\faEnvelope[regular]}\hspace*{0.13cm}pablomorillacabello@gmail.com}}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{tel:+34 626 171 323}{\color{black}{\footnotesize\faPhone*}\hspace*{0.13cm}+34 626 171 323}}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{https://linkedin.com/in/PabloMorillaCabello}{\color{black}{\footnotesize\faLinkedinIn}\hspace*{0.13cm}PabloMorillaCabello}}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{https://github.com/PabloMorillaCabello}{\color{black}{\footnotesize\faGithub}\hspace*{0.13cm}PabloMorillaCabello}}%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{https://pablomorillacabello.github.io/}{\color{black}{\footnotesize\faGlobe[regular]}\hspace*{0.13cm}Portfolio}}%
+        \kern 0.25 cm%
+    \end{header}
+
+    \vspace{0.3 cm - 0.3 cm}
+
+    \section{Experiencia}
+
+        \begin{twocolentry}{
+        \textit{Málaga, España}
+
+        \textit{Agosto 2026 - Actualidad}}
+        \textbf{Development Engineer}
+        \textit{\href{https://dhvtechnology.com/}{DHV Technology}}
+        \end{twocolentry}
+
+        \vspace{0.10 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+            \item Ingeniería de desarrollo de sistemas de energía solar de grado espacial para pequeños satélites y CubeSats.
+            \item Aplicación de la experiencia en automatización industrial y robótica al desarrollo y las pruebas de hardware espacial.
+            \end{highlights}
+        \end{onecolentry}
+
+        \vspace{0.2 cm}
+
+        \begin{twocolentry}{
+        \textit{Skövde, Suecia}
+
+        \textit{Abril 2024 - Junio 2026}}
+        \textbf{Ingeniero de Automatización}
+        \textit{\href{https://elektroautomatik.se/}{Elektroautomatik}}
+        \end{twocolentry}
+
+        \vspace{0.10 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+            \item Programación y puesta en marcha de celdas robóticas industriales y líneas de automatización basadas en PLC en equipos multidisciplinares.
+            \item Desarrollo de estándares de programación reutilizables para optimizar los flujos de trabajo.
+            \item Trabajo con RAPID, TIA Portal, TwinCAT y CODESYS, desde la programación offline hasta la integración de sistemas.
+            \item Puestas en marcha in situ para empresas internacionales como Volvo Group, SCANIA e Hitachi.
+            \end{highlights}
+        \end{onecolentry}
+
+        \vspace{0.2 cm}
+
+        \begin{twocolentry}{
+        \textit{Skövde, Suecia}
+
+        \textit{Junio 2023 - Agosto 2023}}
+        \textbf{Asistente de Investigación}
+        \textit{\href{https://assarinnovation.se/}{ASSAR Industrial Innovation Arena}}
+      \end{twocolentry}
+
+        \vspace{0.10 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+            \item Planificación de un proyecto de verano dentro de un grupo de investigación.
+            \item Desarrollo e integración de software específico en sistemas robóticos y de automatización.
+            \item Simulación de un sistema robótico industrial en 3D.
+            \item Participación en la redacción y presentación de un artículo publicado tras el proyecto.
+            \end{highlights}
+        \end{onecolentry}
+
+    \section{Formación}
+
+        \begin{twocolentry}{
+
+
+        \textit{Agosto 2025 – Junio 2026}}
+            \textbf{University West}
+
+            \textit{Máster en IA y Automatización}
+        \end{twocolentry}
+
+        \vspace{0.10 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+            \item \href{https://www.hv.se/utbildning/program/master-i-ai-och-automation-heltid-campus-tamai/}{Web del máster}
+
+                    \item \textbf{Asignaturas:} Machine Learning, DNN, CNN, RNN, Python, TensorFlow, diseño de pipelines, OpenCV, visión por computador, programación de PLC, RAPID, ROS2, Docker.
+            \end{highlights}
+        \end{onecolentry}
+
+        \vspace{0.20 cm}
+
+        \begin{twocolentry}{
+
+
+        \textit{Agosto 2022 – Junio 2023}}
+            \textbf{Högskolan i Skövde}
+
+            \textit{Grado en Ingeniería Industrial}
+        \end{twocolentry}
+
+        \vspace{0.10 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+            \item \href{https://www.his.se/en/education/engineering-and-technology/engineering-course-combinations/}{Web del grado}
+
+                    \item \textbf{Asignaturas:} Ingeniería de Control Industrial, Robótica Industrial y Programación Offline, Simulación Logística.
+            \end{highlights}
+        \end{onecolentry}
+
+        \vspace{0.20 cm}
+
+        \begin{twocolentry}{
+
+
+        \textit{Agosto 2019 – Febrero 2024}}
+            \textbf{Universidad de Málaga}
+
+            \textit{Grado en Ingeniería Electrónica, Robótica y Mecatrónica}
+        \end{twocolentry}
+
+        \vspace{0.10 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+            \item \href{https://www.uma.es/grado-en-ingenieria-electronica-robotica-y-mecatronica}{Web del grado}
+
+                    \item \textbf{Asignaturas:} Matemáticas, Robótica, Fundamentos de Control Automático, Control por Computador, Programación, Visión por Computador, Electrónica y Mecánica.
+            \end{highlights}
+        \end{onecolentry}
+
+    \section{Publicaciones}
+
+        \begin{samepage}
+            \begin{twocolentry}{
+                Abril 2024
+            }
+                \textbf{Exploring the Synergies of Modularization, Interface Standardization, and Service-Orientation in Production System Simulation}
+
+                \vspace{0.10 cm}
+
+                \mbox{Martin Birtic}, \mbox{\textbf{\textit{Pablo Morilla Cabello}}}, \mbox{Ángel Muñoz}, \mbox{Anna Syberfeldt}
+            \end{twocolentry}
+
+
+            \vspace{0.10 cm}
+
+            \begin{onecolentry}
+            \textit{DOI: \href{https://doi.org/10.3233/ATDE240164}{10.3233/ATDE240164}}
+            \end{onecolentry}
+        \end{samepage}
+
+\newpage
+
+    \section{Proyectos}
+
+        \begin{twocolentry}{
+
+
+        \textit{\href{https://github.com/PabloMorillaCabello/AGV-Digital-Twin}{github.com/repo}}}
+            \textbf{AGV Digital Twin}
+            \textit{\href{https://www.linkedin.com/posts/pablomorillacabello_software-opcua-server-activity-7181380999304339457-X081?utm_source=share&utm_medium=member_desktop}{(Vídeo del proyecto)} }
+        \end{twocolentry}
+
+        \vspace{0.10 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+                \item Solución para integrar distintos sistemas software mediante el estándar OPC UA. Simula el funcionamiento de un AGV en un entorno virtual, con control para planificación de trayectorias y evitación de colisiones, y una interfaz de control remoto sencilla de usar.
+                \item Herramientas: C, JavaScript, MongoDB, Node-RED, RobotStudio, CODESYS, OPC UA.
+            \end{highlights}
+        \end{onecolentry}
+
+        \vspace{0.2 cm}
+
+        \begin{twocolentry}{
+        \textit{\href{https://github.com/PabloMorillaCabello/Mobile-Robotics-Lab}{github.com/repo}}}
+            \textbf{Mobile Robotic Lab}
+            \textit{\href{https://www.linkedin.com/posts/pablomorillacabello_maerlagauniversity-robot-piero-activity-7160223406435491840-jWpq?utm_source=share&utm_medium=member_desktop}{(Vídeo del proyecto)} }
+        \end{twocolentry}
+
+        \vspace{0.10 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+                \item Proyecto con el robot móvil PIERO, equipado con sensores y sistema de tracción. Programado con un Arduino Mega desde MATLAB, permitiendo implementar estrategias de control avanzadas como planificación de trayectorias y evitación de colisiones.
+                \item Herramientas: MATLAB, Simulink, Arduino.
+            \end{highlights}
+        \end{onecolentry}
+
+        \vspace{0.2 cm}
+
+        \begin{twocolentry}{
+
+        \textit{\href{https://github.com/PabloMorillaCabello/Ultra-Adding}{github.com/repo}}}
+            \textbf{ULTRA-ADDIN}
+            \textit{\href{https://www.linkedin.com/posts/pablomorillacabello_addin-post-git-activity-7135249770603761664-ZB-b?utm_source=share&utm_medium=member_desktop}{(Vídeo del proyecto)} }
+        \end{twocolentry}
+
+        \vspace{0.10 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+                \item Desarrollo de un add-in para RobotStudio que ofrece una interfaz que garantiza la modularización y la estandarización de interfaces sin perder facilidad de uso. Da soporte a la investigación sobre las sinergias entre modularización, estandarización de interfaces y orientación a servicios en la simulación de sistemas de producción.
+                \item Herramientas: C\#, RobotStudio, Python.
+            \end{highlights}
+        \end{onecolentry}
+
+
+        \section{Tecnologías}
+
+        \begin{onecolentry}
+            \textbf{Lenguajes de programación:} C++, C, C\#, Python, Java, JavaScript, RAPID, MATLAB, LaTeX.
+        \end{onecolentry}
+
+        \vspace{0.2 cm}
+
+        \begin{onecolentry}
+            \textbf{Automatización y robótica:} RobotStudio, TIA Portal, TwinCAT, CODESYS, Plant Simulation, ROS2, OPC UA, MQTT/HTTP, Node-RED, Simulink, Arduino, Xilinx FPGA.
+        \end{onecolentry}
+
+        \vspace{0.2 cm}
+
+        \begin{onecolentry}
+            \textbf{IA y software:} TensorFlow, PyTorch, OpenCV, Docker, Git/GitHub, MongoDB, Statgraphics, AutoCAD.
+        \end{onecolentry}
+
+        \section{Idiomas}
+
+        \begin{onecolentry}
+         Español (nativo) / Inglés (fluido) / Sueco (básico).
+        \end{onecolentry}
+
+\end{document}
