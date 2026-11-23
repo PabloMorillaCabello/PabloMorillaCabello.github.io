@@ -70,6 +70,26 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="image" href="photo.jpg" fetchpriority="high">
+    <style>
+        /* Loader styles live here so they paint before anything else */
+        #loader { position: fixed; inset: 0; z-index: 5000; display: grid; place-items: center; background: #1E1A16; color: #D4A574; transition: opacity .7s ease, visibility .7s; }
+        [data-theme="light"] #loader { background: #F3ECE1; color: #8A5A22; }
+        html.loaded #loader { opacity: 0; visibility: hidden; }
+        html:not(.loaded) body { overflow: hidden; }
+        html:not(.loaded) .intro, html:not(.loaded) .intro-photo { animation-play-state: paused; }
+        .ld { display: grid; justify-items: center; gap: 22px; font: 500 12px/1 system-ui, sans-serif; letter-spacing: .3em; text-transform: uppercase; }
+        .ld-orbit { position: relative; width: 84px; height: 84px; }
+        .ld-orbit::before { content: ''; position: absolute; inset: 22px; border-radius: 50%; background: currentColor; opacity: .9; box-shadow: 0 0 30px currentColor; }
+        .ld-orbit::after { content: ''; position: absolute; inset: 0; border-radius: 50%; border: 1px solid currentColor; opacity: .35; }
+        .ld-orbit i { position: absolute; inset: 0; animation: ldSpin 1.4s linear infinite; }
+        .ld-orbit i::before { content: ''; position: absolute; top: -4px; left: 50%; width: 8px; height: 8px; margin-left: -4px; border-radius: 50%; background: currentColor; }
+        .ld-bar { width: 140px; height: 2px; background: rgba(212, 165, 116, .2); overflow: hidden; border-radius: 2px; }
+        .ld-bar b { display: block; height: 100%; width: 40%; background: currentColor; animation: ldBar 1.1s ease-in-out infinite; }
+        @keyframes ldSpin { to { transform: rotate(360deg); } }
+        @keyframes ldBar { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+    </style>
+    <noscript><style>#loader { display: none; } .intro, .intro-photo { animation-play-state: running !important; } html:not(.loaded) body { overflow: auto; }</style></noscript>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
@@ -99,26 +119,35 @@
         }
 
         [data-theme="light"] {
-            --bg:        #F6F1E8;
-            --bg2:       #EFE7DA;
-            --card:      #FFFDF8;
-            --text:      #1E1913;
-            --muted:     #62574A;
-            --faint:     #857867;
-            --gold:      #9A6B37;
+            --bg:        #F3ECE1;
+            --bg2:       #E9DFCF;
+            --card:      #FFFFFF;
+            --text:      #17110B;
+            --muted:     #4A3F33;
+            --faint:     #6B5D4C;
+            --gold:      #8A5A22;
             --gold-ink:  #FFF8EE;
-            --line:      #E2D7C5;
-            --line2:     #D3C5AE;
-            --star:      120, 95, 60;
-            --planet-a:  #E9D6BC;
-            --planet-b:  #F1E6D6;
-            --glow:      rgba(154, 107, 55, 0.18);
-            --header-bg: rgba(246, 241, 232, 0.8);
-            --ok-bg: #DDF1E4; --ok-fg: #1D5B35;
-            --err-bg: #F8DEDC; --err-fg: #7A231D;
+            --line:      #D8CAB3;
+            --line2:     #B9A587;
+            --star:      120, 84, 40;
+            --planet-a:  #E3CFAF;
+            --planet-b:  #ECE2D2;
+            --glow:      rgba(138, 90, 34, 0.2);
+            --header-bg: rgba(243, 236, 225, 0.88);
+            --ok-bg: #D9EFE0; --ok-fg: #17522F;
+            --err-bg: #F6DAD7; --err-fg: #7A231D;
             color-scheme: light;
         }
-
+        [data-theme="light"] .tl-card,
+        [data-theme="light"] .rec-card,
+        [data-theme="light"] .project-card,
+        [data-theme="light"] .form-group input,
+        [data-theme="light"] .form-group textarea,
+        [data-theme="light"] .skill-tag {
+            box-shadow: 0 1px 2px rgba(60, 40, 10, .06), 0 14px 34px -20px rgba(60, 40, 10, .35);
+        }
+        [data-theme="light"] .space-grid { box-shadow: 0 14px 34px -24px rgba(60, 40, 10, .35); }
+        [data-theme="light"] .hero-photo .arch::after { background: radial-gradient(circle at 32% 28%, rgba(255, 250, 240, .22) 0%, transparent 40%), radial-gradient(circle at 36% 32%, transparent 56%, rgba(60, 35, 10, .3) 100%); }
         /* ================================================================
            BASE
         ================================================================ */
@@ -274,20 +303,28 @@
         .btn-primary:hover { color: var(--gold-ink); filter: brightness(1.08); }
         .btn:disabled { opacity: .6; cursor: progress; transform: none; }
 
-        .hero-photo { position: relative; width: clamp(210px, 22vw, 270px); transition: transform .6s cubic-bezier(.2, .7, .2, 1); }
+        .hero-photo { position: relative; width: clamp(230px, 25vw, 320px); aspect-ratio: 1; transition: transform .6s cubic-bezier(.2, .7, .2, 1); }
         .hero-photo .arch {
-            position: relative; z-index: 1;
-            aspect-ratio: 3 / 4; border-radius: 999px 999px 18px 18px; overflow: hidden;
-            border: 1px solid var(--line2); background: var(--card);
-            box-shadow: 0 30px 80px -30px var(--glow);
+            position: relative; z-index: 1; width: 100%; height: 100%;
+            border-radius: 50%; overflow: hidden; background: var(--card);
+            box-shadow: 0 0 0 1px var(--line2), 0 0 40px -4px var(--glow), 0 0 110px 10px var(--glow);
         }
-        .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; transition: transform 1.2s cubic-bezier(.2, .7, .2, 1); }
-        .hero-photo:hover img { transform: scale(1.05); }
-        .orbits { position: absolute; inset: -22% -48%; z-index: 0; pointer-events: none; color: var(--gold); transition: transform .8s cubic-bezier(.2, .7, .2, 1); }
+        /* planet shading: lit from top-left, terminator towards bottom-right, thin atmosphere rim */
+        .hero-photo .arch::after {
+            content: ''; position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
+            background:
+                radial-gradient(circle at 32% 28%, rgba(255, 240, 220, .14) 0%, transparent 38%),
+                radial-gradient(circle at 36% 32%, transparent 52%, rgba(10, 6, 2, .42) 100%);
+            box-shadow: inset 0 0 0 2px rgba(212, 165, 116, .25), inset -14px -18px 40px rgba(0, 0, 0, .25);
+        }
+        .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 32%; transform: scale(1.02); transition: transform 1.2s cubic-bezier(.2, .7, .2, 1); }
+        .hero-photo:hover img { transform: scale(1.08); }
+        .orbits { position: absolute; inset: -42%; pointer-events: none; color: var(--gold); transition: transform .8s cubic-bezier(.2, .7, .2, 1); }
+        .orbits-back { z-index: 0; }
+        .orbits-front { z-index: 2; }
         .orbits svg { width: 100%; height: 100%; overflow: visible; }
-        .orbits .front { z-index: 2; }
 
-        [data-theme="light"] .planet { display: none; }
+        [data-theme="light"] .planet { box-shadow: 0 -1px 0 rgba(138, 90, 34, .35), 0 -40px 120px var(--glow); }
         [data-theme="light"] #hero { background: radial-gradient(ellipse 70% 60% at 80% 40%, #EFE2CF 0%, transparent 70%); }
 
         /* Intro animation */
@@ -365,7 +402,8 @@
         /* ================================================================
            JOURNEY — alternating timeline over a soft, blurred 3D globe
         ================================================================ */
-        .journey { position: relative; margin-top: clamp(24px, 4vw, 48px); }
+        .journey { position: relative; margin-top: clamp(24px, 4vw, 48px); overflow: clip; }
+        main > section:not(#hero):not(#career) { position: relative; z-index: 1; }
         .journey-stage {
             position: sticky; top: 0; z-index: 0;
             height: 100vh; height: 100svh;
@@ -376,8 +414,8 @@
         }
         #globe { position: absolute; inset: 0; opacity: 0; transition: opacity 1.4s; }
         #globe.ready { opacity: 1; }
-        #globe canvas { opacity: .9; }
-        [data-theme="light"] #globe canvas { opacity: .85; }
+        #globe canvas { opacity: 1; }
+        [data-theme="light"] #globe canvas { opacity: 1; }
 
         .city-marker { position: relative; width: 12px; height: 12px; border-radius: 50%; background: var(--gold); pointer-events: none; }
         .city-marker.visited { width: 8px; height: 8px; opacity: .7; }
@@ -414,11 +452,13 @@
             padding: clamp(22px, 2.4vw, 32px); border-radius: 18px;
             background: var(--card); border: 1px solid var(--line);
             box-shadow: 0 24px 60px -30px rgba(0, 0, 0, .45);
-            opacity: .45; transition: opacity .7s, transform .7s cubic-bezier(.2, .7, .2, 1), border-color .7s;
+            transition: transform .7s cubic-bezier(.2, .7, .2, 1), border-color .7s, box-shadow .7s;
         }
         .tl-item.left  .tl-card { transform: translateX(-36px) rotate(-1deg); }
         .tl-item.right .tl-card { transform: translateX(36px) rotate(1deg); }
-        .tl-item.active .tl-card { opacity: 1; transform: none; border-color: var(--line2); }
+        .tl-card > * { transition: opacity .7s; }
+        .tl-item:not(.active) .tl-card > * { opacity: .42; }
+        .tl-item.active .tl-card { transform: none; border-color: var(--line2); }
         .tl-card::after {
             content: ''; position: absolute; top: 50%; width: 14px; height: 14px; margin-top: -7px;
             background: var(--card); border: 1px solid var(--line); transform: rotate(45deg);
@@ -485,42 +525,118 @@
            SKILLS
         ================================================================ */
         #skills { background: var(--bg2); }
-        .skills-filter { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
-        .filter-btn { height: 38px; padding: 0 18px; border-radius: 40px; border: 1px solid var(--line2); background: transparent; cursor: pointer; font-size: 13px; transition: all .2s; }
-        .filter-btn:hover { border-color: var(--gold); color: var(--gold); }
-        .filter-btn.active { background: var(--gold); border-color: var(--gold); color: var(--gold-ink); }
         .skills-grid { display: flex; flex-wrap: wrap; gap: 10px; }
-        .skill-tag { padding: 9px 18px; border: 1px solid var(--line); border-radius: 40px; background: var(--card); font-size: 14px; transition: border-color .2s, opacity .3s, transform .3s; }
-        .skill-tag:hover { border-color: var(--gold); }
-        .skill-tag.hidden { display: none; }
-        .skills-grid.stagger .skill-tag { opacity: 0; transform: translateY(14px) scale(.96); transition: opacity .5s, transform .5s cubic-bezier(.34, 1.56, .64, 1), border-color .2s; transition-delay: calc(var(--i) * 28ms); }
-        .skills-grid.stagger.in .skill-tag { opacity: 1; transform: none; }
-        .skill-tag:hover { transform: translateY(-3px) !important; transition-delay: 0s !important; }
+        .skill-tag { display: inline-flex; align-items: center; padding: 10px 18px; border: 1px solid var(--line); border-radius: 40px; background: var(--card); font-size: 15px; transition: border-color .2s, transform .3s; }
+        .skill-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); margin-right: 10px; flex: none; }
+        .skill-tag:hover { border-color: var(--gold); transform: translateY(-3px); }
+
+        /* Interactive toolbox */
+        .toolbox-wrap { display: grid; grid-template-columns: minmax(280px, 380px) minmax(0, 1fr); gap: clamp(36px, 6vw, 90px); align-items: center; }
+        .toolbox { --lid-a: #E2B98A; --lid-b: #A9783F; position: relative; padding-top: 74px; perspective: 1100px; }
+        [data-theme="light"] .toolbox { --lid-a: #BC8648; --lid-b: #7E5220; }
+        .tb-top { position: relative; height: 64px; transform-style: preserve-3d; }
+        .tb-tray {
+            position: absolute; inset: 10px 12px 0; border-radius: 10px 10px 0 0;
+            background: var(--bg); border: 1px solid var(--line2); border-bottom: 0;
+            display: flex; align-items: flex-end; justify-content: space-around; padding: 0 10px 6px;
+        }
+        .tb-tool { width: 44px; height: 44px; color: var(--gold); opacity: 0; transform: translateY(26px) rotate(var(--r, 0deg)); transition: opacity .35s, transform .7s cubic-bezier(.34, 1.56, .64, 1); }
+        .tb-tool svg { width: 100%; height: 100%; }
+        .toolbox.open .tb-tool { opacity: 1; transform: translateY(-36px) rotate(var(--r, 0deg)); transition-delay: calc(var(--i) * 70ms + .3s); }
+        .toolbox.open .tb-tool:hover { transform: translateY(-46px) rotate(0deg) scale(1.1); transition-delay: 0s; }
+        .tb-lid {
+            position: absolute; inset: 0; z-index: 2; border: 0; cursor: pointer;
+            border-radius: 16px 16px 6px 6px; color: #2A1A0A; font-weight: 600; font-size: 14px; letter-spacing: .04em;
+            background: linear-gradient(180deg, var(--lid-a), var(--lid-b));
+            box-shadow: inset 0 2px 0 rgba(255, 255, 255, .35), inset 0 -6px 0 rgba(0, 0, 0, .18), 0 12px 26px -14px rgba(0, 0, 0, .6);
+            transform-origin: 50% 100%; transition: transform .95s cubic-bezier(.34, 1.25, .64, 1), filter .6s;
+        }
+        .tb-lid-label { transition: opacity .3s; }
+        .tb-handle {
+            position: absolute; top: -18px; left: 50%; width: 100px; height: 28px; margin-left: -50px;
+            border: 7px solid var(--lid-b); border-bottom: 0; border-radius: 16px 16px 0 0;
+        }
+        .toolbox:not(.open) .tb-lid:hover { animation: lidWiggle .9s ease; }
+        @keyframes lidWiggle { 30% { transform: rotateX(22deg); } 60% { transform: rotateX(6deg); } }
+        .toolbox.open .tb-lid { transform: rotateX(118deg); filter: brightness(.7); }
+        .toolbox.open .tb-lid-label { opacity: 0; }
+        .tb-body {
+            position: relative; z-index: 1; padding: 18px 14px 14px;
+            background: var(--card); border: 1px solid var(--line2); border-radius: 6px 6px 18px 18px;
+            box-shadow: 0 34px 60px -30px rgba(0, 0, 0, .6);
+        }
+        .tb-latch { position: absolute; top: -2px; left: 50%; width: 36px; height: 14px; margin-left: -18px; border-radius: 0 0 6px 6px; background: var(--lid-b); transform-origin: 50% 0; transition: transform .5s; }
+        .toolbox.open .tb-latch { transform: scaleY(.35); }
+        .tb-drawer {
+            position: relative; display: flex; align-items: center; gap: 14px; width: 100%; height: 62px; padding: 0 16px;
+            border: 1px solid var(--line); border-radius: 12px; background: var(--bg2); color: var(--text);
+            font-size: 15px; text-align: left; cursor: pointer;
+            transition: transform .55s cubic-bezier(.34, 1.56, .64, 1), border-color .3s, box-shadow .3s, background-color .3s, opacity .4s;
+        }
+        .tb-drawer + .tb-drawer { margin-top: 10px; }
+        .toolbox:not(.open) .tb-drawer { opacity: .6; }
+        .toolbox.open .tb-drawer { animation: drawerPeek .6s cubic-bezier(.34, 1.56, .64, 1); animation-delay: calc(var(--i) * 90ms + .35s); }
+        @keyframes drawerPeek { 45% { transform: translateX(14px); } }
+        .toolbox.open .tb-drawer:not(.active):hover { transform: translateX(10px); border-color: var(--line2); }
+        .tb-drawer.active { transform: translateX(34px); border-color: var(--gold); background: var(--card); box-shadow: -20px 20px 34px -22px rgba(0, 0, 0, .6); }
+        .tb-pull { flex: none; width: 46px; height: 8px; border-radius: 6px; background: var(--line2); transition: background-color .3s; }
+        .tb-drawer.active .tb-pull { background: var(--gold); }
+        .tb-name { flex: 1; font-weight: 500; }
+        .tb-count { font-size: 12px; color: var(--faint); border: 1px solid var(--line2); border-radius: 20px; padding: 2px 9px; font-variant-numeric: tabular-nums; transition: all .3s; }
+        .tb-drawer.active .tb-count { background: var(--gold); border-color: var(--gold); color: var(--gold-ink); }
+        .tb-feet { display: flex; justify-content: space-between; padding: 0 28px; }
+        .tb-feet span { width: 46px; height: 8px; border-radius: 0 0 8px 8px; background: var(--line2); }
+
+        .tb-panel { min-height: 320px; }
+        .tb-hint { display: flex; align-items: center; gap: 18px; color: var(--muted); font-size: 18px; max-width: 420px; }
+        .tb-hint svg { flex: none; width: 46px; height: 46px; color: var(--gold); animation: nudge 1.6s ease-in-out infinite; }
+        @keyframes nudge { 50% { transform: translateX(-10px); } }
+        .tb-head { display: none; align-items: baseline; flex-wrap: wrap; gap: 6px 16px; margin-bottom: 24px; }
+        .tb-head h3 { font-size: clamp(34px, 3.8vw, 48px); font-weight: 400; line-height: 1; }
+        .tb-head span { color: var(--gold); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; }
+        .toolbox-wrap.opened .tb-hint { display: none; }
+        .toolbox-wrap.opened .tb-head { display: flex; animation: toolPop .5s cubic-bezier(.2, .7, .2, 1); }
+        #skillsGrid .skill-tag { display: none; }
+        #skillsGrid .skill-tag.show { display: inline-flex; animation: toolPop .55s cubic-bezier(.34, 1.56, .64, 1) both; animation-delay: calc(var(--i) * 45ms + .1s); }
+        @keyframes toolPop { from { opacity: 0; transform: translateY(18px) scale(.8) rotate(-4deg); } to { opacity: 1; transform: none; } }
         .langs { margin-top: 44px; display: flex; flex-wrap: wrap; gap: 12px 40px; color: var(--muted); font-size: 15px; }
         .langs b { color: var(--text); font-weight: 500; }
 
         /* ================================================================
            RECOMMENDATIONS
         ================================================================ */
-        .rec-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+        .rec-carousel {
+            position: relative; overflow: hidden; padding: 24px 0 8px;
+            margin: 0 calc(-1 * clamp(16px, 5vw, 56px));
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+        }
+        .rec-track { display: flex; gap: 24px; transition: transform .9s cubic-bezier(.65, 0, .35, 1); will-change: transform; }
         .rec-card {
+            flex: 0 0 min(700px, 74%);
             display: flex; flex-direction: column; gap: 22px;
-            padding: clamp(24px, 3vw, 36px); border-radius: 22px;
+            padding: clamp(26px, 3.4vw, 44px); border-radius: 24px;
             background: var(--card); border: 1px solid var(--line);
-            text-decoration: none; color: inherit;
-            transition: transform .45s cubic-bezier(.2, .7, .2, 1), border-color .45s, box-shadow .45s;
+            text-decoration: none; color: inherit; cursor: pointer;
+            transform: scale(.9); transition: transform .9s cubic-bezier(.65, 0, .35, 1), border-color .6s, box-shadow .6s;
         }
-        .rec-card:hover { transform: translateY(-6px); border-color: var(--gold); box-shadow: 0 30px 60px -30px rgba(0, 0, 0, .5); }
+        .rec-card > * { transition: opacity .6s; }
+        .rec-card:not(.active) > :not(.rec-mark) { opacity: .38; }
+        .rec-card.active { transform: none; border-color: var(--line2); box-shadow: 0 40px 80px -40px rgba(0, 0, 0, .55); }
+        .rec-card.active:hover { border-color: var(--gold); }
         .rec-card .rec-mark {
-            position: absolute; top: -28px; right: 20px; z-index: 0;
-            font-family: 'Instrument Serif', Georgia, serif; font-size: 170px; line-height: 1;
-            color: var(--gold); opacity: .14; transition: opacity .45s, transform .45s;
+            position: absolute; top: -34px; right: 24px; z-index: 0;
+            font-family: 'Instrument Serif', Georgia, serif; font-size: 200px; line-height: 1;
+            color: var(--gold); opacity: .12; transition: opacity .6s, transform .9s cubic-bezier(.65, 0, .35, 1);
         }
-        .rec-card:hover .rec-mark { opacity: .3; transform: rotate(-8deg) translateY(4px); }
-        .rec-quote { flex: 1; font-family: 'Instrument Serif', Georgia, serif; font-size: clamp(20px, 1.9vw, 25px); line-height: 1.35; }
+        .rec-card.active .rec-mark { opacity: .28; transform: rotate(-6deg); }
+        .rec-quote { flex: 1; font-family: 'Instrument Serif', Georgia, serif; font-size: clamp(23px, 2.5vw, 34px); line-height: 1.28; }
+        .rec-quote .w { display: inline-block; white-space: pre; }
+        .rec-card.active .rec-quote .w { animation: wordIn .7s cubic-bezier(.2, .7, .2, 1) both; animation-delay: calc(var(--i) * 28ms + .25s); }
+        @keyframes wordIn { from { opacity: 0; transform: translateY(.45em); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
         .rec-person { display: flex; align-items: center; gap: 14px; }
         .rec-avatar {
-            flex: none; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center;
+            flex: none; width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center;
             background: linear-gradient(135deg, var(--gold), var(--line2)); color: var(--gold-ink);
             font-weight: 600; font-size: 15px; letter-spacing: .04em;
         }
@@ -529,9 +645,18 @@
         .rec-letter {
             align-self: flex-start; font-size: 13px; color: var(--gold);
             border: 1px solid var(--line2); border-radius: 40px; padding: 6px 14px;
-            transition: background-color .3s, color .3s, border-color .3s;
+            transition: background-color .3s, color .3s, border-color .3s, opacity .6s;
         }
-        .rec-card:hover .rec-letter { background: var(--gold); color: var(--gold-ink); border-color: var(--gold); }
+        .rec-card.active:hover .rec-letter { background: var(--gold); color: var(--gold-ink); border-color: var(--gold); }
+        .rec-controls { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 28px; }
+        .rec-dots { display: flex; gap: 8px; }
+        .rec-dot { position: relative; width: 30px; height: 4px; border: 0; padding: 0; border-radius: 2px; background: var(--line2); cursor: pointer; overflow: hidden; transition: width .4s; }
+        .rec-dot.active { width: 64px; }
+        .rec-dot i { position: absolute; inset: 0; background: var(--gold); transform-origin: 0 50%; transform: scaleX(0); }
+        .rec-dot.done i { transform: scaleX(1); }
+        .rec-dot.active i { animation: recFill var(--rec-ms, 7000ms) linear forwards; }
+        .rec-carousel.paused ~ .rec-controls .rec-dot.active i { animation-play-state: paused; }
+        @keyframes recFill { to { transform: scaleX(1); } }
 
         /* ================================================================
            CONTACT
@@ -589,16 +714,22 @@
         @media (max-width: 860px) {
             .hero-grid { grid-template-columns: 1fr; }
             .hero-photo-wrap { order: -1; }
-            .hero-photo { width: 170px; margin-left: 30px; }
+            .hero-photo { width: 190px; margin: 40px 0 30px 60px; }
             .hero-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .hero-stat:nth-child(3) { padding-left: 0; border-left: 0; }
             .hero-stat:nth-child(n+3) { border-top: 1px solid var(--line); margin-top: 20px; }
             .about-grid, .contact-grid { grid-template-columns: 1fr; }
             .space-grid { grid-template-columns: 1fr; }
             .pub { grid-template-columns: 1fr; gap: 10px; }
+            .toolbox-wrap { grid-template-columns: 1fr; gap: 28px; }
+            .toolbox { width: 100%; max-width: 360px; margin: 0 auto; }
+            .tb-drawer.active { transform: translateX(14px); }
+            .tb-hint { justify-content: center; text-align: left; margin: 0 auto; }
+            .tb-hint svg { transform: rotate(90deg); animation: none; }
+            .tb-panel { min-height: 0; }
             #globe canvas { opacity: .5; }
-            .rec-grid { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 86%; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; }
-            .rec-card { scroll-snap-align: start; }
+            .rec-card { flex-basis: 84%; }
+            .rec-carousel { -webkit-mask-image: none; mask-image: none; }
             .tl-line { left: 22px; }
             .tl-item, .tl-item.left, .tl-item.right { display: block; min-height: 0; padding: 18px 0; }
             .tl-node { left: 22px; top: 40px; transform: translate(-50%, 0); width: 40px; height: 40px; }
@@ -624,6 +755,7 @@
 </head>
 
 <body>
+    <div id="loader" aria-hidden="true"><div class="ld"><div class="ld-orbit"><i></i></div><div class="ld-bar"><b></b></div></div></div>
     <div id="scroll-progress" aria-hidden="true"></div>
 
     <!-- ===== MOBILE NAV ===== -->
@@ -689,25 +821,36 @@
                 </div>
 
                 <div class="hero-photo-wrap intro-photo" style="--d:.3s"><div class="hero-photo">
-                    <div class="arch"><img src="photo.jpg" width="800" height="630" alt="Portrait of Pablo Morilla Cabello" fetchpriority="high"></div>
-                    <div class="orbits" id="orbits" aria-hidden="true">
+                    <div class="orbits orbits-back" aria-hidden="true">
                         <svg viewBox="0 0 400 400" fill="none">
-                            <g transform="rotate(-20 200 200)">
-                                <path id="orbitA" d="M12,200 a188,62 0 1,0 376,0 a188,62 0 1,0 -376,0" stroke="currentColor" stroke-opacity=".7" stroke-width="1.3" stroke-dasharray="2 7"/>
-                                <g>
-                                    <rect x="-4.5" y="-4.5" width="9" height="9" rx="1.5" fill="currentColor"/>
-                                    <rect x="-17" y="-3" width="10" height="6" stroke="currentColor" stroke-width="1.2"/>
-                                    <rect x="7" y="-3" width="10" height="6" stroke="currentColor" stroke-width="1.2"/>
-                                    <animateMotion dur="16s" repeatCount="indefinite" rotate="auto"><mpath href="#orbitA"/></animateMotion>
-                                </g>
+                            <circle cx="200" cy="200" r="196" stroke="currentColor" stroke-opacity=".14" stroke-dasharray="1 6"/>
+                            <g transform="rotate(-16 200 200)">
+                                <path id="ringA" d="M15,200 a185,46 0 1,0 370,0 a185,46 0 1,0 -370,0" stroke="currentColor" stroke-opacity=".55" stroke-width="1.2"/>
+                                <g class="sat"><rect x="-4.5" y="-4.5" width="9" height="9" rx="1.5" fill="currentColor"/><rect x="-17" y="-3" width="10" height="6" stroke="currentColor" stroke-width="1.2"/><rect x="7" y="-3" width="10" height="6" stroke="currentColor" stroke-width="1.2"/>
+                                    <animateMotion dur="18s" repeatCount="indefinite" rotate="auto"><mpath href="#ringA"/></animateMotion></g>
                             </g>
-                            <g transform="rotate(28 200 200)">
-                                <path id="orbitB" d="M40,200 a160,96 0 1,1 320,0 a160,96 0 1,1 -320,0" stroke="currentColor" stroke-opacity=".38"/>
-                                <circle r="4" fill="currentColor" opacity=".85">
-                                    <animateMotion dur="24s" repeatCount="indefinite"><mpath href="#orbitB"/></animateMotion>
-                                </circle>
+                            <g transform="rotate(22 200 200)">
+                                <path id="ringB" d="M40,200 a160,72 0 1,0 320,0 a160,72 0 1,0 -320,0" stroke="currentColor" stroke-opacity=".3" stroke-dasharray="3 6"/>
+                                <circle r="6" fill="currentColor"><animateMotion dur="27s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#ringB"/></animateMotion></circle>
                             </g>
-                            <circle cx="200" cy="200" r="196" stroke="currentColor" stroke-opacity=".16"/>
+                        </svg>
+                    </div>
+                    <div class="arch"><img src="photo.jpg" width="800" height="630" alt="Portrait of Pablo Morilla Cabello" fetchpriority="high" decoding="async"></div>
+                    <div class="orbits orbits-front" aria-hidden="true">
+                        <svg viewBox="0 0 400 400" fill="none">
+                            <defs>
+                                <clipPath id="frontA" clipPathUnits="userSpaceOnUse"><rect x="0" y="200" width="400" height="200"/></clipPath>
+                                <clipPath id="frontB" clipPathUnits="userSpaceOnUse"><rect x="0" y="200" width="400" height="200"/></clipPath>
+                            </defs>
+                            <g transform="rotate(-16 200 200)" clip-path="url(#frontA)">
+                                <path id="ringA2" d="M15,200 a185,46 0 1,0 370,0 a185,46 0 1,0 -370,0" stroke="currentColor" stroke-opacity=".55" stroke-width="1.2"/>
+                                <g class="sat"><rect x="-4.5" y="-4.5" width="9" height="9" rx="1.5" fill="currentColor"/><rect x="-17" y="-3" width="10" height="6" stroke="currentColor" stroke-width="1.2"/><rect x="7" y="-3" width="10" height="6" stroke="currentColor" stroke-width="1.2"/>
+                                    <animateMotion dur="18s" repeatCount="indefinite" rotate="auto"><mpath href="#ringA2"/></animateMotion></g>
+                            </g>
+                            <g transform="rotate(22 200 200)" clip-path="url(#frontB)">
+                                <path id="ringB2" d="M40,200 a160,72 0 1,0 320,0 a160,72 0 1,0 -320,0" stroke="currentColor" stroke-opacity=".3" stroke-dasharray="3 6"/>
+                                <circle r="6" fill="currentColor"><animateMotion dur="27s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#ringB2"/></animateMotion></circle>
+                            </g>
                         </svg>
                     </div>
                 </div></div>
@@ -821,7 +964,7 @@
                         </div>
                     </article>
 
-                    <article class="tl-item right" data-lat="58.3903" data-lng="13.8461" data-alt="0.28">
+                    <article class="tl-item right" data-lat="58.3903" data-lng="13.8461" data-alt="0.36">
                         <div class="tl-node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 3h6M10 3v6L4.5 18.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3"/><path d="M7.5 15h9"/></svg></div>
                         <div class="tl-card">
                             <span class="tl-kind" data-i18n="career.kind.research">Research</span>
@@ -834,7 +977,7 @@
                         </div>
                     </article>
 
-                    <article class="tl-item left" data-lat="58.3903" data-lng="13.8461" data-alt="0.38">
+                    <article class="tl-item left" data-lat="58.3903" data-lng="13.8461" data-alt="0.36">
                         <div class="tl-node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></div>
                         <div class="tl-card">
                             <span class="tl-kind" data-i18n="career.kind.work">Work</span>
@@ -847,7 +990,7 @@
                         </div>
                     </article>
 
-                    <article class="tl-item right" data-lat="58.2837" data-lng="12.2886" data-alt="0.3">
+                    <article class="tl-item right" data-lat="58.2837" data-lng="12.2886" data-alt="0.32">
                         <div class="tl-node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5M22 9v6"/></svg></div>
                         <div class="tl-card">
                             <span class="tl-kind" data-i18n="career.kind.edu">Education</span>
@@ -860,7 +1003,7 @@
                         </div>
                     </article>
 
-                    <article class="tl-item left" data-lat="36.7213" data-lng="-4.4214" data-alt="0.5">
+                    <article class="tl-item left" data-lat="36.7213" data-lng="-4.4214" data-alt="0.45">
                         <div class="tl-node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="9.5" y="9.5" width="5" height="5" rx=".5"/><rect x="1.5" y="10" width="6" height="4"/><rect x="16.5" y="10" width="6" height="4"/><path d="M7.5 12h2M14.5 12h2M12 9.5V6M10 4.5a3 3 0 0 1 4 0"/></svg></div>
                         <div class="tl-card">
                             <span class="tl-kind" data-i18n="career.kind.work">Work</span> <b class="badge" data-i18n="career.current">Current</b>
@@ -920,13 +1063,37 @@
         <div class="wrap">
             <div class="eyebrow" data-i18n="skills.eyebrow">06 — Skills</div>
             <h2 class="section-title" data-i18n="skills.title">The <i>toolbox</i></h2>
-            <div class="skills-filter" role="group" aria-label="Filter skills">
-                <button class="filter-btn active" data-filter="all" data-i18n="skills.all">All</button>
-                <button class="filter-btn" data-filter="lang" data-i18n="skills.lang">Languages</button>
-                <button class="filter-btn" data-filter="auto" data-i18n="skills.auto">Automation &amp; robotics</button>
-                <button class="filter-btn" data-filter="ai" data-i18n="skills.ai">AI &amp; software</button>
-                <button class="filter-btn" data-filter="soft" data-i18n="skills.soft">Soft skills</button>
-            </div>
+            <div class="toolbox-wrap">
+                <div class="toolbox" id="toolbox">
+                    <div class="tb-top">
+                        <div class="tb-tray" aria-hidden="true">
+                            <span class="tb-tool" style="--i:0;--r:-14deg"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M30 6a9 9 0 0 0-8.6 11.7L7 32.1a3.9 3.9 0 0 0 5.5 5.5l14.4-14.4A9 9 0 0 0 38.6 15l-5.8 5.8-5.2-1.4-1.4-5.2L32 8.4A9 9 0 0 0 30 6z"/></svg></span>
+                            <span class="tb-tool" style="--i:1;--r:8deg"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="19" y="3" width="10" height="18" rx="3"/><path d="M24 21v16M21 37h6l-3 8z"/></svg></span>
+                            <span class="tb-tool" style="--i:2;--r:-4deg"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="12" y="12" width="24" height="24" rx="3"/><rect x="19" y="19" width="10" height="10"/><path d="M18 6v6M24 6v6M30 6v6M18 36v6M24 36v6M30 36v6M6 18h6M6 24h6M6 30h6M36 18h6M36 24h6M36 30h6"/></svg></span>
+                            <span class="tb-tool" style="--i:3;--r:12deg"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 42h20M14 42V34h12v8M20 34V24M20 24l12-10M32 14l6 4M38 18l-3 7M38 18l4-5"/><circle cx="20" cy="24" r="3"/><circle cx="32" cy="14" r="3"/></svg></span>
+                            <span class="tb-tool" style="--i:4;--r:-10deg"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="6"/><path d="M24 6v6M24 36v6M6 24h6M36 24h6M11.3 11.3l4.2 4.2M32.5 32.5l4.2 4.2M11.3 36.7l4.2-4.2M32.5 15.5l4.2-4.2"/></svg></span>
+                        </div>
+                        <button class="tb-lid" id="tbLid" aria-expanded="false" aria-controls="tbPanel">
+                            <span class="tb-handle" aria-hidden="true"></span>
+                            <span class="tb-lid-label" data-i18n="skills.open">Open the toolbox</span>
+                        </button>
+                    </div>
+                    <div class="tb-body">
+                        <span class="tb-latch" aria-hidden="true"></span>
+                        <button class="tb-drawer" data-cat="lang" disabled><i class="tb-pull" aria-hidden="true"></i><span class="tb-name" data-i18n="skills.lang">Languages</span><span class="tb-count"></span></button>
+                        <button class="tb-drawer" data-cat="auto" disabled><i class="tb-pull" aria-hidden="true"></i><span class="tb-name" data-i18n="skills.auto">Automation &amp; robotics</span><span class="tb-count"></span></button>
+                        <button class="tb-drawer" data-cat="ai" disabled><i class="tb-pull" aria-hidden="true"></i><span class="tb-name" data-i18n="skills.ai">AI &amp; software</span><span class="tb-count"></span></button>
+                        <button class="tb-drawer" data-cat="soft" disabled><i class="tb-pull" aria-hidden="true"></i><span class="tb-name" data-i18n="skills.soft">Soft skills</span><span class="tb-count"></span></button>
+                    </div>
+                    <div class="tb-feet" aria-hidden="true"><span></span><span></span></div>
+                </div>
+
+                <div class="tb-panel" id="tbPanel" aria-live="polite">
+                    <div class="tb-hint">
+                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M40 24H10M20 14L10 24l10 10"/></svg>
+                        <p data-i18n="skills.hint">Open the toolbox, then pull out a drawer to see what's inside.</p>
+                    </div>
+                    <div class="tb-head"><h3 class="serif" id="tbTitle"></h3><span id="tbCount"></span></div>
             <div class="skills-grid" id="skillsGrid">
                 <span class="skill-tag" data-cat="lang">Python</span>
                 <span class="skill-tag" data-cat="lang">C / C++</span>
@@ -962,6 +1129,8 @@
                 <span class="skill-tag" data-cat="soft" data-i18n="skills.research">Research</span>
                 <span class="skill-tag" data-cat="soft" data-i18n="skills.statistics">Statistics</span>
             </div>
+                </div>
+            </div>
             <div class="langs">
                 <span><b data-i18n="lang.es">Spanish</b> — <span data-i18n="lang.native">native</span></span>
                 <span><b data-i18n="lang.en">English</b> — <span data-i18n="lang.fluent">fluent</span></span>
@@ -975,31 +1144,38 @@
         <div class="wrap">
             <div class="eyebrow" data-i18n="rec.eyebrow">07 — Recommendations</div>
             <h2 class="section-title" data-i18n="rec.title">What people <i>say</i></h2>
-            <div class="rec-grid">
-                <a class="rec-card glow-card reveal" href="Recomendations/Malin%20Elektroautomatik.pdf" target="_blank" rel="noopener">
+            <div class="rec-carousel" id="recCarousel" tabindex="0" aria-roledescription="carousel">
+            <div class="rec-track" id="recTrack">
+                <a class="rec-card glow-card" href="Recomendations/Malin%20Elektroautomatik.pdf" target="_blank" rel="noopener">
                     <span class="rec-mark" aria-hidden="true">“</span>
                     <p class="rec-quote" data-i18n="rec.malin.quote">He is structured, solution-oriented, and able to quickly adapt to new technical challenges and working methods. The quality of the work delivered has consistently been of a very high standard.</p>
                     <div class="rec-person"><span class="rec-avatar" aria-hidden="true">ML</span><div><div class="rec-name">Malin Landin</div><div class="rec-role" data-i18n="rec.malin.role">Vision &amp; Robotics Manager · Elektroautomatik AB</div></div></div>
                     <span class="rec-letter" data-i18n="rec.read">Read the full letter ↗</span>
                 </a>
-                <a class="rec-card glow-card reveal" style="--d:.1s" href="Recomendations/Martin%20Birtic.pdf" target="_blank" rel="noopener">
+                <a class="rec-card glow-card" href="Recomendations/Martin%20Birtic.pdf" target="_blank" rel="noopener">
                     <span class="rec-mark" aria-hidden="true">“</span>
                     <p class="rec-quote" data-i18n="rec.martin.quote">His analytical approach and ability to tackle complex problems independently made him indispensable to the project's success.</p>
                     <div class="rec-person"><span class="rec-avatar" aria-hidden="true">MB</span><div><div class="rec-name">Martin Birtic</div><div class="rec-role" data-i18n="rec.martin.role">Lecturer in Production Engineering · Högskolan i Skövde</div></div></div>
                     <span class="rec-letter" data-i18n="rec.read">Read the full letter ↗</span>
                 </a>
-                <a class="rec-card glow-card reveal" href="Recomendations/Nasjwa.pdf" target="_blank" rel="noopener">
+                <a class="rec-card glow-card" href="Recomendations/Nasjwa.pdf" target="_blank" rel="noopener">
                     <span class="rec-mark" aria-hidden="true">“</span>
                     <p class="rec-quote" data-i18n="rec.najwa.quote">He introduced new tools and developed smart components that improved our work with simulations. Pablo's creativity and dedication to finding solutions have significantly benefited our team.</p>
                     <div class="rec-person"><span class="rec-avatar" aria-hidden="true">NY</span><div><div class="rec-name">Najwa Yattou Belkhrouf</div><div class="rec-role" data-i18n="rec.najwa.role">Automation Engineer &amp; Mentor · Elektroautomatik</div></div></div>
                     <span class="rec-letter" data-i18n="rec.read">Read the full letter ↗</span>
                 </a>
-                <a class="rec-card glow-card reveal" style="--d:.1s" href="Recomendations/Antonio%20Carrillo.pdf" target="_blank" rel="noopener">
+                <a class="rec-card glow-card" href="Recomendations/Antonio%20Carrillo.pdf" target="_blank" rel="noopener">
                     <span class="rec-mark" aria-hidden="true">“</span>
                     <p class="rec-quote" data-i18n="rec.antonio.quote">He is a motivated, ethical, and diligent individual, with a positive attitude that inspires his peers. His effective communication skills and teamwork contribute significantly to any professional environment he is in.</p>
                     <div class="rec-person"><span class="rec-avatar" aria-hidden="true">AC</span><div><div class="rec-name">Antonio Luis Carrillo León</div><div class="rec-role" data-i18n="rec.antonio.role">Professor, Dept. of Languages &amp; Computer Science · University of Málaga</div></div></div>
                     <span class="rec-letter" data-i18n="rec.read">Read the full letter ↗</span>
                 </a>
+            </div>
+            </div>
+            <div class="rec-controls">
+                <button class="round-btn" id="recPrev" aria-label="Previous recommendation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button>
+                <div class="rec-dots" id="recDots"></div>
+                <button class="round-btn" id="recNext" aria-label="Next recommendation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
             </div>
         </div>
     </section>
@@ -1138,6 +1314,7 @@
             'skills.eyebrow': '06 — Habilidades', 'skills.title': 'La <i>caja de herramientas</i>',
             'skills.all': 'Todas', 'skills.lang': 'Lenguajes', 'skills.auto': 'Automatización y robótica',
             'skills.ai': 'IA y software', 'skills.soft': 'Habilidades blandas',
+            'skills.open': 'Abrir la caja', 'skills.hint': 'Abre la caja de herramientas y saca un cajón para ver lo que hay dentro.',
             'skills.problemsolving': 'Resolución de problemas', 'skills.communication': 'Comunicación', 'skills.teamwork': 'Trabajo en equipo',
             'skills.management': 'Gestión de proyectos', 'skills.research': 'Investigación', 'skills.statistics': 'Estadística',
             'lang.es': 'Español', 'lang.en': 'Inglés', 'lang.sv': 'Sueco',
@@ -1174,7 +1351,7 @@
                 sending: 'Sending…', sent: 'Message sent — I\'ll get back to you soon.',
                 sendErr: 'Something went wrong. Please try again.',
                 netErr: 'Could not send the message. Please email me directly at pablomorillacabello@gmail.com',
-                langBtn: 'ES', langAria: 'Cambiar a español', cv: 'CV.pdf'
+                langBtn: 'ES', langAria: 'Cambiar a español', cv: 'CV.pdf', tools: 'tools'
             },
             es: {
                 noDesc: 'Sin descripción', viewGh: 'Ver en GitHub →', noProjects: 'No se encontraron proyectos.',
@@ -1183,7 +1360,7 @@
                 sending: 'Enviando…', sent: 'Mensaje enviado — te responderé pronto.',
                 sendErr: 'Algo ha fallado. Inténtalo de nuevo.',
                 netErr: 'No se pudo enviar el mensaje. Escríbeme directamente a pablomorillacabello@gmail.com',
-                langBtn: 'EN', langAria: 'Switch to English', cv: 'CV_ES.pdf'
+                langBtn: 'EN', langAria: 'Switch to English', cv: 'CV_ES.pdf', tools: 'herramientas'
             }
         };
 
@@ -1244,6 +1421,8 @@
             else if (projectsFailed) showProjectsError();
             buildMarquee();
             if (window.__journeyRefresh) window.__journeyRefresh();
+            if (window.__recRefresh) window.__recRefresh();
+            if (window.__toolboxRefresh) window.__toolboxRefresh();
             try { localStorage.setItem('lang', next); } catch (e) {}
         }
 
@@ -1375,7 +1554,7 @@
                         s.a += s.s; if (s.a > 1 || s.a < .15) s.s *= -1;
                         s.x -= s.v; if (s.x < 0) s.x = w;
                     }
-                    ctx.globalAlpha = Math.max(.1, Math.min(1, s.a)) * (root.getAttribute('data-theme') === 'light' ? .5 : 1);
+                    ctx.globalAlpha = Math.max(.15, Math.min(1, s.a)) * (root.getAttribute('data-theme') === 'light' ? .85 : 1);
                     ctx.fillStyle = 'rgb(' + rgb + ')';
                     ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill();
                 }
@@ -1439,8 +1618,9 @@
 
             // Camera centre for a stop: the city sits on the free side of the line
             function view(s) {
-                var shift = mq.matches ? 0 : s.side * s.alt * 22 / Math.cos(s.lat * Math.PI / 180);
-                return { lat: s.lat - (mq.matches ? 2 : 0), lng: s.lng + shift, altitude: s.alt * (mq.matches ? 1.5 : 1) };
+                // Same view for every stage in the same city; the city sits above the cards, on the line
+                var alt = s.alt * (mq.matches ? 1.5 : 1);
+                return { lat: s.lat - alt * (mq.matches ? 11 : 14), lng: s.lng, altitude: alt };
             }
 
             /* ---------- timeline state from scroll ---------- */
@@ -1486,7 +1666,7 @@
             /* ---------- globe layers ---------- */
             function markerEl(s, current) {
                 var el = document.createElement('div');
-                el.className = 'city-marker ' + (current ? 'current' : 'visited') + (current && s.side === 1 && !mq.matches ? ' flip' : '');
+                el.className = 'city-marker ' + (current ? 'current' : 'visited') + '';
                 if (current) {
                     var place = s.el.querySelector('.tl-place').textContent;
                     el.innerHTML = '<div class="city-label"><b></b><small></small></div>';
@@ -1520,7 +1700,7 @@
                 cam.lat += (target.lat - cam.lat) * k;
                 cam.lng += (target.lng - cam.lng) * k;
                 cam.altitude += (target.altitude - cam.altitude) * k;
-                var drift = reduceMotion ? 0 : Math.sin(performance.now() / 5000) * 0.35;
+                var drift = 0;
                 globe.pointOfView({ lat: cam.lat, lng: cam.lng + drift, altitude: cam.altitude }, 0);
                 requestAnimationFrame(loop);
             }
@@ -1539,15 +1719,15 @@
             function palette() {
                 var g = gold();
                 return isLight()
-                    ? { ocean: '#EFE7DA', land: '#E0D1B9', grid: 'rgba(154,107,55,.16)', coast: hexA(g, .85), border: hexA(g, .45) }
+                    ? { ocean: '#E9DFCF', land: '#D6C3A5', grid: 'rgba(138,90,34,.2)', coast: hexA(g, .95), border: hexA(g, .55) }
                     : { ocean: '#1B1713', land: '#352C23', grid: 'rgba(212,165,116,.10)', coast: hexA(g, .75), border: hexA(g, .38) };
             }
             function drawTexture(p, cb) {
-                var W = 8192, H = 4096, c = document.createElement('canvas');
+                var W = 4096, H = 2048, c = document.createElement('canvas');
                 c.width = W; c.height = H;
                 var x = c.getContext('2d');
                 x.fillStyle = p.ocean; x.fillRect(0, 0, W, H);
-                x.strokeStyle = p.grid; x.lineWidth = 3;
+                x.strokeStyle = p.grid; x.lineWidth = 1.5;
                 for (var lng = -180; lng <= 180; lng += 10) { var px = (lng + 180) / 360 * W; x.beginPath(); x.moveTo(px, 0); x.lineTo(px, H); x.stroke(); }
                 for (var lat = -80; lat <= 80; lat += 10) { var py = (90 - lat) / 180 * H; x.beginPath(); x.moveTo(0, py); x.lineTo(W, py); x.stroke(); }
                 if (geo) {
@@ -1697,18 +1877,69 @@
         buildMarquee();
 
         /* ============================================================
-           SKILLS FILTER
+           SKILLS — interactive toolbox
         ============================================================ */
-        var filterBtns = document.querySelectorAll('.filter-btn');
-        filterBtns.forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                var f = btn.getAttribute('data-filter');
-                filterBtns.forEach(function (b) { b.classList.toggle('active', b === btn); b.setAttribute('aria-pressed', b === btn); });
-                document.querySelectorAll('.skill-tag').forEach(function (tag) {
-                    tag.classList.toggle('hidden', f !== 'all' && tag.getAttribute('data-cat') !== f);
+        (function () {
+            var box = document.getElementById('toolbox');
+            var wrap = box.parentNode;
+            var lid = document.getElementById('tbLid');
+            var grid = document.getElementById('skillsGrid');
+            var drawers = Array.prototype.slice.call(box.querySelectorAll('.tb-drawer'));
+            var tags = Array.prototype.slice.call(grid.querySelectorAll('.skill-tag'));
+            var titleEl = document.getElementById('tbTitle'), countEl = document.getElementById('tbCount');
+            var active = null, autoTimer = null;
+
+            function inCat(cat) { return tags.filter(function (t) { return t.getAttribute('data-cat') === cat; }); }
+
+            drawers.forEach(function (d, i) {
+                d.style.setProperty('--i', i);
+                d.querySelector('.tb-count').textContent = inCat(d.getAttribute('data-cat')).length;
+                d.setAttribute('aria-pressed', 'false');
+                d.addEventListener('click', function () {
+                    if (!box.classList.contains('open')) { open(d); return; }
+                    select(d);
                 });
             });
-        });
+
+            function label() {
+                if (!active) return;
+                titleEl.textContent = active.querySelector('.tb-name').textContent;
+                countEl.textContent = inCat(active.getAttribute('data-cat')).length + ' ' + t('tools');
+            }
+
+            function select(d) {
+                active = d;
+                drawers.forEach(function (x) { x.classList.toggle('active', x === d); x.setAttribute('aria-pressed', x === d); });
+                tags.forEach(function (t) { t.classList.remove('show'); });
+                void grid.offsetWidth; // restart the pop animation
+                inCat(d.getAttribute('data-cat')).forEach(function (t, i) { t.style.setProperty('--i', i); t.classList.add('show'); });
+                label();
+            }
+
+            function open(first) {
+                box.classList.add('open');
+                wrap.classList.add('opened');
+                lid.setAttribute('aria-expanded', 'true');
+                drawers.forEach(function (d) { d.disabled = false; });
+                clearTimeout(autoTimer);
+                autoTimer = setTimeout(function () { select(first || active || drawers[0]); }, reduceMotion ? 0 : 700);
+            }
+
+            function close() {
+                clearTimeout(autoTimer);
+                box.classList.remove('open');
+                wrap.classList.remove('opened');
+                lid.setAttribute('aria-expanded', 'false');
+                drawers.forEach(function (d) { d.classList.remove('active'); d.setAttribute('aria-pressed', 'false'); });
+                tags.forEach(function (t) { t.classList.remove('show'); });
+            }
+
+            lid.addEventListener('click', function () { if (box.classList.contains('open')) close(); else open(); });
+            // closed drawers are "locked": clicking one opens the box and pulls it out
+            drawers.forEach(function (d) { d.disabled = false; });
+
+            window.__toolboxRefresh = label;
+        })();
 
         /* ============================================================
            DYNAMICS — glow, tilt, parallax, counters, staggered skills
@@ -1743,16 +1974,16 @@
         (function () {
             var hero = document.getElementById('hero');
             var photo = document.querySelector('.hero-photo');
-            var orbits = document.getElementById('orbits');
+            var orbits = document.querySelectorAll('.orbits');
             var planet = document.querySelector('.planet');
             if (reduceMotion) return;
             if (finePointer) {
                 hero.addEventListener('pointermove', function (e) {
                     var x = e.clientX / window.innerWidth - .5, y = e.clientY / window.innerHeight - .5;
                     photo.style.transform = 'translate(' + (x * 14) + 'px,' + (y * 14) + 'px)';
-                    orbits.style.transform = 'translate(' + (x * -22) + 'px,' + (y * -22) + 'px) rotate(' + (x * 6) + 'deg)';
+                    orbits.forEach(function (o) { o.style.transform = 'translate(' + (x * -18) + 'px,' + (y * -18) + 'px) rotate(' + (x * 5) + 'deg)'; });
                 });
-                hero.addEventListener('pointerleave', function () { photo.style.transform = ''; orbits.style.transform = ''; });
+                hero.addEventListener('pointerleave', function () { photo.style.transform = ''; orbits.forEach(function (o) { o.style.transform = ''; }); });
             }
             window.addEventListener('scroll', function () {
                 var y = window.scrollY;
@@ -1783,16 +2014,99 @@
             statObs.observe(document.querySelector('.hero-stats'));
         }
 
-        // Staggered skill tags
-        document.querySelectorAll('.skill-tag').forEach(function (t, i) { t.style.setProperty('--i', i); });
-        if ('IntersectionObserver' in window && !reduceMotion) {
-            var grid = document.getElementById('skillsGrid');
-            grid.classList.add('stagger');
-            var skObs = new IntersectionObserver(function (e) {
-                if (e[0].isIntersecting) { grid.classList.add('in'); skObs.disconnect(); }
-            }, { threshold: .15 });
-            skObs.observe(grid);
-        }
+
+        /* ============================================================
+           RECOMMENDATIONS — quote carousel
+        ============================================================ */
+        (function () {
+            var carousel = document.getElementById('recCarousel');
+            var track = document.getElementById('recTrack');
+            var cards = Array.prototype.slice.call(track.querySelectorAll('.rec-card'));
+            var dotsWrap = document.getElementById('recDots');
+            var DELAY = 7000, current = 0, timer = null, startX = 0, inView = false;
+            carousel.style.setProperty('--rec-ms', DELAY + 'ms');
+            dotsWrap.parentNode.style.setProperty('--rec-ms', DELAY + 'ms');
+
+            function split() {
+                cards.forEach(function (c) {
+                    var q = c.querySelector('.rec-quote');
+                    var words = q.textContent.trim().split(/\s+/);
+                    q.innerHTML = '';
+                    words.forEach(function (w, i) {
+                        var s = document.createElement('span');
+                        s.className = 'w'; s.style.setProperty('--i', i);
+                        s.textContent = w + (i < words.length - 1 ? ' ' : '');
+                        q.appendChild(s);
+                    });
+                });
+            }
+
+            cards.forEach(function (c, i) {
+                var d = document.createElement('button');
+                d.className = 'rec-dot'; d.setAttribute('aria-label', 'Recommendation ' + (i + 1));
+                d.innerHTML = '<i></i>';
+                d.addEventListener('click', function () { go(i); });
+                dotsWrap.appendChild(d);
+                c.addEventListener('click', function (e) { if (i !== current) { e.preventDefault(); go(i); } });
+            });
+            var dots = dotsWrap.children;
+
+            function center() {
+                var c = cards[current];
+                var x = carousel.clientWidth / 2 - (c.offsetLeft + c.offsetWidth / 2);
+                track.style.transform = 'translateX(' + x + 'px)';
+            }
+
+            function go(i) {
+                current = (i + cards.length) % cards.length;
+                cards.forEach(function (c, k) {
+                    c.classList.toggle('active', k === current);
+                    c.setAttribute('aria-hidden', k !== current);
+                    c.tabIndex = k === current ? 0 : -1;
+                });
+                for (var k = 0; k < dots.length; k++) {
+                    dots[k].classList.remove('active');
+                    dots[k].classList.toggle('done', k < current);
+                }
+                void dots[current].offsetWidth; // restart the progress animation
+                dots[current].classList.add('active');
+                center();
+                restart();
+            }
+            function stop() { clearTimeout(timer); timer = null; }
+            function restart() {
+                stop();
+                if (!reduceMotion && inView && !carousel.classList.contains('paused')) timer = setTimeout(function () { go(current + 1); }, DELAY);
+            }
+            function pause() { carousel.classList.add('paused'); stop(); }
+            function resume() { carousel.classList.remove('paused'); go(current); }
+
+            document.getElementById('recPrev').addEventListener('click', function () { go(current - 1); });
+            document.getElementById('recNext').addEventListener('click', function () { go(current + 1); });
+            carousel.addEventListener('mouseenter', pause);
+            carousel.addEventListener('mouseleave', resume);
+            carousel.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; }, { passive: true });
+            carousel.addEventListener('touchend', function (e) {
+                var dx = e.changedTouches[0].clientX - startX;
+                if (Math.abs(dx) > 40) go(current + (dx < 0 ? 1 : -1));
+            }, { passive: true });
+            carousel.addEventListener('keydown', function (e) {
+                if (e.key === 'ArrowRight') go(current + 1);
+                if (e.key === 'ArrowLeft') go(current - 1);
+            });
+            window.addEventListener('resize', center);
+
+            if ('IntersectionObserver' in window) {
+                new IntersectionObserver(function (e) {
+                    inView = e[0].isIntersecting;
+                    if (inView) go(current); else stop();
+                }, { threshold: .35 }).observe(carousel);
+            }
+
+            window.__recRefresh = function () { split(); go(current); };
+            split();
+            go(0);
+        })();
 
         /* ============================================================
            GITHUB PROJECTS
@@ -1882,6 +2196,23 @@
         if (root.getAttribute('data-theme') === 'light') document.querySelector('meta[name="theme-color"]').setAttribute('content', '#F6F1E8');
 
         try { if (localStorage.getItem('lang') === 'es') setLanguage('es'); } catch (e) {}
+
+        /* ============================================================
+           LOADER â€” reveal the page once fonts and the hero photo are ready
+        ============================================================ */
+        (function () {
+            var t0 = performance.now(), done = false;
+            function reveal() {
+                if (done) return; done = true;
+                var wait = Math.max(0, 450 - (performance.now() - t0));
+                setTimeout(function () { requestAnimationFrame(function () { root.classList.add('loaded'); }); }, wait);
+            }
+            var img = document.querySelector('.hero-photo img');
+            var imgReady = img && img.decode ? img.decode().catch(function () {}) : Promise.resolve();
+            var fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+            Promise.all([imgReady, fontsReady]).then(reveal, reveal);
+            setTimeout(reveal, 3500); // never block the page for long
+        })();
     })();
     </script>
 </body>
